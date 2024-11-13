@@ -1,6 +1,11 @@
 import 'dart:io';
+
 import 'package:christiandimene/features/onboading/presentation/another_onboading.dart';
 import 'package:christiandimene/features/onboading/presentation/onbording_screen.dart';
+
+import 'package:christiandimene/features/auth/presentation/login_screen.dart';
+import 'package:christiandimene/features/auth/presentation/signup_screen.dart';
+
 import 'package:flutter/cupertino.dart';
 
 final class Routes {
@@ -42,6 +47,16 @@ final class RouteGenerator {
             ? _FadedTransitionRoute(
                 widget: AnotherOnboading(), settings: settings)
             : CupertinoPageRoute(builder: (context) => AnotherOnboading());
+
+      case Routes.signUpScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(widget: SignupScreen(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => SignupScreen());
+
+      case Routes.logInScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(widget: LoginScreen(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => LoginScreen());
 
       default:
         return null;
