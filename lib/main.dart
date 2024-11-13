@@ -1,4 +1,3 @@
-import 'package:christiandimene/features/home/presentation/home.dart';
 import 'package:christiandimene/features/onboading/presentation/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,7 +10,7 @@ import 'helpers/all_routes.dart';
 import 'helpers/di.dart';
 import 'helpers/helper_methods.dart';
 import 'helpers/navigation_service.dart';
-import 'loading_screen.dart';
+
 import 'networks/dio/dio.dart';
 
 void main() async {
