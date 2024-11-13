@@ -21,7 +21,7 @@ class FeaturedMenu extends StatelessWidget {
         side: const BorderSide(color: AppColors.allPrimaryColor),
         label: Text(
           name,
-          style: TextFontStyle.textStyle14c292E34DmSans700,
+          style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim,
         ),
       ),
     );

@@ -10,7 +10,7 @@ extension Loader on Future {
   Future<dynamic> waitingForFuture() async {
     showDialog(
       context: NavigationService.context,
-      barrierColor: AppColors.cF4F4F4,
+      barrierColor: AppColors.black,
       builder: (context) => loadingIndicatorCircle(context: context),
     );
 
@@ -85,7 +85,7 @@ extension Loader on Future {
     try {
       showDialog(
         context: NavigationService.context,
-        barrierColor: AppColors.cF4F4F4,
+        barrierColor: AppColors.black,
         builder: (context) => loadingIndicatorCircle(context: context),
       );
       bool result = await this;

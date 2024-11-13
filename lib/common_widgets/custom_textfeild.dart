@@ -1,79 +1,105 @@
+import 'package:christiandimene/constants/text_font_style.dart';
+import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../constants/text_font_style.dart';
-import '../gen/colors.gen.dart';
 
-// ignore: must_be_immutable
-class CustomTextFormField extends StatefulWidget {
-  String? hintText;
-  final TextEditingController controller;
-  final IconData? suffixIcon;
-  bool isSufixIcon;
-  bool isenabled;
-  Color? textColor;
-  bool isObsecure;
+class CustomTextfield extends StatelessWidget {
+  const CustomTextfield(
+      {super.key,
+      this.hintText,
+      this.validation,
+      this.obscuretext,
+      this.onchanged,
+      this.controller,
+      this.suffixIcon,
+      this.suffixIconOntap,
+      this.fillColor,
+      this.maxLines,
+      this.borderRadius,
+      this.keyboardType,
+      this.isPrefix = true,
+      this.isSuffix = true,
+      this.contentVerticalPadding,
+      this.fillColors,
+      this.borderColor,
+      this.prefixIcon,
+      this.prefixIconOntap,
+      this.readOnly,
+      this.ontap,
+      this.fontSize,
+      this.onSubmitted});
 
-  CustomTextFormField({
-    required this.controller,
-    required this.hintText,
-    this.suffixIcon,
-    this.textColor = AppColors.c919293,
-    this.isSufixIcon = false,
-    this.isenabled = true,
-    this.isObsecure = false,
-    super.key,
-  });
+  final hintText;
+  final validation;
+  final obscuretext;
+  final onchanged;
+  final controller;
+  final suffixIcon;
+  final prefixIcon;
+  final suffixIconOntap;
+  final prefixIconOntap;
+  final fillColor;
+  final maxLines;
+  final double? borderRadius;
+  final keyboardType;
+  final bool isPrefix;
+  final bool isSuffix;
+  final double? contentVerticalPadding;
+  final Color? fillColors;
+  final Color? borderColor;
+  final readOnly;
+  final ontap;
+  final fontSize;
+  final onSubmitted;
 
-  @override
-  // ignore: library_private_types_in_public_api
-  _CustomTextFormFieldState createState() => _CustomTextFormFieldState();
-}
-
-class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: widget.controller,
-      obscureText: widget.isObsecure,
+      onChanged: onchanged,
+      validator: validation,
+      controller: controller,
+      onTap: ontap,
+      obscureText: obscuretext ?? false,
+      keyboardType: keyboardType,
+      maxLines: maxLines ?? 1,
+      readOnly: readOnly ?? false,
+      onFieldSubmitted: onSubmitted,
       decoration: InputDecoration(
-        suffixIcon: widget.isSufixIcon == true
-            ? const Icon(
-                Icons.search,
-                color: AppColors.c919293,
-              )
-            : null,
-        contentPadding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 24.w),
-        hintText: widget.hintText,
-        hintStyle: TextFontStyle.headline14w400c000000StyledmSans
-            .copyWith(color: widget.textColor),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(6.r)),
-        ),
+        hintText: hintText,
+        hintStyle: TextFontStyle.textStyle16w500c222222StyleGTWalsheim,
+
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: 4.w, vertical: contentVerticalPadding ?? 17.h),
+        suffixIcon: isSuffix == true
+            ? IconButton(onPressed: suffixIconOntap, icon: Icon(suffixIcon))
+            : SizedBox(),
+        prefixIcon: isPrefix == true
+            ? IconButton(onPressed: prefixIconOntap, icon: Icon(prefixIcon))
+            : SizedBox(),
+        filled: true,
+        fillColor: fillColors ?? fillColor,
+
+        //enable-->
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(6.r)),
-          borderSide: BorderSide(
-              color: AppColors.cEBEBEB,
-              width: 1.w), // Replace with your custom color
+          borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
+          borderSide:
+              BorderSide(color: borderColor ?? AppColors.black, width: 1.w),
         ),
+        //focus-->
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(6.r)),
           borderSide: BorderSide(
-              color: AppColors.cEBEBEB,
-              width: 1.w), // Replace with your custom color
+            color: Colors.blue,
+            width: 1.5.w,
+          ),
+          borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
         ),
-        disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(6.r)),
-          borderSide: BorderSide(
-              color: AppColors.cEBEBEB,
-              width: 1.w), // Replace with your custom color
-        ),
+        //focus-->
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(6.r)),
-          borderSide: BorderSide(color: Colors.red, width: 1.w),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(6.r)),
-          borderSide: BorderSide(color: Colors.red, width: 1.w),
+          borderSide: BorderSide(
+            color: AppColors.cBBCBC4,
+            width: 2.w,
+          ),
+          borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
         ),
       ),
     );

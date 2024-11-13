@@ -1,31 +1,36 @@
+import 'package:christiandimene/constants/text_font_style.dart';
+import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../gen/colors.gen.dart';
 
-Widget customeButton({
-  required String name,
-  required VoidCallback onCallBack,
-  required double height,
-  required double minWidth,
-  required double borderRadius,
-  required Color color,
-  required TextStyle textStyle,
-  required BuildContext context,
-  Color? borderColor,
-}) {
-  return MaterialButton(
-    onPressed: onCallBack,
-    height: height,
-    minWidth: minWidth,
-    shape: RoundedRectangleBorder(
-      side: BorderSide(color: borderColor ?? AppColors.allPrimaryColor, width: 1.5.sp),
-      borderRadius: BorderRadius.circular(borderRadius),
-    ),
-    color: color,
-    splashColor: Colors.white.withOpacity(0.4),
-    child: Text(
-      name,
-      style: textStyle,
+Widget customButton(
+    {required String name,
+    required VoidCallback onCallBack,
+    double? height,
+    double? minWidth,
+    double? borderRadius,
+    Color? color,
+    TextStyle? textStyle,
+    required BuildContext context,
+    Color? borderColor,
+    elevation}) {
+  return GestureDetector(
+    onTap: onCallBack,
+    child: Container(
+      height: height ?? 62.h,
+      width: minWidth ?? double.infinity,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+          color: color ?? AppColors.cFDB338,
+          borderRadius: BorderRadius.circular(borderRadius ?? 33.r),
+          border: Border.all(
+            color: borderColor ?? AppColors.cFDB338,
+          )),
+      child: Text(
+        name,
+        overflow: TextOverflow.ellipsis,
+        style: textStyle ?? TextFontStyle.headline18w500cFFFFFFStyleGTWalsheim,
+      ),
     ),
   );
 }
