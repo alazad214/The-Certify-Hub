@@ -1,4 +1,4 @@
-import 'package:christiandimene/features/home/presentation/home.dart';
+import 'package:christiandimene/features/onboading/presentation/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -10,7 +10,7 @@ import 'helpers/all_routes.dart';
 import 'helpers/di.dart';
 import 'helpers/helper_methods.dart';
 import 'helpers/navigation_service.dart';
-import 'loading_screen.dart';
+
 import 'networks/dio/dio.dart';
 
 void main() async {
@@ -67,21 +67,22 @@ class UtillScreenMobile extends StatelessWidget {
             showMaterialDialog(context);
           },
           child: GetMaterialApp(
-              //    showPerformanceOverlay: true,
-              theme: ThemeData(
-                  unselectedWidgetColor: Colors.white,
-                  primarySwatch: CustomTheme.kToDark,
-                  useMaterial3: false,
-                  scaffoldBackgroundColor: AppColors.cFFFFFF,
-                  appBarTheme: const AppBarTheme(
-                      color: AppColors.cFFFFFF, elevation: 0)),
-              debugShowCheckedModeBanner: false,
-              builder: (context, widget) {
-                return MediaQuery(data: MediaQuery.of(context), child: widget!);
-              },
-              navigatorKey: NavigationService.navigatorKey,
-              onGenerateRoute: RouteGenerator.generateRoute,
-              home: const HomeScreen()),
+            //    showPerformanceOverlay: true,
+            theme: ThemeData(
+                unselectedWidgetColor: Colors.white,
+                primarySwatch: CustomTheme.kToDark,
+                useMaterial3: false,
+                scaffoldBackgroundColor: AppColors.cE9EEEC,
+                appBarTheme:
+                    const AppBarTheme(color: AppColors.cFFFFFF, elevation: 0)),
+            debugShowCheckedModeBanner: false,
+            builder: (context, widget) {
+              return MediaQuery(data: MediaQuery.of(context), child: widget!);
+            },
+            navigatorKey: NavigationService.navigatorKey,
+            onGenerateRoute: RouteGenerator.generateRoute,
+            home: const SplashScreen(),
+          ),
         );
       },
     );

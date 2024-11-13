@@ -40,7 +40,7 @@ class ReusableAppBar extends StatelessWidget implements PreferredSizeWidget {
           : null,
       title: Text(
         title,
-        style: TextFontStyle.headline18w500cFFFFFFStyleGTWalsheim,
+        style: TextFontStyle.headline18w500c222222StyleGTWalsheim,
       ),
       actions: actions,
       bottom: bottom,

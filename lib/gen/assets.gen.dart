@@ -15,23 +15,81 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Back Button.svg
   String get backButton => 'assets/icons/Back Button.svg';
 
+  /// File path: assets/icons/apple.svg
+  String get apple => 'assets/icons/apple.svg';
+
+  /// File path: assets/icons/facebook.svg
+  String get facebook => 'assets/icons/facebook.svg';
+
+  /// File path: assets/icons/google.svg
+  String get google => 'assets/icons/google.svg';
+
+  /// File path: assets/icons/notification.svg
+  String get notification => 'assets/icons/notification.svg';
+
   /// List of all assets
-  List<String> get values => [backButton];
+  List<String> get values =>
+      [backButton, apple, facebook, google, notification];
 }
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/appLogo.png
+  AssetGenImage get appLogo => const AssetGenImage('assets/images/appLogo.png');
+
+  /// File path: assets/images/apple.png
+  AssetGenImage get apple => const AssetGenImage('assets/images/apple.png');
+
   /// File path: assets/images/error_image.png
   AssetGenImage get errorImage =>
       const AssetGenImage('assets/images/error_image.png');
+
+  /// File path: assets/images/facebook.png
+  AssetGenImage get facebook =>
+      const AssetGenImage('assets/images/facebook.png');
+
+  /// File path: assets/images/google.png
+  AssetGenImage get google => const AssetGenImage('assets/images/google.png');
+
+  /// File path: assets/images/home_card_image.png
+  AssetGenImage get homeCardImage =>
+      const AssetGenImage('assets/images/home_card_image.png');
+
+  /// File path: assets/images/onboading.png
+  AssetGenImage get onboading =>
+      const AssetGenImage('assets/images/onboading.png');
+
+  /// File path: assets/images/onboading2.png
+  AssetGenImage get onboading2 =>
+      const AssetGenImage('assets/images/onboading2.png');
+
+  /// File path: assets/images/onboading3.png
+  AssetGenImage get onboading3 =>
+      const AssetGenImage('assets/images/onboading3.png');
 
   /// File path: assets/images/placeholder_image.jpeg
   AssetGenImage get placeholderImage =>
       const AssetGenImage('assets/images/placeholder_image.jpeg');
 
+  /// File path: assets/images/white_round_shape.png
+  AssetGenImage get whiteRoundShape =>
+      const AssetGenImage('assets/images/white_round_shape.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [errorImage, placeholderImage];
+  List<AssetGenImage> get values => [
+        appLogo,
+        apple,
+        errorImage,
+        facebook,
+        google,
+        homeCardImage,
+        onboading,
+        onboading2,
+        onboading3,
+        placeholderImage,
+        whiteRoundShape
+      ];
 }
 
 class $AssetsLottieGen {

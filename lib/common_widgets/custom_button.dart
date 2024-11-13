@@ -22,14 +22,14 @@ Widget customButton(
       alignment: Alignment.center,
       decoration: BoxDecoration(
           color: color ?? AppColors.cFDB338,
-          borderRadius: BorderRadius.circular(borderRadius ?? 33.r),
+          borderRadius: BorderRadius.circular(borderRadius ?? 12.r),
           border: Border.all(
             color: borderColor ?? AppColors.cFDB338,
           )),
       child: Text(
         name,
         overflow: TextOverflow.ellipsis,
-        style: textStyle ?? TextFontStyle.headline18w500cFFFFFFStyleGTWalsheim,
+        style: textStyle ?? TextFontStyle.headline18w500c222222StyleGTWalsheim,
       ),
     ),
   );
