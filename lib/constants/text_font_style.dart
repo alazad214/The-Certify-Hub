@@ -6,7 +6,7 @@ class TextFontStyle {
 //Initialising Constractor
   TextFontStyle._();
 
-///Christiandimene START-->>
+  ///Christiandimene START-->>
 
 //headline start..
   static final headline32w700cFFFFFFStyleGTWalsheim = TextStyle(
@@ -40,9 +40,9 @@ class TextFontStyle {
     fontWeight: FontWeight.w700,
   );
 
-  static final headline18w500cFFFFFFStyleGTWalsheim = TextStyle(
+  static final headline18w500c222222StyleGTWalsheim = TextStyle(
     fontFamily: 'GT Walsheim Trial',
-    color: AppColors.cFFFFFF,
+    color: AppColors.c222222,
     fontSize: 18.sp,
     fontWeight: FontWeight.w500,
   );

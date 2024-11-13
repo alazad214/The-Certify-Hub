@@ -15,23 +15,53 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Back Button.svg
   String get backButton => 'assets/icons/Back Button.svg';
 
+  /// File path: assets/icons/notification.svg
+  String get notification => 'assets/icons/notification.svg';
+
   /// List of all assets
-  List<String> get values => [backButton];
+  List<String> get values => [backButton, notification];
 }
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/appLogo.png
+  AssetGenImage get appLogo => const AssetGenImage('assets/images/appLogo.png');
+
   /// File path: assets/images/error_image.png
   AssetGenImage get errorImage =>
       const AssetGenImage('assets/images/error_image.png');
+
+  /// File path: assets/images/onboading.png
+  AssetGenImage get onboading =>
+      const AssetGenImage('assets/images/onboading.png');
+
+  /// File path: assets/images/onboading2.png
+  AssetGenImage get onboading2 =>
+      const AssetGenImage('assets/images/onboading2.png');
+
+  /// File path: assets/images/onboading3.png
+  AssetGenImage get onboading3 =>
+      const AssetGenImage('assets/images/onboading3.png');
 
   /// File path: assets/images/placeholder_image.jpeg
   AssetGenImage get placeholderImage =>
       const AssetGenImage('assets/images/placeholder_image.jpeg');
 
+  /// File path: assets/images/white_round_shape.png
+  AssetGenImage get whiteRoundShape =>
+      const AssetGenImage('assets/images/white_round_shape.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [errorImage, placeholderImage];
+  List<AssetGenImage> get values => [
+        appLogo,
+        errorImage,
+        onboading,
+        onboading2,
+        onboading3,
+        placeholderImage,
+        whiteRoundShape
+      ];
 }
 
 class $AssetsLottieGen {
