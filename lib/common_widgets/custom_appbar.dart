@@ -1,40 +1,49 @@
+import 'package:christiandimene/constants/text_font_style.dart';
+import 'package:christiandimene/gen/assets.gen.dart';
+import 'package:christiandimene/gen/colors.gen.dart';
+import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
-import '../constants/text_font_style.dart';
-import '../gen/colors.gen.dart';
-
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String? title;
-  final double elevation;
-  final Function()? onBackPressed;
-  final bool isCenterd;
-
-  const CustomAppBar({
+class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
+  const CustomAppbar({
     super.key,
-    this.title,
-    this.elevation = 0.0,
-    this.onBackPressed,
-    this.isCenterd = false,
+    required this.title,
+    required this.onCallBack,
+    this.leadingIconUnVisible = false,
   });
+
+  final String title;
+  final VoidCallback onCallBack;
+  final bool leadingIconUnVisible;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
-          icon: const Icon(
-            Icons.keyboard_arrow_left,
-            color: AppColors.c394456,
+      automaticallyImplyLeading: false,
+      leading: Visibility(
+          visible: !leadingIconUnVisible,
+          child: Padding(
+            padding: EdgeInsets.all(12.sp),
+            child: InkWell(
+              onTap: () {
+                NavigationService.goBack;
+              },
+              child: SvgPicture.asset(
+                Assets.icons.backButton,
+                height: 32.h,
+                width: 32.w,
+              ),
+            ),
           )),
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      centerTitle: isCenterd,
-      title: Text(title ?? ''),
-      titleTextStyle: TextFontStyle.headline18c292E34ODmSans500
-          .copyWith(fontWeight: FontWeight.w700),
+      backgroundColor: Colors.white,
+      titleSpacing: 2.w,
+      title: Text(
+        title,
+        style: TextFontStyle.headline18w500cFFFFFFStyleGTWalsheim
+            .copyWith(color: AppColors.c222222),
+      ),
     );
   }
 

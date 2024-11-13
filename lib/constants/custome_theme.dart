@@ -22,7 +22,7 @@ final class CustomTheme {
     return ThemeData(
       primaryColor: AppColors.allPrimaryColor,
       primarySwatch: CustomTheme.kToDark,
-      scaffoldBackgroundColor: AppColors.scaffoldColor,
+      scaffoldBackgroundColor: AppColors.white,
     );
   }
 }

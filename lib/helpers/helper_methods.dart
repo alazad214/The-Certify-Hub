@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, unused_local_variable, avoid_print
 
 import 'dart:async';
-import 'dart:convert';
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:http/http.dart' as http;
 import '/helpers/di.dart';
-import '/helpers/toast.dart';
 import '../common_widgets/custom_button.dart';
 import '../constants/app_constants.dart';
 import '../constants/text_font_style.dart';
@@ -249,10 +248,10 @@ void showMaterialDialog(
             title: Text(
               "Do you want to exit the app?",
               textAlign: TextAlign.center,
-              style: TextFontStyle.textStyle14c54585CDmSans400,
+              style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim,
             ),
             actions: <Widget>[
-              customeButton(
+              customButton(
                   name: "No".tr,
                   onCallBack: () {
                     Navigator.of(context).pop(false);
@@ -260,13 +259,13 @@ void showMaterialDialog(
                   height: 30.sp,
                   minWidth: .3.sw,
                   borderRadius: 30.r,
-                  color: AppColors.cF0F0F0,
+                  color: AppColors.black,
                   textStyle: GoogleFonts.montserrat(
                       fontSize: 17.sp,
                       color: AppColors.allPrimaryColor,
                       fontWeight: FontWeight.w700),
                   context: context),
-              customeButton(
+              customButton(
                   name: "Yes".tr,
                   onCallBack: () {
                     if (Platform.isAndroid) {

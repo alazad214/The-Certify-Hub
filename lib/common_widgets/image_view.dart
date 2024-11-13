@@ -21,7 +21,7 @@ final class ImageView extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5.0.r),
         border: Border.all(
-          color: AppColors.cEDBB43,
+          color: AppColors.black,
           width: 1.5,
         ),
       ),
