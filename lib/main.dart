@@ -67,21 +67,22 @@ class UtillScreenMobile extends StatelessWidget {
             showMaterialDialog(context);
           },
           child: GetMaterialApp(
-              //    showPerformanceOverlay: true,
-              theme: ThemeData(
-                  unselectedWidgetColor: Colors.white,
-                  primarySwatch: CustomTheme.kToDark,
-                  useMaterial3: false,
-                  scaffoldBackgroundColor: AppColors.cFFFFFF,
-                  appBarTheme: const AppBarTheme(
-                      color: AppColors.cFFFFFF, elevation: 0)),
-              debugShowCheckedModeBanner: false,
-              builder: (context, widget) {
-                return MediaQuery(data: MediaQuery.of(context), child: widget!);
-              },
-              navigatorKey: NavigationService.navigatorKey,
-              onGenerateRoute: RouteGenerator.generateRoute,
-              home: const HomeScreen()),
+            //    showPerformanceOverlay: true,
+            theme: ThemeData(
+                unselectedWidgetColor: Colors.white,
+                primarySwatch: CustomTheme.kToDark,
+                useMaterial3: false,
+                scaffoldBackgroundColor: AppColors.cE9EEEC,
+                appBarTheme:
+                    const AppBarTheme(color: AppColors.cFFFFFF, elevation: 0)),
+            debugShowCheckedModeBanner: false,
+            builder: (context, widget) {
+              return MediaQuery(data: MediaQuery.of(context), child: widget!);
+            },
+            navigatorKey: NavigationService.navigatorKey,
+            onGenerateRoute: RouteGenerator.generateRoute,
+            home: const Loading(),
+          ),
         );
       },
     );

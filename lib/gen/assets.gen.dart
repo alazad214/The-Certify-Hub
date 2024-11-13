@@ -15,23 +15,43 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Back Button.svg
   String get backButton => 'assets/icons/Back Button.svg';
 
+  /// File path: assets/icons/apple.svg
+  String get apple => 'assets/icons/apple.svg';
+
+  /// File path: assets/icons/facebook.svg
+  String get facebook => 'assets/icons/facebook.svg';
+
+  /// File path: assets/icons/google.svg
+  String get google => 'assets/icons/google.svg';
+
   /// List of all assets
-  List<String> get values => [backButton];
+  List<String> get values => [backButton, apple, facebook, google];
 }
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/apple.png
+  AssetGenImage get apple => const AssetGenImage('assets/images/apple.png');
+
   /// File path: assets/images/error_image.png
   AssetGenImage get errorImage =>
       const AssetGenImage('assets/images/error_image.png');
+
+  /// File path: assets/images/facebook.png
+  AssetGenImage get facebook =>
+      const AssetGenImage('assets/images/facebook.png');
+
+  /// File path: assets/images/google.png
+  AssetGenImage get google => const AssetGenImage('assets/images/google.png');
 
   /// File path: assets/images/placeholder_image.jpeg
   AssetGenImage get placeholderImage =>
       const AssetGenImage('assets/images/placeholder_image.jpeg');
 
   /// List of all assets
-  List<AssetGenImage> get values => [errorImage, placeholderImage];
+  List<AssetGenImage> get values =>
+      [apple, errorImage, facebook, google, placeholderImage];
 }
 
 class $AssetsLottieGen {

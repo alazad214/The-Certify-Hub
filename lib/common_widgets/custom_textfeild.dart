@@ -54,53 +54,63 @@ class CustomTextfield extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      onChanged: onchanged,
-      validator: validation,
-      controller: controller,
-      onTap: ontap,
-      obscureText: obscuretext ?? false,
-      keyboardType: keyboardType,
-      maxLines: maxLines ?? 1,
-      readOnly: readOnly ?? false,
-      onFieldSubmitted: onSubmitted,
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: TextFontStyle.textStyle16w500c222222StyleGTWalsheim,
-
-        contentPadding: EdgeInsets.symmetric(
-            horizontal: 4.w, vertical: contentVerticalPadding ?? 17.h),
-        suffixIcon: isSuffix == true
-            ? IconButton(onPressed: suffixIconOntap, icon: Icon(suffixIcon))
-            : SizedBox(),
-        prefixIcon: isPrefix == true
-            ? IconButton(onPressed: prefixIconOntap, icon: Icon(prefixIcon))
-            : SizedBox(),
-        filled: true,
-        fillColor: fillColors ?? fillColor,
-
-        //enable-->
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
-          borderSide:
-              BorderSide(color: borderColor ?? AppColors.black, width: 1.w),
-        ),
-        //focus-->
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.blue,
-            width: 1.5.w,
+    return Container(
+      decoration: BoxDecoration(
+          // gradient: LinearGradient(
+          //   colors: [AppColors.c999999, AppColors.cFFFFFF], // Gradient colors
+          //   begin: Alignment.topCenter,
+          //   end: Alignment.bottomCenter,
+          // ),
+          //color: AppColors.cBBCBC4,
           ),
-          borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
-        ),
-        //focus-->
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: AppColors.cBBCBC4,
-            width: 2.w,
+      child: TextFormField(
+        onChanged: onchanged,
+        validator: validation,
+        controller: controller,
+        onTap: ontap,
+        obscureText: obscuretext ?? false,
+        keyboardType: keyboardType,
+        maxLines: maxLines ?? 1,
+        readOnly: readOnly ?? false,
+        onFieldSubmitted: onSubmitted,
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: TextStyle(color: AppColors.c999999), // Text color
+          contentPadding: EdgeInsets.symmetric(
+              horizontal: 4.w, vertical: contentVerticalPadding ?? 17.h),
+          suffixIcon: isSuffix == true
+              ? IconButton(onPressed: suffixIconOntap, icon: Icon(suffixIcon))
+              : SizedBox(),
+          prefixIcon: isPrefix == true
+              ? IconButton(onPressed: prefixIconOntap, icon: Icon(prefixIcon))
+              : SizedBox(),
+          filled: true,
+          fillColor: fillColors ?? fillColor,
+
+          //enable-->
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
+            borderSide: BorderSide(
+                color: borderColor ?? Colors.transparent, width: 1.w),
           ),
-          borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
+          //focus-->
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.transparent,
+              width: 1.5.w,
+            ),
+            borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
+          ),
+          //focus-->
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: AppColors.cBBCBC4,
+              width: 2.w,
+            ),
+            borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
+          ),
         ),
+        style: TextStyle(color: AppColors.c999999), // Input text color
       ),
     );
   }
