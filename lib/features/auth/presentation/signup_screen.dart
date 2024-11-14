@@ -45,41 +45,40 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 UIHelper.verticalSpace(32.h),
                 CustomTextfield(
-                  isSuffix: false,
+             
                   hintText: 'Name',
-                  keyboardType: TextInputType.text,
+         
                   borderRadius: 10.r,
-                  fillColors: AppColors.c999999.withOpacity(0.3),
+          
                   controller: null,
                 ),
                 UIHelper.verticalSpace(24.h),
                 CustomTextfield(
-                  isSuffix: false,
+        
                   hintText: 'Email',
-                  keyboardType: TextInputType.text,
+           
                   borderRadius: 10.r,
-                  fillColors: AppColors.c999999.withOpacity(0.3),
+                
                   controller: null,
                 ),
                 UIHelper.verticalSpace(24.h),
                 CustomTextfield(
-                  isSuffix: true,
+     
                   hintText: 'Password',
-                  keyboardType: TextInputType.text,
+               
                   borderRadius: 10.r,
-                  fillColors: AppColors.c999999.withOpacity(0.3),
+             
                   controller: null,
-                  obscuretext: true,
+        
                 ),
                 UIHelper.verticalSpace(24.h),
                 CustomTextfield(
                   hintText: 'Confirm Password',
-                  keyboardType: TextInputType.text,
+             
                   borderRadius: 10.r,
-                  fillColors: AppColors.c999999.withOpacity(0.3),
+           
                   controller: null,
-                  obscuretext: true,
-                  isSuffix: false,
+             
                 ),
                 UIHelper.verticalSpace(40.h),
                 customButton(

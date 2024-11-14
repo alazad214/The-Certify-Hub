@@ -1,6 +1,8 @@
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
+import 'package:christiandimene/helpers/all_routes.dart';
+import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -49,7 +51,9 @@ class AnotherOnboading extends StatelessWidget {
                     UIHelper.verticalSpace(30.h),
                     customButton(
                       name: 'Log in',
-                      onCallBack: () {},
+                      onCallBack: () {
+                        NavigationService.navigateTo(Routes.logInScreen);
+                      },
                       context: context,
                     ),
                     UIHelper.verticalSpace(12.h),
@@ -64,7 +68,9 @@ class AnotherOnboading extends StatelessWidget {
                     customButton(
                       name: 'Sign Up',
                       color: Colors.transparent,
-                      onCallBack: () {},
+                      onCallBack: () {
+                          NavigationService.navigateTo(Routes.signUpScreen);
+                      },
                       textStyle: TextFontStyle
                           .headline18w500c222222StyleGTWalsheim
                           .copyWith(color: AppColors.cFDB338),

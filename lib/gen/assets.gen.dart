@@ -27,9 +27,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/notification.svg
   String get notification => 'assets/icons/notification.svg';
 
+  /// File path: assets/icons/search.svg
+  String get search => 'assets/icons/search.svg';
+
   /// List of all assets
   List<String> get values =>
-      [backButton, apple, facebook, google, notification];
+      [backButton, apple, facebook, google, notification, search];
 }
 
 class $AssetsImagesGen {
