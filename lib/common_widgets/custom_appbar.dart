@@ -37,7 +37,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
           )),
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.cE9EEEC,
       titleSpacing: 2.w,
       title: Text(
         title,

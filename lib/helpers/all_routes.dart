@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import 'package:christiandimene/features/certification/presentation/certification_main_screen.dart';
+import 'package:christiandimene/features/certification/presentation/certification_video_player_screen.dart';
+import 'package:christiandimene/features/certification/presentation/course_section_screen.dart';
+import 'package:christiandimene/features/certification/presentation/mock_test_section_screen.dart';
 import 'package:christiandimene/features/onboading/presentation/another_onboading.dart';
 import 'package:christiandimene/features/onboading/presentation/onbording_screen.dart';
 
@@ -21,6 +25,11 @@ final class Routes {
   ///AZAD ADDED-->
   static const String onboading = '/onboading_screen';
   static const String anotherOnboading = '/another_onboading_screen';
+  static const String certificationScreen = '/certification_main_screen';
+  static const String certificationSectionScreen =
+      '/certification_section_screen';
+  static const String mockTestSectionScreen = '/mockTest_section_screen';
+  static const String videoPlayerScreen = '/video_player_screen';
 }
 
 final class RouteGenerator {
@@ -57,6 +66,32 @@ final class RouteGenerator {
         return Platform.isAndroid
             ? _FadedTransitionRoute(widget: LoginScreen(), settings: settings)
             : CupertinoPageRoute(builder: (context) => LoginScreen());
+
+      case Routes.certificationScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: CertificationMainScreen(), settings: settings)
+            : CupertinoPageRoute(
+                builder: (context) => CertificationMainScreen());
+
+      case Routes.certificationSectionScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: CourseSectionScreen(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => CourseSectionScreen());
+
+      case Routes.mockTestSectionScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: MockTestSectionScreen(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => MockTestSectionScreen());
+
+      case Routes.videoPlayerScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: CertificationVideoPlayerScreen(), settings: settings)
+            : CupertinoPageRoute(
+                builder: (context) => CertificationVideoPlayerScreen());
 
       default:
         return null;

@@ -12,8 +12,14 @@ import 'package:flutter/widgets.dart';
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/Back Button Frame.svg
+  String get backButtonFrame => 'assets/icons/Back Button Frame.svg';
+
   /// File path: assets/icons/Back Button.svg
   String get backButton => 'assets/icons/Back Button.svg';
+
+  /// File path: assets/icons/Play Button Container.svg
+  String get playButtonContainer => 'assets/icons/Play Button Container.svg';
 
   /// File path: assets/icons/apple.svg
   String get apple => 'assets/icons/apple.svg';
@@ -31,8 +37,16 @@ class $AssetsIconsGen {
   String get search => 'assets/icons/search.svg';
 
   /// List of all assets
-  List<String> get values =>
-      [backButton, apple, facebook, google, notification, search];
+  List<String> get values => [
+        backButtonFrame,
+        backButton,
+        playButtonContainer,
+        apple,
+        facebook,
+        google,
+        notification,
+        search
+      ];
 }
 
 class $AssetsImagesGen {
@@ -43,6 +57,12 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/apple.png
   AssetGenImage get apple => const AssetGenImage('assets/images/apple.png');
+
+  /// File path: assets/images/askMe2.png
+  AssetGenImage get askMe2 => const AssetGenImage('assets/images/askMe2.png');
+
+  /// File path: assets/images/askme.png
+  AssetGenImage get askme => const AssetGenImage('assets/images/askme.png');
 
   /// File path: assets/images/error_image.png
   AssetGenImage get errorImage =>
@@ -71,9 +91,19 @@ class $AssetsImagesGen {
   AssetGenImage get onboading3 =>
       const AssetGenImage('assets/images/onboading3.png');
 
+  /// File path: assets/images/pdf.png
+  AssetGenImage get pdf => const AssetGenImage('assets/images/pdf.png');
+
   /// File path: assets/images/placeholder_image.jpeg
   AssetGenImage get placeholderImage =>
       const AssetGenImage('assets/images/placeholder_image.jpeg');
+
+  /// File path: assets/images/quiz.png
+  AssetGenImage get quiz => const AssetGenImage('assets/images/quiz.png');
+
+  /// File path: assets/images/video player.png
+  AssetGenImage get videoPlayer =>
+      const AssetGenImage('assets/images/video player.png');
 
   /// File path: assets/images/white_round_shape.png
   AssetGenImage get whiteRoundShape =>
@@ -83,6 +113,8 @@ class $AssetsImagesGen {
   List<AssetGenImage> get values => [
         appLogo,
         apple,
+        askMe2,
+        askme,
         errorImage,
         facebook,
         google,
@@ -90,7 +122,10 @@ class $AssetsImagesGen {
         onboading,
         onboading2,
         onboading3,
+        pdf,
         placeholderImage,
+        quiz,
+        videoPlayer,
         whiteRoundShape
       ];
 }
