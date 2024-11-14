@@ -1,15 +1,19 @@
 import 'dart:io';
 
+
 import 'package:christiandimene/features/certification/presentation/certification_main_screen.dart';
 import 'package:christiandimene/features/certification/presentation/certification_video_player_screen.dart';
 import 'package:christiandimene/features/certification/presentation/course_section_screen.dart';
 import 'package:christiandimene/features/certification/presentation/mock_test_section_screen.dart';
+
+import 'package:christiandimene/features/auth/presentation/otp_screen/otp_verification.dart';
+import 'package:christiandimene/features/home/presentation/home.dart';
+
 import 'package:christiandimene/features/onboading/presentation/another_onboading.dart';
 import 'package:christiandimene/features/onboading/presentation/onbording_screen.dart';
-
-import 'package:christiandimene/features/auth/presentation/login_screen.dart';
-import 'package:christiandimene/features/auth/presentation/signup_screen.dart';
-
+import 'package:christiandimene/features/auth/presentation/registration_screen/login_screen.dart';
+import 'package:christiandimene/features/auth/presentation/registration_screen/signup_screen.dart';
+import 'package:christiandimene/features/profile_screen/presentation/profile/edit_profile.dart';
 import 'package:flutter/cupertino.dart';
 
 final class Routes {
@@ -22,14 +26,25 @@ final class Routes {
   static const String home = '/home';
   static const String search = '/search';
 
+  ///Zobayer Hasan Nayem
+  static const String forgetPassword = '/forget_password';
+  static const String createNewPassword = '/create_new_password';
+  static const String profile = '/profile';
+  static const String editProfile = '/edit_profile';
+  static const String changePassword = '/change_password';
+
   ///AZAD ADDED-->
   static const String onboading = '/onboading_screen';
   static const String anotherOnboading = '/another_onboading_screen';
+
   static const String certificationScreen = '/certification_main_screen';
   static const String certificationSectionScreen =
       '/certification_section_screen';
   static const String mockTestSectionScreen = '/mockTest_section_screen';
   static const String videoPlayerScreen = '/video_player_screen';
+
+  static const String otpVerification = '/otp_verification';
+
 }
 
 final class RouteGenerator {
@@ -92,6 +107,27 @@ final class RouteGenerator {
                 widget: CertificationVideoPlayerScreen(), settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => CertificationVideoPlayerScreen());
+
+      case Routes.otpVerification:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: OtpVerification(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => OtpVerification());
+
+      case Routes.editProfile:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: EditProfileScreen(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => EditProfileScreen());
+
+
+
+      case Routes.home:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: HomeScreen(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => HomeScreen());
+
 
       default:
         return null;

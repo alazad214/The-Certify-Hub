@@ -35,6 +35,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
     {"progress": 1.0},
   ];
 
+//
   @override
   Widget build(BuildContext context) {
     return Scaffold(
