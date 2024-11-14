@@ -7,9 +7,9 @@ import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/gen/assets.gen.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
-import 'package:flutter/material.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+
 import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -20,6 +20,20 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  var isVisibility = false;
+
+  togglePassword() {
+    setState(() {
+      isVisibility = !isVisibility;
+    });
+  }
+
+  @override
+  void initState() {
+    togglePassword();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,20 +60,24 @@ class _LoginScreenState extends State<LoginScreen> {
                 UIHelper.verticalSpace(55.h),
                 CustomTextfield(
                   hintText: 'Email',
-                  keyboardType: TextInputType.text,
                   borderRadius: 10.r,
-                  fillColors: AppColors.c999999.withOpacity(0.3),
                   controller: null,
                 ),
                 UIHelper.verticalSpace(24.h),
                 CustomTextfield(
-                  isSuffix: true,
                   hintText: 'Password',
-                  keyboardType: TextInputType.text,
                   borderRadius: 10.r,
-                  fillColors: AppColors.c999999.withOpacity(0.3),
                   controller: null,
-                  obscuretext: true,
+                  isObsecure: isVisibility,
+                  suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          togglePassword();
+                        });
+                      },
+                      icon: isVisibility == true
+                          ? Icon(Icons.visibility)
+                          : Icon(Icons.visibility_off)),
                 ),
                 UIHelper.verticalSpace(40.h),
                 customButton(

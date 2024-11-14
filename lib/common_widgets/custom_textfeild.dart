@@ -1,117 +1,159 @@
 import 'package:christiandimene/constants/text_font_style.dart';
-import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CustomTextfield extends StatelessWidget {
-  const CustomTextfield(
-      {super.key,
-      this.hintText,
-      this.validation,
-      this.obscuretext,
-      this.onchanged,
-      this.controller,
-      this.suffixIcon,
-      this.suffixIconOntap,
-      this.fillColor,
-      this.maxLines,
-      this.borderRadius,
-      this.keyboardType,
-      this.isPrefix = true,
-      this.isSuffix = true,
-      this.contentVerticalPadding,
-      this.fillColors,
-      this.borderColor,
-      this.prefixIcon,
-      this.prefixIconOntap,
-      this.readOnly,
-      this.ontap,
-      this.fontSize,
-      this.onSubmitted});
+import '../gen/colors.gen.dart';
 
-  final hintText;
-  final validation;
-  final obscuretext;
-  final onchanged;
-  final controller;
-  final suffixIcon;
-  final prefixIcon;
-  final suffixIconOntap;
-  final prefixIconOntap;
-  final fillColor;
-  final maxLines;
+class CustomTextfield extends StatelessWidget {
+  final String? hintText;
+  final String? labelText;
+  final TextEditingController? controller;
+  final TextInputType? inputType;
+  final double? fieldHeight;
+  final int? maxline;
+  final String? Function(String?)? validator;
+  final bool? validation;
+  final Widget? suffixIcon;
+  final Widget? prefixIcon;
+  final bool? isObsecure;
+  final bool? isPass;
+  final FocusNode? focusNode;
+  final TextInputAction? textInputAction;
+  final Function(String)? onFieldSubmitted;
+  final Function(String)? onChanged;
+  final List<TextInputFormatter>? inputFormatters;
+  final TextStyle? labelStyle;
+  final TextStyle? style;
+  final bool? isEnabled;
+  final double? cursorHeight;
+  final Color? disableColor;
+  final bool? isRead;
   final double? borderRadius;
-  final keyboardType;
-  final bool isPrefix;
-  final bool isSuffix;
-  final double? contentVerticalPadding;
-  final Color? fillColors;
+  final Color? fillColor;
+  final TextStyle? hintTextSyle;
   final Color? borderColor;
-  final readOnly;
-  final ontap;
-  final fontSize;
-  final onSubmitted;
+  final TextAlign? textAlign;
+  final VoidCallback? ontap;
+  final contentPadding;
+
+  //final double
+
+  const CustomTextfield({
+    super.key,
+    this.hintText,
+    this.labelText,
+    this.controller,
+    this.inputType,
+    this.fieldHeight,
+    this.maxline,
+    this.validator,
+    this.validation = false,
+    this.suffixIcon,
+    this.prefixIcon,
+    this.isObsecure = false,
+    this.isPass = false,
+    this.focusNode,
+    this.textInputAction = TextInputAction.next,
+    this.onFieldSubmitted,
+    this.onChanged,
+    this.inputFormatters,
+    this.labelStyle,
+    this.isEnabled,
+    this.style,
+    this.cursorHeight,
+    this.disableColor,
+    this.isRead = false,
+    this.borderRadius,
+    this.fillColor,
+    this.hintTextSyle,
+    this.borderColor,
+    this.textAlign = TextAlign.center,
+    this.ontap,
+    this.contentPadding,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          // gradient: LinearGradient(
-          //   colors: [AppColors.c999999, AppColors.cFFFFFF], // Gradient colors
-          //   begin: Alignment.topCenter,
-          //   end: Alignment.bottomCenter,
-          // ),
-          //color: AppColors.cBBCBC4,
-          ),
-      child: TextFormField(
-        onChanged: onchanged,
-        validator: validation,
-        controller: controller,
-        onTap: ontap,
-        obscureText: obscuretext ?? false,
-        keyboardType: keyboardType,
-        maxLines: maxLines ?? 1,
-        readOnly: readOnly ?? false,
-        onFieldSubmitted: onSubmitted,
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: TextStyle(color: AppColors.c999999), // Text color
-          contentPadding: EdgeInsets.symmetric(
-              horizontal: 4.w, vertical: contentVerticalPadding ?? 17.h),
-          suffixIcon: isSuffix == true
-              ? IconButton(onPressed: suffixIconOntap, icon: Icon(suffixIcon))
-              : SizedBox(),
-          prefixIcon: isPrefix == true
-              ? IconButton(onPressed: prefixIconOntap, icon: Icon(prefixIcon))
-              : SizedBox(),
-          filled: true,
-          fillColor: fillColors ?? fillColor,
-
-          //enable-->
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
-            borderSide: BorderSide(
-                color: borderColor ?? Colors.transparent, width: 1.w),
-          ),
-          //focus-->
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.transparent,
-              width: 1.5.w,
+    return TextFormField(
+      textAlign: TextAlign.left,
+      readOnly: isRead ?? false,
+      cursorHeight: cursorHeight ?? 20,
+      //cursorColor: Colors.blue,
+      focusNode: focusNode,
+      obscureText: isObsecure ?? false,
+      onTap: ontap,
+      textInputAction: textInputAction,
+      autovalidateMode: validation!
+          ? AutovalidateMode.always
+          : AutovalidateMode.onUserInteraction,
+      validator: validator,
+      maxLines: maxline ?? 1,
+      controller: controller,
+      onFieldSubmitted: onFieldSubmitted,
+      onChanged: onChanged,
+      inputFormatters: inputFormatters,
+      enabled: isEnabled,
+      obscuringCharacter: "*",
+      decoration: InputDecoration(
+        suffixIcon: suffixIcon,
+        /*  suffixIcon: GestureDetector(
+          onTap: togglePassVisibility,
+          child: Padding(
+            padding: EdgeInsets.only(right:24.w),
+            child: Icon(
+              isPassVisible ? Icons.visibility : Icons.visibility_off, size: 19.sp,
             ),
-            borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
           ),
-          //focus-->
-          errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: AppColors.cBBCBC4,
-              width: 2.w,
-            ),
-            borderRadius: BorderRadius.circular(borderRadius ?? 16.r),
+        ), */
+        prefixIcon: prefixIcon,
+        fillColor: fillColor ?? AppColors.cE8E8E8,
+        filled: true,
+        contentPadding: contentPadding ??
+            EdgeInsets.symmetric(vertical: 20.h, horizontal: 16.w),
+        hintText: hintText,
+        hintStyle:
+            hintTextSyle ?? TextFontStyle.textStyle14w500c6B6B6BtyleGTWalsheim,
+        labelText: labelText,
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(borderRadius ?? 12.r),
+          borderSide: const BorderSide(
+            color: Colors.red,
+            width: 1,
           ),
         ),
-        style: TextStyle(color: AppColors.c999999), // Input text color
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(borderRadius ?? 12.r),
+          borderSide: BorderSide(
+            color: borderColor ?? AppColors.cE8E8E8,
+            width: 1.5,
+          ),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(borderRadius ?? 12.r),
+          borderSide: BorderSide(
+            color: borderColor ?? AppColors.cE8E8E8,
+            width: 1,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(borderRadius ?? 12.r),
+          borderSide: const BorderSide(
+            color: Colors.red,
+            width: 1,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(borderRadius ?? 12.r),
+          borderSide: BorderSide(
+            color: borderColor ?? AppColors.cE8E8E8,
+            width: 1,
+          ),
+        ),
       ),
+
+      style: style ?? TextFontStyle.textStyle14w500c6B6B6BtyleGTWalsheim,
+      keyboardType: inputType,
     );
   }
 }

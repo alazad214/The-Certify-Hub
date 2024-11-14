@@ -1,3 +1,4 @@
+import 'package:christiandimene/common_widgets/custom_textfeild.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/gen/assets.gen.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
@@ -19,20 +20,29 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
-        padding: EdgeInsets.all(24.sp),
+        padding: EdgeInsets.all(20.sp),
         child: Column(
           children: [
             ///home header.....
             _buildHomeHeader(),
+            UIHelper.verticalSpace(12.h),
 
+            CustomTextfield(
+              hintText: 'Search a certification',
+              fillColor: AppColors.white,
+              prefixIcon: Icon(Icons.search_rounded),
+            ),
+            UIHelper.verticalSpace(26.h),
             GridView.builder(
                 shrinkWrap: true,
                 primary: false,
+                itemCount: 6,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                ),
+                    crossAxisCount: 2, mainAxisSpacing: 5, crossAxisSpacing: 5),
                 itemBuilder: (context, index) {
-                  return Container();
+                  return Container(
+                    color: Colors.red,
+                  );
                   //
                 })
           ],
