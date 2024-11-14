@@ -49,6 +49,12 @@ dependencies:
   dotlottie_loader: ^0.0.4
   lottie: ^3.1.2
   flutter_svg: ^2.0.14
+  pin_code_fields: ^8.0.1
+  image_picker: ^0.8.4+4
+
+  # azad added...
+  chewie: ^1.3.4
+  video_player: ^2.4.9
 
 dev_dependencies:
   flutter_test:

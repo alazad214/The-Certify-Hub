@@ -1,6 +1,5 @@
-import 'package:christiandimene/features/auth/presentation/login_screen.dart';
-import 'package:christiandimene/features/home/presentation/home.dart';
 import 'package:christiandimene/features/onboading/presentation/splash_screen.dart';
+import 'package:christiandimene/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -83,7 +82,7 @@ class UtillScreenMobile extends StatelessWidget {
             },
             navigatorKey: NavigationService.navigatorKey,
             onGenerateRoute: RouteGenerator.generateRoute,
-            home: const LoginScreen(),
+            home: const SplashScreen(),
           ),
         );
       },
