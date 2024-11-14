@@ -1,11 +1,10 @@
 import 'dart:io';
-
+import 'package:christiandimene/features/auth/presentation/otp_screen/otp_verification.dart';
 import 'package:christiandimene/features/onboading/presentation/another_onboading.dart';
 import 'package:christiandimene/features/onboading/presentation/onbording_screen.dart';
-
-import 'package:christiandimene/features/auth/presentation/login_screen.dart';
-import 'package:christiandimene/features/auth/presentation/signup_screen.dart';
-
+import 'package:christiandimene/features/auth/presentation/registration_screen/login_screen.dart';
+import 'package:christiandimene/features/auth/presentation/registration_screen/signup_screen.dart';
+import 'package:christiandimene/features/profile_screen/presentation/profile/edit_profile.dart';
 import 'package:flutter/cupertino.dart';
 
 final class Routes {
@@ -18,9 +17,17 @@ final class Routes {
   static const String home = '/home';
   static const String search = '/search';
 
+  ///Zobayer Hasan Nayem
+  static const String forgetPassword = '/forget_password';
+  static const String createNewPassword = '/create_new_password';
+  static const String profile = '/profile';
+  static const String editProfile = '/edit_profile';
+  static const String changePassword = '/change_password';
+
   ///AZAD ADDED-->
   static const String onboading = '/onboading_screen';
   static const String anotherOnboading = '/another_onboading_screen';
+  static const String otpVerification = '/otp_verification';
 }
 
 final class RouteGenerator {
@@ -57,6 +64,18 @@ final class RouteGenerator {
         return Platform.isAndroid
             ? _FadedTransitionRoute(widget: LoginScreen(), settings: settings)
             : CupertinoPageRoute(builder: (context) => LoginScreen());
+
+      case Routes.otpVerification:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: OtpVerification(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => OtpVerification());
+
+      case Routes.editProfile:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: EditProfileScreen(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => EditProfileScreen());
 
       default:
         return null;

@@ -15,8 +15,26 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Back Button.svg
   String get backButton => 'assets/icons/Back Button.svg';
 
+  /// File path: assets/icons/Check.svg
+  String get check => 'assets/icons/Check.svg';
+
+  /// File path: assets/icons/Help.svg
+  String get help => 'assets/icons/Help.svg';
+
+  /// File path: assets/icons/Logout.svg
+  String get logout => 'assets/icons/Logout.svg';
+
   /// File path: assets/icons/apple.svg
   String get apple => 'assets/icons/apple.svg';
+
+  /// File path: assets/icons/arrow-down.svg
+  String get arrowDown => 'assets/icons/arrow-down.svg';
+
+  /// File path: assets/icons/arrow_right.svg
+  String get arrowRight => 'assets/icons/arrow_right.svg';
+
+  /// File path: assets/icons/edit.svg
+  String get edit => 'assets/icons/edit.svg';
 
   /// File path: assets/icons/facebook.svg
   String get facebook => 'assets/icons/facebook.svg';
@@ -27,12 +45,32 @@ class $AssetsIconsGen {
   /// File path: assets/icons/notification.svg
   String get notification => 'assets/icons/notification.svg';
 
+  /// File path: assets/icons/profile.svg
+  String get profile => 'assets/icons/profile.svg';
+
   /// File path: assets/icons/search.svg
   String get search => 'assets/icons/search.svg';
 
+  /// File path: assets/icons/shield-tick.svg
+  String get shieldTick => 'assets/icons/shield-tick.svg';
+
   /// List of all assets
-  List<String> get values =>
-      [backButton, apple, facebook, google, notification, search];
+  List<String> get values => [
+        backButton,
+        check,
+        help,
+        logout,
+        apple,
+        arrowDown,
+        arrowRight,
+        edit,
+        facebook,
+        google,
+        notification,
+        profile,
+        search,
+        shieldTick
+      ];
 }
 
 class $AssetsImagesGen {
@@ -75,6 +113,10 @@ class $AssetsImagesGen {
   AssetGenImage get placeholderImage =>
       const AssetGenImage('assets/images/placeholder_image.jpeg');
 
+  /// File path: assets/images/profile_image.png
+  AssetGenImage get profileImage =>
+      const AssetGenImage('assets/images/profile_image.png');
+
   /// File path: assets/images/white_round_shape.png
   AssetGenImage get whiteRoundShape =>
       const AssetGenImage('assets/images/white_round_shape.png');
@@ -91,6 +133,7 @@ class $AssetsImagesGen {
         onboading2,
         onboading3,
         placeholderImage,
+        profileImage,
         whiteRoundShape
       ];
 }
