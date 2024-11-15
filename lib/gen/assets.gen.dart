@@ -33,11 +33,29 @@ class $AssetsIconsGen {
   /// File path: assets/icons/apple.svg
   String get apple => 'assets/icons/apple.svg';
 
+  /// File path: assets/icons/arroe.svg
+  String get arroe => 'assets/icons/arroe.svg';
+
   /// File path: assets/icons/arrow-down.svg
   String get arrowDown => 'assets/icons/arrow-down.svg';
 
+  /// File path: assets/icons/arrow-left.svg
+  String get arrowLeft => 'assets/icons/arrow-left.svg';
+
+  /// File path: assets/icons/arrow-right.svg
+  String get arrowRightSvg => 'assets/icons/arrow-right.svg';
+
   /// File path: assets/icons/arrow_right.svg
-  String get arrowRight => 'assets/icons/arrow_right.svg';
+  String get arrowRightSvg_ => 'assets/icons/arrow_right.svg';
+
+  /// File path: assets/icons/arrow_blacks.svg
+  String get arrowBlacks => 'assets/icons/arrow_blacks.svg';
+
+  /// File path: assets/icons/arrowleft.svg
+  String get arrowleft => 'assets/icons/arrowleft.svg';
+
+  /// File path: assets/icons/correct.svg
+  String get correct => 'assets/icons/correct.svg';
 
   /// File path: assets/icons/edit.svg
   String get edit => 'assets/icons/edit.svg';
@@ -45,14 +63,35 @@ class $AssetsIconsGen {
   /// File path: assets/icons/facebook.svg
   String get facebook => 'assets/icons/facebook.svg';
 
+  /// File path: assets/icons/filled_check.svg
+  String get filledCheck => 'assets/icons/filled_check.svg';
+
   /// File path: assets/icons/google.svg
   String get google => 'assets/icons/google.svg';
+
+  /// File path: assets/icons/marks.svg
+  String get marks => 'assets/icons/marks.svg';
 
   /// File path: assets/icons/notification.svg
   String get notification => 'assets/icons/notification.svg';
 
+  /// File path: assets/icons/notification_one.svg
+  String get notificationOne => 'assets/icons/notification_one.svg';
+
+  /// File path: assets/icons/notification_profile.svg
+  String get notificationProfile => 'assets/icons/notification_profile.svg';
+
+  /// File path: assets/icons/notification_three.svg
+  String get notificationThree => 'assets/icons/notification_three.svg';
+
+  /// File path: assets/icons/notification_two.svg
+  String get notificationTwo => 'assets/icons/notification_two.svg';
+
   /// File path: assets/icons/profile.svg
   String get profile => 'assets/icons/profile.svg';
+
+  /// File path: assets/icons/question.svg
+  String get question => 'assets/icons/question.svg';
 
   /// File path: assets/icons/search.svg
   String get search => 'assets/icons/search.svg';
@@ -69,13 +108,26 @@ class $AssetsIconsGen {
         logout,
         playButtonContainer,
         apple,
+        arroe,
         arrowDown,
-        arrowRight,
+        arrowLeft,
+        arrowRightSvg,
+        arrowRightSvg_,
+        arrowBlacks,
+        arrowleft,
+        correct,
         edit,
         facebook,
+        filledCheck,
         google,
+        marks,
         notification,
+        notificationOne,
+        notificationProfile,
+        notificationThree,
+        notificationTwo,
         profile,
+        question,
         search,
         shieldTick
       ];
@@ -95,6 +147,10 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/askme.png
   AssetGenImage get askme => const AssetGenImage('assets/images/askme.png');
+
+  /// File path: assets/images/character_oops.png
+  AssetGenImage get characterOops =>
+      const AssetGenImage('assets/images/character_oops.png');
 
   /// File path: assets/images/error_image.png
   AssetGenImage get errorImage =>
@@ -151,6 +207,7 @@ class $AssetsImagesGen {
         apple,
         askMe2,
         askme,
+        characterOops,
         errorImage,
         facebook,
         google,

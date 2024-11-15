@@ -1,6 +1,6 @@
 import 'dart:io';
 
-
+import 'package:christiandimene/features/auth/presentation/forget_pass_screen.dart/forget_pass_screen.dart';
 import 'package:christiandimene/features/certification/presentation/certification_main_screen.dart';
 import 'package:christiandimene/features/certification/presentation/certification_video_player_screen.dart';
 import 'package:christiandimene/features/certification/presentation/course_section_screen.dart';
@@ -8,11 +8,15 @@ import 'package:christiandimene/features/certification/presentation/mock_test_se
 
 import 'package:christiandimene/features/auth/presentation/otp_screen/otp_verification.dart';
 import 'package:christiandimene/features/home/presentation/home.dart';
+import 'package:christiandimene/features/mock_test/presentation/mock_test_instruction/mock_test_instruction_screen.dart';
+import 'package:christiandimene/features/mock_test/presentation/mock_test_result/mock_result_screen.dart';
+import 'package:christiandimene/features/mock_test/presentation/mock_test_screen/question_screen.dart';
 
 import 'package:christiandimene/features/onboading/presentation/another_onboading.dart';
 import 'package:christiandimene/features/onboading/presentation/onbording_screen.dart';
 import 'package:christiandimene/features/auth/presentation/registration_screen/login_screen.dart';
 import 'package:christiandimene/features/auth/presentation/registration_screen/signup_screen.dart';
+import 'package:christiandimene/features/profile_screen/presentation/notification/notification_screen.dart';
 import 'package:christiandimene/features/profile_screen/presentation/profile/edit_profile.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -44,7 +48,13 @@ final class Routes {
   static const String videoPlayerScreen = '/video_player_screen';
 
   static const String otpVerification = '/otp_verification';
+  static const String notification = '/notification';
 
+  ///Zobayer (mock test instructions)
+  static const String mock_test_instruction_screen =
+      '/mock_test_instruction_screen';
+  static const String question_screen = '/question_screen';
+  static const String mock_test_result = '/mock_test_result';
 }
 
 final class RouteGenerator {
@@ -120,14 +130,40 @@ final class RouteGenerator {
                 widget: EditProfileScreen(), settings: settings)
             : CupertinoPageRoute(builder: (context) => EditProfileScreen());
 
-
+      case Routes.forgetPassword:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: ForgetPasswordScreen(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => ForgetPasswordScreen());
 
       case Routes.home:
         return Platform.isAndroid
-            ? _FadedTransitionRoute(
-                widget: HomeScreen(), settings: settings)
+            ? _FadedTransitionRoute(widget: HomeScreen(), settings: settings)
             : CupertinoPageRoute(builder: (context) => HomeScreen());
 
+      case Routes.notification:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: NotificationScreen(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => NotificationScreen());
+
+      case Routes.mock_test_instruction_screen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: MockTestInstructions(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => MockTestInstructions());
+
+      case Routes.question_screen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: QuestionWidget(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => QuestionWidget());
+
+      case Routes.mock_test_result:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: MockTestResult(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => MockTestResult());
 
       default:
         return null;

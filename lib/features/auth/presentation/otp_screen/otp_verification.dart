@@ -71,13 +71,14 @@ class _OtpVerificationState extends State<OtpVerification> {
                         borderRadius: BorderRadius.circular(12.r),
                         fieldHeight: 52.h,
                         fieldWidth: 70.w,
-                        inactiveFillColor: AppColors.c999999.withOpacity(0.3),
-                        inactiveColor: AppColors.c999999,
-                        selectedColor: AppColors.c999999,
+                        inactiveFillColor: AppColors.cE8E8E8,
+                        inactiveColor: AppColors.cE8E8E8,
+                        selectedColor: Colors.transparent,
                         selectedBorderWidth: 2,
-                        activeFillColor: AppColors.c999999,
-                        activeColor: AppColors.c999999,
-                        selectedFillColor: AppColors.c999999),
+                        activeFillColor: AppColors.cE8E8E8,
+                        activeColor: AppColors.cE8E8E8,
+                        selectedFillColor: AppColors.cE8E8E8),
+                    cursorColor: AppColors.c245741,
                     animationDuration: Duration(milliseconds: 300),
                     enableActiveFill: true,
                     controller: _otpTEController,
@@ -90,7 +91,7 @@ class _OtpVerificationState extends State<OtpVerification> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Have an account?'.tr,
+                        'Didn’t Receive Code?'.tr,
                         style: TextFontStyle
                             .textStyle14w400c9AB2A8StyleGTWalsheim
                             .copyWith(color: AppColors.c6B6B6B),

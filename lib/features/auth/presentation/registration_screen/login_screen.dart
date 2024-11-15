@@ -94,6 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       value: _isChecked,
                       focusColor: AppColors.c999999,
                       activeColor: AppColors.c999999,
+                      checkColor: AppColors.cFFFFFF,
                       onChanged: (bool? value) {
                         setState(() {
                           _isChecked = value ?? false;
@@ -117,10 +118,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       .copyWith(color: AppColors.cFFFFFF),
                 ),
                 UIHelper.verticalSpace(16.h),
-                Text(
-                  'Forget Password?'.tr,
-                  style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim
-                      .copyWith(color: AppColors.c245741),
+                GestureDetector(
+                  onTap: () {
+                    NavigationService.navigateTo(Routes.forgetPassword);
+                  },
+                  child: Text(
+                    'Forget Password?'.tr,
+                    style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim
+                        .copyWith(color: AppColors.c245741),
+                  ),
                 ),
                 UIHelper.verticalSpace(41.5.h),
                 Text(

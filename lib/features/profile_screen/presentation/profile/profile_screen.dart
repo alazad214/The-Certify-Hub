@@ -139,7 +139,7 @@ class profileItem extends StatelessWidget {
               ),
             ),
             SvgPicture.asset(
-              Assets.icons.arrowRight,
+              Assets.icons.arrowBlacks,
               height: 24.h,
               width: 24.w,
             ),
