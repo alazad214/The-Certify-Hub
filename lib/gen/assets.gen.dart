@@ -57,6 +57,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/clock.svg
   String get clock => 'assets/icons/clock.svg';
 
+  /// File path: assets/icons/clock_color.svg
+  String get clockColor => 'assets/icons/clock_color.svg';
+
   /// File path: assets/icons/close.svg
   String get close => 'assets/icons/close.svg';
 
@@ -128,6 +131,7 @@ class $AssetsIconsGen {
         arrowBlacks,
         arrowleft,
         clock,
+        clockColor,
         close,
         correct,
         edit,
@@ -167,6 +171,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/character_oops.png
   AssetGenImage get characterOops =>
       const AssetGenImage('assets/images/character_oops.png');
+
+  /// File path: assets/images/character_pass.png
+  AssetGenImage get characterPass =>
+      const AssetGenImage('assets/images/character_pass.png');
 
   /// File path: assets/images/error_image.png
   AssetGenImage get errorImage =>
@@ -224,6 +232,7 @@ class $AssetsImagesGen {
         askMe2,
         askme,
         characterOops,
+        characterPass,
         errorImage,
         facebook,
         google,

@@ -74,8 +74,13 @@ class _CertificationMainScreenState extends State<MockTestSectionScreen> {
           onTap: () {
             mockTestPopup(
               context,
-              () {},
-              () {},
+              () {
+                NavigationService.navigateTo(
+                    Routes.mock_test_instruction_screen);
+              },
+              () {
+                NavigationService.navigateTo(Routes.testPassedResult);
+              },
             );
           },
           child: Container(

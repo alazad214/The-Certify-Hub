@@ -130,7 +130,7 @@ class _OtpVerificationState extends State<OtpVerification> {
                     name: 'Verify',
                     borderRadius: 12.r,
                     onCallBack: () {
-                      NavigationService.navigateTo(Routes.home);
+                      NavigationService.navigateTo(Routes.createNewPassword);
                     },
                     context: context,
                     textStyle: TextFontStyle

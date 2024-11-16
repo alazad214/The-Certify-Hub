@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:christiandimene/features/auth/presentation/forget_pass_screen.dart/create_new_pass.dart';
 import 'package:christiandimene/features/auth/presentation/forget_pass_screen.dart/forget_pass_screen.dart';
 import 'package:christiandimene/features/certification/presentation/certification_main_screen.dart';
 import 'package:christiandimene/features/certification/presentation/certification_video_player_screen.dart';
@@ -18,6 +19,7 @@ import 'package:christiandimene/features/auth/presentation/registration_screen/l
 import 'package:christiandimene/features/auth/presentation/registration_screen/signup_screen.dart';
 import 'package:christiandimene/features/profile_screen/presentation/notification/notification_screen.dart';
 import 'package:christiandimene/features/profile_screen/presentation/profile/edit_profile.dart';
+import 'package:christiandimene/features/test_exam/presentation/test_passed_result.dart';
 import 'package:flutter/cupertino.dart';
 
 final class Routes {
@@ -55,6 +57,7 @@ final class Routes {
       '/mock_test_instruction_screen';
   static const String question_screen = '/question_screen';
   static const String mock_test_result = '/mock_test_result';
+  static const String testPassedResult = '/test_passed_result';
 }
 
 final class RouteGenerator {
@@ -164,6 +167,19 @@ final class RouteGenerator {
             ? _FadedTransitionRoute(
                 widget: MockTestResult(), settings: settings)
             : CupertinoPageRoute(builder: (context) => MockTestResult());
+
+      case Routes.createNewPassword:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: CreateNewPassScreen(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => CreateNewPassScreen());
+
+      case Routes.testPassedResult:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: TestPassesResultScreen(), settings: settings)
+            : CupertinoPageRoute(
+                builder: (context) => TestPassesResultScreen());
 
       default:
         return null;

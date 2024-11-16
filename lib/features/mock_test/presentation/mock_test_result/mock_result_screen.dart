@@ -9,9 +9,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../common_widgets/custom_button.dart';
-import '../../../../constants/text_font_style.dart';
 import '../../../../gen/assets.gen.dart';
-import '../../../../gen/colors.gen.dart';
 import '../../../../helpers/all_routes.dart';
 
 class MockTestResult extends StatefulWidget {
