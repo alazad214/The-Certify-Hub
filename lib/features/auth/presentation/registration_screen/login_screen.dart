@@ -94,6 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       value: _isChecked,
                       focusColor: AppColors.c999999,
                       activeColor: AppColors.c999999,
+                      checkColor: AppColors.cFFFFFF,
                       onChanged: (bool? value) {
                         setState(() {
                           _isChecked = value ?? false;
@@ -110,17 +111,24 @@ class _LoginScreenState extends State<LoginScreen> {
                 UIHelper.verticalSpace(40.h),
                 customButton(
                   name: 'Log In',
-                  onCallBack: () {},
+                  onCallBack: () {
+                    NavigationService.navigateTo(Routes.home);
+                  },
                   context: context,
                   borderRadius: 12.r,
                   textStyle: TextFontStyle.headline18w500c222222StyleGTWalsheim
-                      .copyWith(color: AppColors.cFFFFFF),
+                      .copyWith(color: AppColors.c000000),
                 ),
                 UIHelper.verticalSpace(16.h),
-                Text(
-                  'Forget Password?'.tr,
-                  style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim
-                      .copyWith(color: AppColors.c245741),
+                GestureDetector(
+                  onTap: () {
+                    NavigationService.navigateTo(Routes.forgetPassword);
+                  },
+                  child: Text(
+                    'Forget Password?'.tr,
+                    style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim
+                        .copyWith(color: AppColors.c245741),
+                  ),
                 ),
                 UIHelper.verticalSpace(41.5.h),
                 Text(

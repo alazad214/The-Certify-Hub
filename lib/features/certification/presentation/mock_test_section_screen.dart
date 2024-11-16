@@ -1,11 +1,15 @@
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/widgets/custom_appbar2.dart';
+import 'package:christiandimene/features/mock_test/widgets/mock_test_popup.dart';
 import 'package:christiandimene/gen/assets.gen.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
+import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../helpers/all_routes.dart';
 
 class MockTestSectionScreen extends StatefulWidget {
   const MockTestSectionScreen({super.key});
@@ -62,11 +66,19 @@ class _CertificationMainScreenState extends State<MockTestSectionScreen> {
   ///build pdf item......
   Widget _buildPDFItem() {
     return ListView.builder(
-        itemCount: 5,
-        shrinkWrap: true,
-        primary: false,
-        itemBuilder: (_, index) {
-          return Container(
+      itemCount: 5,
+      shrinkWrap: true,
+      primary: false,
+      itemBuilder: (_, index) {
+        return GestureDetector(
+          onTap: () {
+            mockTestPopup(
+              context,
+              () {},
+              () {},
+            );
+          },
+          child: Container(
             height: 84.h,
             padding: EdgeInsets.all(8.sp),
             margin: EdgeInsets.symmetric(vertical: 8.h),
@@ -131,7 +143,9 @@ class _CertificationMainScreenState extends State<MockTestSectionScreen> {
                 ),
               ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }
