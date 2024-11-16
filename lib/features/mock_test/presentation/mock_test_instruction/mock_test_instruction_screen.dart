@@ -98,11 +98,10 @@ class _MockTestInstructionsState extends State<MockTestInstructions> {
   Widget _questionBoard() {
     return Center(
       child: Container(
-        height: 76.h,
         width: 280.w,
         decoration: BoxDecoration(
           color: AppColors.cFFFFFF,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
         ),
         child: Row(
           children: [
@@ -151,8 +150,8 @@ class _MockTestInstructionsState extends State<MockTestInstructions> {
                   children: [
                     SvgPicture.asset(Assets.icons.marks),
                     Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10.0, horizontal: 5),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 10.0.h, horizontal: 5.w),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

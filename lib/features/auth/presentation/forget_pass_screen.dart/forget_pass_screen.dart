@@ -78,7 +78,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     context: context,
                     textStyle: TextFontStyle
                         .headline18w500c222222StyleGTWalsheim
-                        .copyWith(color: AppColors.cFFFFFF),
+                        .copyWith(color: AppColors.c000000),
                   ),
                 ],
               ),

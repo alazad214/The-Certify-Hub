@@ -111,11 +111,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 UIHelper.verticalSpace(40.h),
                 customButton(
                   name: 'Log In',
-                  onCallBack: () {},
+                  onCallBack: () {
+                    NavigationService.navigateTo(Routes.home);
+                  },
                   context: context,
                   borderRadius: 12.r,
                   textStyle: TextFontStyle.headline18w500c222222StyleGTWalsheim
-                      .copyWith(color: AppColors.cFFFFFF),
+                      .copyWith(color: AppColors.c000000),
                 ),
                 UIHelper.verticalSpace(16.h),
                 GestureDetector(

@@ -12,6 +12,7 @@ import '../../../../common_widgets/custom_button.dart';
 import '../../../../constants/text_font_style.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../gen/colors.gen.dart';
+import '../../../../helpers/all_routes.dart';
 
 class MockTestResult extends StatefulWidget {
   const MockTestResult({super.key});
@@ -64,7 +65,7 @@ class _MockTestResultState extends State<MockTestResult> {
               ),
               UIHelper.verticalSpace(16.h),
               Container(
-                height: 56.h,
+                //height: 56.h,
                 width: 140.w,
                 decoration: BoxDecoration(
                   color: AppColors.cFFFFFF,
@@ -190,7 +191,7 @@ class _MockTestResultState extends State<MockTestResult> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            "Question 1",
+                            "Question 2",
                             style: TextFontStyle
                                 .textStyle12w400c9AB2A8StyleGTWalsheim,
                             textAlign: TextAlign.center,
@@ -242,8 +243,10 @@ class _MockTestResultState extends State<MockTestResult> {
             minWidth:
                 double.infinity, // Set the button to take full width if needed
             height: 48.h,
-            name: 'Buy Now',
-            onCallBack: () {},
+            name: 'Restart Quiz',
+            onCallBack: () {
+              NavigationService.navigateTo(Routes.mock_test_instruction_screen);
+            },
             context: context,
           ),
         ),

@@ -111,7 +111,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   context: context,
                   borderRadius: 12.r,
                   textStyle: TextFontStyle.headline18w500c222222StyleGTWalsheim
-                      .copyWith(color: AppColors.cFFFFFF),
+                      .copyWith(color: AppColors.c000000),
                 ),
                 UIHelper.verticalSpace(41.5.h),
                 Text(
