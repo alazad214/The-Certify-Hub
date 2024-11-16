@@ -42,7 +42,7 @@ class _OnBoardingWidgetState extends State<OnBoardingWidget> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            height: 600.h,
+            height: 580.h,
             child: Stack(
               children: [
                 PageView(

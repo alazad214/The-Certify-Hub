@@ -54,6 +54,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/arrowleft.svg
   String get arrowleft => 'assets/icons/arrowleft.svg';
 
+  /// File path: assets/icons/clock.svg
+  String get clock => 'assets/icons/clock.svg';
+
+  /// File path: assets/icons/close.svg
+  String get close => 'assets/icons/close.svg';
+
   /// File path: assets/icons/correct.svg
   String get correct => 'assets/icons/correct.svg';
 
@@ -99,6 +105,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/shield-tick.svg
   String get shieldTick => 'assets/icons/shield-tick.svg';
 
+  /// File path: assets/icons/tick-circle.svg
+  String get tickCircle => 'assets/icons/tick-circle.svg';
+
+  /// File path: assets/icons/warning-2.svg
+  String get warning2 => 'assets/icons/warning-2.svg';
+
   /// List of all assets
   List<String> get values => [
         backButtonFrame,
@@ -115,6 +127,8 @@ class $AssetsIconsGen {
         arrowRightSvg_,
         arrowBlacks,
         arrowleft,
+        clock,
+        close,
         correct,
         edit,
         facebook,
@@ -129,7 +143,9 @@ class $AssetsIconsGen {
         profile,
         question,
         search,
-        shieldTick
+        shieldTick,
+        tickCircle,
+        warning2
       ];
 }
 

@@ -51,56 +51,6 @@ class _HomeScreenState extends State<HomeScreen> {
     ));
   }
 
-  ///build custom card.....
-  // Widget _buildHomeCustomCard() {
-  //   return GridView.builder(
-  //     shrinkWrap: true,
-  //     primary: false,
-  //     itemCount: 6,
-  //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-  //       crossAxisCount: 2,
-  //       mainAxisSpacing: 8,
-  //       crossAxisSpacing: 8,
-  //     ),
-  //     itemBuilder: (context, index) {
-  //       return InkWell(
-  //         onTap: () {
-  //           NavigationService.navigateTo(Routes.certificationScreen);
-  //         },
-  //         child: Container(
-  //           padding: EdgeInsets.all(8.sp),
-  //           decoration: BoxDecoration(
-  //             color: AppColors.white,
-  //             borderRadius: BorderRadius.circular(8.r),
-  //           ),
-  //           child: Column(
-  //             children: [
-  //               Container(
-  //                 height: 123.h,
-  //                 width: double.infinity,
-  //                 decoration: BoxDecoration(
-  //                     borderRadius: BorderRadius.circular(8.r),
-  //                     image: DecorationImage(
-  //                         image: AssetImage(Assets.images.homeCardImage.path),
-  //                         fit: BoxFit.cover)),
-  //               ),
-  //               UIHelper.verticalSpace(12.h),
-  //               Text(
-  //                 overflow: TextOverflow.ellipsis,
-  //                 maxLines: 2,
-  //                 'Weekend lessons for children',
-  //                 style: TextFontStyle.textStyle16w500c222222StyleGTWalsheim,
-  //               )
-  //             ],
-  //           ),
-  //         ),
-  //       );
-  //       //
-  //     },
-  //   );
-  // }
-
-  /// Build custom card
   Widget _buildHomeCustomCard() {
     return GridView.builder(
       shrinkWrap: true,

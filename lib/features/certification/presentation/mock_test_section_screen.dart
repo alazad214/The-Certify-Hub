@@ -1,6 +1,7 @@
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/widgets/custom_appbar2.dart';
+import 'package:christiandimene/features/mock_test/widgets/mock_test_popup.dart';
 import 'package:christiandimene/gen/assets.gen.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
@@ -71,7 +72,11 @@ class _CertificationMainScreenState extends State<MockTestSectionScreen> {
       itemBuilder: (_, index) {
         return GestureDetector(
           onTap: () {
-            NavigationService.navigateTo(Routes.mock_test_instruction_screen);
+            mockTestPopup(
+              context,
+              () {},
+              () {},
+            );
           },
           child: Container(
             height: 84.h,
