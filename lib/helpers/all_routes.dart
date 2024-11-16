@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:christiandimene/features/auth/presentation/forget_pass_screen.dart/create_new_pass.dart';
 import 'package:christiandimene/features/auth/presentation/forget_pass_screen.dart/forget_pass_screen.dart';
 import 'package:christiandimene/features/certification/presentation/certification_main_screen.dart';
 import 'package:christiandimene/features/certification/presentation/certification_video_player_screen.dart';
@@ -164,6 +165,12 @@ final class RouteGenerator {
             ? _FadedTransitionRoute(
                 widget: MockTestResult(), settings: settings)
             : CupertinoPageRoute(builder: (context) => MockTestResult());
+
+      case Routes.createNewPassword:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: CreateNewPassScreen(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => CreateNewPassScreen());
 
       default:
         return null;
