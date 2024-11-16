@@ -193,6 +193,7 @@ final class RouteGenerator {
 //     );
 //   },
 // );
+//
 
 class _FadedTransitionRoute extends PageRouteBuilder {
   final Widget widget;
