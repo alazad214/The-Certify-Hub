@@ -35,6 +35,7 @@ class _CreateNewPassScreenState extends State<CreateNewPassScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+            backgroundColor: AppColors.white,
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 27.0, vertical: 55.0),
@@ -103,7 +104,7 @@ class _CreateNewPassScreenState extends State<CreateNewPassScreen> {
                   customButton(
                     name: 'Sign Up',
                     onCallBack: () {
-                      NavigationService.navigateTo(Routes.otpVerification);
+                      NavigationService.navigateTo(Routes.bottomNavBarScreen);
                     },
                     context: context,
                     borderRadius: 12.r,

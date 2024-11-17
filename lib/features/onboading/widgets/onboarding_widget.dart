@@ -4,12 +4,10 @@ import 'package:christiandimene/features/onboading/widgets/custom_indicator_widg
 import 'package:christiandimene/features/onboading/widgets/onboarding_page.dart';
 import 'package:christiandimene/gen/assets.gen.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
-import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../helpers/all_routes.dart';
 
 class OnBoardingWidget extends StatefulWidget {
   final Function() onDone;

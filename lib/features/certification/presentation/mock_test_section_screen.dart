@@ -1,15 +1,14 @@
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/widgets/custom_appbar2.dart';
-import 'package:christiandimene/features/mock_test/widgets/mock_test_popup.dart';
+import 'package:christiandimene/features/widgets/mock_test_popup.dart';
 import 'package:christiandimene/gen/assets.gen.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
+import 'package:christiandimene/helpers/all_routes.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../helpers/all_routes.dart';
 
 class MockTestSectionScreen extends StatefulWidget {
   const MockTestSectionScreen({super.key});
@@ -63,6 +62,8 @@ class _CertificationMainScreenState extends State<MockTestSectionScreen> {
     );
   }
 
+////
+  ///
   ///build pdf item......
   Widget _buildPDFItem() {
     return ListView.builder(
@@ -74,8 +75,12 @@ class _CertificationMainScreenState extends State<MockTestSectionScreen> {
           onTap: () {
             mockTestPopup(
               context,
-              () {},
-              () {},
+              () {
+                NavigationService.navigateTo(Routes.practiceExamInstruction);
+              },
+              () {
+                NavigationService.navigateTo(Routes.testExamInstructionScreen);
+              },
             );
           },
           child: Container(

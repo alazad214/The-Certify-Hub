@@ -1,4 +1,3 @@
-import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/widgets/custom_appbar2.dart';
@@ -40,7 +39,8 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
               UIHelper.verticalSpace(21.h),
               CustomAppbar2(
                 title: 'Managing Your Time Wisely',
-                subtitle: '0/5 lesson(s) completed',
+                subtitle:
+                    _selectedType == 'lesson' ? '0/5 lesson(s) completed' : '',
               ),
 
               UIHelper.verticalSpace(21.h),

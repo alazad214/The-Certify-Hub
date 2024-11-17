@@ -60,7 +60,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     if (pickedFile != null) {
       setState(() {
-        _profileImage = File(pickedFile.path); // Update the profile image
+        _profileImage = File(pickedFile.path); 
       });
     }
   }

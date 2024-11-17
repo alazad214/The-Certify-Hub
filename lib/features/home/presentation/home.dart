@@ -44,7 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
             UIHelper.verticalSpace(26.h),
 
             ///build custom card.....
-            _buildHomeCustomCard()
+            _buildHomeCustomCard(),
+            UIHelper.verticalSpace(26.h),
           ],
         ),
       ),
@@ -58,8 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
       itemCount: 6,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        mainAxisSpacing: 8,
-        crossAxisSpacing: 8,
+        mainAxisSpacing: 8.w,
+        crossAxisSpacing: 8.w,
+        childAspectRatio: 0.9,
       ),
       itemBuilder: (context, index) {
         return InkWell(
@@ -76,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  height: 100.h,
+                  height: 115.h,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.r),
@@ -112,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Hey, Fatema 👋',
+                'Hey, Al Azad 👋',
                 style: TextFontStyle.headline24w400c222222StyleGTWalsheim,
               ),
               UIHelper.verticalSpace(10.h),

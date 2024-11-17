@@ -1,12 +1,8 @@
 import 'package:christiandimene/constants/text_font_style.dart';
-import 'package:christiandimene/gen/colors.gen.dart';
-import 'package:christiandimene/helpers/all_routes.dart';
-
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../helpers/navigation_service.dart';
 
 class OnboardingPage extends StatelessWidget {
   final String title;

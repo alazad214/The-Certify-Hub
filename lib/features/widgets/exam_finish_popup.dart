@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-void testExamPopup(
+void examFinishPopup(
   BuildContext context,
   VoidCallback finishOntap,
   String timeLeft,
@@ -31,8 +31,10 @@ void testExamPopup(
             children: [
               UIHelper.verticalSpace(24.h),
               Text(
+                textAlign: TextAlign.center,
                 'Are you sure you want to Finish this?',
-                style: TextFontStyle.headline18w500c222222StyleGTWalsheim,
+                style: TextFontStyle.headline18w500c222222StyleGTWalsheim
+                    .copyWith(fontWeight: FontWeight.w700),
               ),
               UIHelper.verticalSpace(40.h),
               Row(
@@ -42,6 +44,7 @@ void testExamPopup(
                     height: 24.h,
                     width: 24.w,
                   ),
+                  UIHelper.horizontalSpace(8.w),
                   Text(
                     'Time left',
                     style: TextFontStyle.textStyle16w400c999999StyleGTWalsheim
@@ -50,10 +53,12 @@ void testExamPopup(
                   Spacer(),
                   Text(
                     timeLeft,
-                    style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim,
+                    style: TextFontStyle.textStyle16w400c999999StyleGTWalsheim
+                        .copyWith(color: AppColors.c222222),
                   )
                 ],
               ),
+              UIHelper.verticalSpace(12.h),
               Row(
                 children: [
                   SvgPicture.asset(
@@ -61,6 +66,7 @@ void testExamPopup(
                     height: 24.h,
                     width: 24.w,
                   ),
+                  UIHelper.horizontalSpace(8.w),
                   Text(
                     'Attempted',
                     style: TextFontStyle.textStyle16w400c999999StyleGTWalsheim
@@ -69,10 +75,12 @@ void testExamPopup(
                   Spacer(),
                   Text(
                     attempted,
-                    style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim,
+                    style: TextFontStyle.textStyle16w400c999999StyleGTWalsheim
+                        .copyWith(color: AppColors.c222222),
                   )
                 ],
               ),
+              UIHelper.verticalSpace(12.h),
               Row(
                 children: [
                   SvgPicture.asset(
@@ -80,6 +88,7 @@ void testExamPopup(
                     height: 24.h,
                     width: 24.w,
                   ),
+                  UIHelper.horizontalSpace(8.w),
                   Text(
                     'Unattempted',
                     style: TextFontStyle.textStyle16w400c999999StyleGTWalsheim
@@ -88,7 +97,8 @@ void testExamPopup(
                   Spacer(),
                   Text(
                     unattempted,
-                    style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim,
+                    style: TextFontStyle.textStyle16w400c999999StyleGTWalsheim
+                        .copyWith(color: AppColors.c222222),
                   )
                 ],
               ),
@@ -103,6 +113,7 @@ void testExamPopup(
                         },
                         height: 46.h,
                         context: context,
+                        borderColor: AppColors.c6B6B6B,
                         color: Colors.transparent,
                         textStyle: TextFontStyle
                             .headline18w500c222222StyleGTWalsheim
