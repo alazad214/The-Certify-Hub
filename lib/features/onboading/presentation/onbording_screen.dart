@@ -19,28 +19,32 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   Widget build(BuildContext context) {
     appData.write(kKeyfirstTime, false);
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppColors.c245741,
-          title: Row(
-            children: [
-              const Spacer(),
-              GestureDetector(
-                onTap: () {
-                  //  NavigationService.navigateToReplacement(Routes.logInScreen);
-                },
-                child: Text(
-                  "Skip",
-                  style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xff292E34)),
-                ),
+      appBar: AppBar(
+        backgroundColor: AppColors.c245741,
+        title: Row(
+          children: [
+            const Spacer(),
+            GestureDetector(
+              onTap: () {
+                NavigationService.navigateToReplacement(
+                    Routes.anotherOnboading);
+              },
+              child: Text(
+                "Skip",
+                style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w700,
+                    color: const Color.fromARGB(255, 255, 255, 255)),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-        body: OnBoardingWidget(
-            onDone: () => NavigationService.navigateToReplacement(
-                Routes.anotherOnboading)));
+      ),
+      body: OnBoardingWidget(
+        onDone: () => NavigationService.navigateToReplacement(
+          Routes.anotherOnboading,
+        ),
+      ),
+    );
   }
 }

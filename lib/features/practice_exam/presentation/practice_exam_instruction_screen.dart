@@ -8,18 +8,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-import '../../../../gen/assets.gen.dart';
-import '../../../../gen/colors.gen.dart';
-import '../../../../helpers/all_routes.dart';
+import '../../../gen/assets.gen.dart';
+import '../../../gen/colors.gen.dart';
+import '../../../helpers/all_routes.dart';
 
-class MockTestInstructions extends StatefulWidget {
-  const MockTestInstructions({super.key});
+class PracticeExamInstructionScreen extends StatefulWidget {
+  const PracticeExamInstructionScreen({super.key});
 
   @override
-  State<MockTestInstructions> createState() => _MockTestInstructionsState();
+  State<PracticeExamInstructionScreen> createState() =>
+      _PracticeExamInstructionScreenState();
 }
 
-class _MockTestInstructionsState extends State<MockTestInstructions> {
+class _PracticeExamInstructionScreenState
+    extends State<PracticeExamInstructionScreen> {
   final List<String> instructionTitles = [
     'Passing Score : 70%',
     'There is no time limit, so feel free to take your time with each question.',
@@ -81,7 +83,8 @@ class _MockTestInstructionsState extends State<MockTestInstructions> {
                     customButton(
                         name: 'Start Now',
                         onCallBack: () {
-                          NavigationService.navigateTo(Routes.question_screen);
+                          NavigationService.navigateTo(
+                              Routes.practiceQuestionScreen);
                         },
                         context: context)
                   ],
@@ -156,7 +159,7 @@ class _MockTestInstructionsState extends State<MockTestInstructions> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Questions'.tr,
+                            'Markes'.tr,
                             style: TextFontStyle
                                 .textStyle12w400c9AB2A8StyleGTWalsheim
                                 .copyWith(color: AppColors.c000000),

@@ -1,5 +1,6 @@
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
+import 'package:christiandimene/features/widgets/exam_finish_popup.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
@@ -7,15 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../../gen/assets.gen.dart';
-import '../../../../helpers/all_routes.dart';
+import '../../../gen/assets.gen.dart';
+import '../../../helpers/all_routes.dart';
 
-class QuestionWidget extends StatefulWidget {
+class PracticeQuestionScreen extends StatefulWidget {
   @override
   _QuestionWidgetState createState() => _QuestionWidgetState();
 }
 
-class _QuestionWidgetState extends State<QuestionWidget> {
+class _QuestionWidgetState extends State<PracticeQuestionScreen> {
   int _selectedOption = -1;
 
   int _selectedQuestionIndex = -1;
@@ -36,7 +37,6 @@ class _QuestionWidgetState extends State<QuestionWidget> {
       appBar: CustomAppbar(
         title: 'Practice: Managing Your Time Wisely',
         onCallBack: () {},
-        leadingIconUnVisible: true,
       ),
       backgroundColor: Colors.grey[200],
       body: SingleChildScrollView(
@@ -194,26 +194,6 @@ class _QuestionWidgetState extends State<QuestionWidget> {
                       ),
                     ),
                   ),
-                  // if (index == 1) // Add badge on question 2 (index 1)
-                  //   Positioned(
-                  //     top: -2,
-                  //     right: -2,
-                  //     child: Container(
-                  //       padding: EdgeInsets.all(4),
-                  //       decoration: BoxDecoration(
-                  //         color: Colors.orange,
-                  //         shape: BoxShape.circle,
-                  //       ),
-                  //       child: Text(
-                  //         "P",
-                  //         style: TextStyle(
-                  //           color: Colors.white,
-                  //           fontSize: 10,
-                  //           fontWeight: FontWeight.bold,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
                 ],
               ),
             );
@@ -253,7 +233,16 @@ class _QuestionWidgetState extends State<QuestionWidget> {
             ),
             GestureDetector(
               onTap: () {
-                NavigationService.navigateTo(Routes.mock_test_result);
+                examFinishPopup(
+                  context,
+                  () {
+                    NavigationService.navigateToReplacement(
+                        Routes.practiceExamResult);
+                  },
+                  '08:11',
+                  '08',
+                  '08',
+                );
               },
               child: Container(
                 width: 176.w,

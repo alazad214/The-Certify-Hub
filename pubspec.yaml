@@ -54,7 +54,8 @@ dependencies:
 
   # azad added...
   chewie: ^1.3.4
-  video_player: ^2.4.9
+  video_player: ^2.4.9 
+
 
 dev_dependencies:
   flutter_test:

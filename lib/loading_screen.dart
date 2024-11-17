@@ -1,3 +1,4 @@
+import 'package:christiandimene/features/onboading/presentation/onbording_screen.dart';
 import 'package:flutter/material.dart';
 import 'constants/app_constants.dart';
 import 'features/home/presentation/home.dart';
@@ -5,8 +6,6 @@ import 'helpers/di.dart';
 import 'helpers/helper_methods.dart';
 import 'helpers/post_login.dart';
 import 'networks/dio/dio.dart';
-import 'welcome_screen.dart';
-
 
 final class Loading extends StatefulWidget {
   const Loading({super.key});
@@ -22,11 +21,9 @@ class _LoadingState extends State<Loading> {
   @override
   void initState() {
     loadInitialData();
-  
+
     super.initState();
   }
-
-
 
   loadInitialData() async {
     //AutoAppUpdateUtil.instance.checkAppUpdate();
@@ -47,7 +44,7 @@ class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const WelcomeScreen();
+      return const OnBoardingScreen();
     } else {
       return appData.read(kKeyIsLoggedIn)
           ? const HomeScreen()
