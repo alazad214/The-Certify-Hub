@@ -35,7 +35,7 @@ class _MockTestResultState extends State<TestExamResult> {
       appBar: CustomAppbar(
         title: 'Test: Managing Your Time Wisely',
         onCallBack: () {
-          NavigationService.goBack();
+    
         },
       ),
       body: SafeArea(
@@ -61,100 +61,18 @@ class _MockTestResultState extends State<TestExamResult> {
                         fontWeight: FontWeight.bold, color: AppColors.c000000),
               ),
               UIHelper.verticalSpace(16.h),
-              Container(
-                //height: 56.h,
-                width: 140.w,
-                decoration: BoxDecoration(
-                  color: AppColors.cFFFFFF,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 8.0.h),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(Assets.icons.question),
-                      UIHelper.horizontalSpace(8),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Questions'.tr,
-                            style: TextFontStyle
-                                .textStyle12w400c9AB2A8StyleGTWalsheim
-                                .copyWith(color: AppColors.c000000),
-                          ),
-                          Text(
-                            '10%'.tr,
-                            style: TextFontStyle
-                                .textStyle16w500c222222StyleGTWalsheim
-                                .copyWith(color: AppColors.c000000),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+
+              //TIME AND SCORE...
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildTimeAndWidget(),
+                ],
               ),
               UIHelper.verticalSpace(16.h),
-              ListView.builder(
-                  shrinkWrap: true,
-                  primary: false,
-                  itemCount: 13,
-                  itemBuilder: (_, index) {
-                    return Padding(
-                      padding: EdgeInsets.all(24.0),
-                      child: Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.cFFFFFF,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(24.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Question ${index + 1}",
-                                  style: TextFontStyle
-                                      .textStyle12w400c9AB2A8StyleGTWalsheim,
-                                  textAlign: TextAlign.center,
-                                ),
-                                Text(
-                                  'What is the primary function of the operating system in a computer?',
-                                  style: TextFontStyle
-                                      .headline18w500c222222StyleGTWalsheim,
-                                  textAlign: TextAlign.center,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: _questionItem(),
-                                ),
-                                UIHelper.verticalSpace(16.h),
-                                Text.rich(
-                                  TextSpan(
-                                    text: "Description: ",
-                                    children: [
-                                      TextSpan(
-                                        text:
-                                            "The operating system (OS) is essential for managing the computer's hardware and software. It acts as an intermediary between users and the computer hardware, ensuring that applications have the resources they need to function properly.",
-                                        style: TextFontStyle
-                                            .textStyle12w400c9AB2A8StyleGTWalsheim,
-                                      ),
-                                    ],
-                                    style: TextFontStyle
-                                        .textStyle12w400c9AB2A8StyleGTWalsheim
-                                        .copyWith(
-                                            fontWeight: FontWeight.bold,
-                                            color: AppColors.c000000),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )),
-                    );
-                  }),
+
+              //QUESTION RESULT LIST...
+              _questionResultList(),
               UIHelper.verticalSpace(100.h),
             ],
           ),
@@ -177,6 +95,137 @@ class _MockTestResultState extends State<TestExamResult> {
           ),
         ),
       ),
+    );
+  }
+
+  //QUESTION RESULT LIST...
+  ListView _questionResultList() {
+    return ListView.builder(
+        shrinkWrap: true,
+        primary: false,
+        itemCount: 2,
+        itemBuilder: (_, index) {
+          return Padding(
+            padding: EdgeInsets.all(24.0),
+            child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.cFFFFFF,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Question ${index + 1}",
+                        style:
+                            TextFontStyle.textStyle12w400c9AB2A8StyleGTWalsheim,
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        'What is the primary function of the operating system in a computer?',
+                        style:
+                            TextFontStyle.headline18w500c222222StyleGTWalsheim,
+                        textAlign: TextAlign.center,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: _questionItem(),
+                      ),
+                      UIHelper.verticalSpace(16.h),
+                      Text.rich(
+                        TextSpan(
+                          text: "Description: ",
+                          children: [
+                            TextSpan(
+                              text:
+                                  "The operating system (OS) is essential for managing the computer's hardware and software. It acts as an intermediary between users and the computer hardware, ensuring that applications have the resources they need to function properly.",
+                              style: TextFontStyle
+                                  .textStyle12w400c9AB2A8StyleGTWalsheim,
+                            ),
+                          ],
+                          style: TextFontStyle
+                              .textStyle12w400c9AB2A8StyleGTWalsheim
+                              .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.c000000),
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
+          );
+        });
+  }
+
+  //TIME AND SCORE...
+  Container _buildTimeAndWidget() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.cFFFFFF,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 8.0.h),
+          child: Row(
+            children: [
+              Row(
+                children: [
+                  SvgPicture.asset(Assets.icons.question),
+                  UIHelper.horizontalSpace(8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Questions'.tr,
+                        style: TextFontStyle
+                            .textStyle12w400c9AB2A8StyleGTWalsheim
+                            .copyWith(color: AppColors.c000000),
+                      ),
+                      Text(
+                        '10%'.tr,
+                        style: TextFontStyle
+                            .textStyle16w500c222222StyleGTWalsheim
+                            .copyWith(color: AppColors.c000000),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+                height: 54.h,
+                width: 1.w,
+                color: AppColors.cB5B5B5,
+              ),
+              Row(
+                children: [
+                  SvgPicture.asset(Assets.icons.question),
+                  UIHelper.horizontalSpace(8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Questions'.tr,
+                        style: TextFontStyle
+                            .textStyle12w400c9AB2A8StyleGTWalsheim
+                            .copyWith(color: AppColors.c000000),
+                      ),
+                      Text(
+                        '10%'.tr,
+                        style: TextFontStyle
+                            .textStyle16w500c222222StyleGTWalsheim
+                            .copyWith(color: AppColors.c000000),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          )),
     );
   }
 

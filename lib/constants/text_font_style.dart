@@ -10,45 +10,45 @@ class TextFontStyle {
 
 //headline start..
   static final headline32w700cFFFFFFStyleGTWalsheim = TextStyle(
-    fontFamily: 'GT Walsheim Trial',
+    fontFamily: 'GT-Walsheim-Regular',
     color: AppColors.cFFFFFF,
     fontSize: 32.sp,
     fontWeight: FontWeight.w700,
   );
   static final headline24w700c245741StyleGTWalsheim = TextStyle(
-    fontFamily: 'GT Walsheim Trial',
+    fontFamily: 'GT-Walsheim-Regular',
     color: AppColors.c245741,
     fontSize: 24.sp,
     fontWeight: FontWeight.w700,
   );
   static final headline24w400c222222StyleGTWalsheim = TextStyle(
-    fontFamily: 'GT Walsheim Trial',
+    fontFamily: 'GT-Walsheim-Regular',
     color: AppColors.c222222,
     fontSize: 24.sp,
     fontWeight: FontWeight.w400,
   );
   static final headline20w500c222222StyleGTWalsheim = TextStyle(
-    fontFamily: 'GT Walsheim Trial',
+    fontFamily: 'GT-Walsheim-Regular',
     color: AppColors.c222222,
     fontSize: 20.sp,
     fontWeight: FontWeight.w500,
   );
   static final headline20w700c222222StyleGTWalsheim = TextStyle(
-    fontFamily: 'GT Walsheim Trial',
+    fontFamily: 'GT-Walsheim-Regular',
     color: AppColors.c222222,
     fontSize: 20.sp,
     fontWeight: FontWeight.w700,
   );
 
   static final headline18w500c222222StyleGTWalsheim = TextStyle(
-    fontFamily: 'GT Walsheim Trial',
+    fontFamily: 'GT-Walsheim-Regular',
     color: AppColors.c222222,
     fontSize: 18.sp,
     fontWeight: FontWeight.w500,
   );
 
   static final headline18w400cFFFFFFStyleGTWalsheim = TextStyle(
-    fontFamily: 'GT Walsheim Trial',
+    fontFamily: 'GT-Walsheim-Regular',
     color: AppColors.c222222,
     fontSize: 18.sp,
     fontWeight: FontWeight.w400,
@@ -56,21 +56,21 @@ class TextFontStyle {
 
   //textstyle start..
   static final textStyle16w700c222222StyleGTWalsheim = TextStyle(
-    fontFamily: 'GT Walsheim Trial',
+    fontFamily: 'GT-Walsheim-Regular',
     color: AppColors.c222222,
     fontSize: 16.sp,
     fontWeight: FontWeight.w700,
   );
 
   static final textStyle16w500c222222StyleGTWalsheim = TextStyle(
-    fontFamily: 'GT Walsheim Trial',
+    fontFamily: 'GT-Walsheim-Regular',
     color: AppColors.c222222,
     fontSize: 16.sp,
     fontWeight: FontWeight.w500,
   );
 
   static final textStyle16w400c999999StyleGTWalsheim = TextStyle(
-    fontFamily: 'GT Walsheim Trial',
+    fontFamily: 'GT-Walsheim-Regular',
     color: AppColors.c999999,
     fontSize: 16.sp,
     fontWeight: FontWeight.w400,

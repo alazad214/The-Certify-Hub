@@ -38,6 +38,7 @@ class _PracticeExamInstructionScreenState
         onCallBack: () {
           NavigationService.goBack();
         },
+        
       ),
       body: SafeArea(
         child: SingleChildScrollView(

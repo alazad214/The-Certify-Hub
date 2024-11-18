@@ -74,7 +74,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     name: 'Send',
                     borderRadius: 12.r,
                     onCallBack: () {
-                      NavigationService.navigateTo(Routes.otpVerification);
+                      NavigationService.navigateTo(Routes.forgetVerifyScreen);
                     },
                     context: context,
                     textStyle: TextFontStyle

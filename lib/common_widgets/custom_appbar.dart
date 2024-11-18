@@ -10,13 +10,15 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppbar({
     super.key,
     required this.title,
-    required this.onCallBack,
+     this.onCallBack,
     this.leadingIconUnVisible = false,
+    this.actions,
   });
 
   final String title;
-  final VoidCallback onCallBack;
+  final  onCallBack;
   final bool leadingIconUnVisible;
+  final actions;
 
   @override
   Widget build(BuildContext context) {
@@ -25,18 +27,17 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
       leading: Visibility(
           visible: !leadingIconUnVisible,
           child: Padding(
-            padding: EdgeInsets.all(12.sp),
-            child: InkWell(
-              onTap: () {
-                NavigationService.goBack;
-              },
-              child: SvgPicture.asset(
-                Assets.icons.backButton,
-                height: 32.h,
-                width: 32.w,
-              ),
-            ),
-          )),
+              padding: EdgeInsets.all(12.sp),
+              child: InkWell(
+                onTap: onCallBack??  () {
+                  NavigationService.goBack();
+                },
+                child: SvgPicture.asset(
+                  Assets.icons.backButton,
+                  height: 32.h,
+                  width: 32.w,
+                ),
+              ))),
       backgroundColor: AppColors.cE9EEEC,
       titleSpacing: 2.w,
       title: Text(
@@ -44,6 +45,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
         style: TextFontStyle.headline18w500c222222StyleGTWalsheim
             .copyWith(color: AppColors.c222222),
       ),
+      actions: actions,
     );
   }
 

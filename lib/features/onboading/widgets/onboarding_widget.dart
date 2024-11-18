@@ -8,7 +8,6 @@ import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 class OnBoardingWidget extends StatefulWidget {
   final Function() onDone;
   const OnBoardingWidget({super.key, required this.onDone});

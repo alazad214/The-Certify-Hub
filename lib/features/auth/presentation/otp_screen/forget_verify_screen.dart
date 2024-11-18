@@ -9,20 +9,20 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../../../helpers/all_routes.dart';
 import '../../../../helpers/navigation_service.dart';
 
-class OtpVerification extends StatefulWidget {
-  const OtpVerification({super.key});
+class ForgetVerifyScreen extends StatefulWidget {
+  const ForgetVerifyScreen({super.key});
 
   @override
-  State<OtpVerification> createState() => _OtpVerificationState();
+  State<ForgetVerifyScreen> createState() => _OtpVerificationState();
 }
 
-class _OtpVerificationState extends State<OtpVerification> {
+class _OtpVerificationState extends State<ForgetVerifyScreen> {
   final TextEditingController _otpTEController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+            backgroundColor: AppColors.white,
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 55.h),
@@ -131,7 +131,7 @@ class _OtpVerificationState extends State<OtpVerification> {
                     name: 'Verify',
                     borderRadius: 12.r,
                     onCallBack: () {
-                      NavigationService.navigateTo(Routes.bottomNavBarScreen);
+                      NavigationService.navigateTo(Routes.createNewPassword);
                     },
                     context: context,
                     textStyle: TextFontStyle

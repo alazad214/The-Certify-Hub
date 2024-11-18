@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/widgets/exam_finish_popup.dart';
@@ -7,7 +8,6 @@ import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../../../gen/assets.gen.dart';
 import '../../../helpers/all_routes.dart';
 
@@ -17,6 +17,36 @@ class TestExamQuestionScreen extends StatefulWidget {
 }
 
 class _QuestionWidgetState extends State<TestExamQuestionScreen> {
+  //timer...
+  final int durationMinutes = 15;
+  late int remainingSeconds;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    remainingSeconds = durationMinutes * 60;
+    startTimer();
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (remainingSeconds <= 0) {
+        _timer?.cancel();
+      } else {
+        setState(() {
+          remainingSeconds--;
+        });
+      }
+    });
+  }
+
+  String formatTime(int seconds) {
+    final minutes = seconds ~/ 60;
+    final secs = seconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}';
+  }
+
   int _selectedOption = -1;
 
   int _selectedQuestionIndex = -1;
@@ -32,11 +62,31 @@ class _QuestionWidgetState extends State<TestExamQuestionScreen> {
   ];
 
   @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
         title: 'Test: Managing Your Time Wisely',
-        onCallBack: () {},
+        onCallBack: () {
+          examFinishPopup(
+            context,
+            () {
+              NavigationService.navigateToReplacement(Routes.testExamResult);
+            },
+            '08:11',
+            '08',
+            '08',
+          );
+        },
+        actions: [
+          //build flag button..
+          _buildFlagButton(),
+        ],
       ),
       backgroundColor: Colors.grey[200],
       body: SingleChildScrollView(
@@ -46,7 +96,7 @@ class _QuestionWidgetState extends State<TestExamQuestionScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               //build time widget...
-              _buildTimeWidget(),
+              _buildTimewidget(),
               UIHelper.verticalSpace(24.h),
 
               //question....
@@ -87,6 +137,25 @@ class _QuestionWidgetState extends State<TestExamQuestionScreen> {
               _questionList(),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  InkWell _buildFlagButton() {
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        height: 32.h,
+        width: 32.w,
+        padding: EdgeInsets.all(5.sp),
+        margin: EdgeInsets.only(right: 10.w),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: AppColors.white,
+        ),
+        child: SvgPicture.asset(
+          Assets.icons.flag,
         ),
       ),
     );
@@ -298,15 +367,8 @@ class _QuestionWidgetState extends State<TestExamQuestionScreen> {
       ],
     );
   }
-}
 
-class _buildTimeWidget extends StatelessWidget {
-  const _buildTimeWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildTimewidget() {
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
@@ -319,12 +381,12 @@ class _buildTimeWidget extends StatelessWidget {
           ),
           child: Row(
             children: [
-              SvgPicture.asset(Assets.icons.clock),
+              SvgPicture.asset(Assets.icons.time),
               UIHelper.horizontalSpace(5.w),
               Text(
-                '13:30',
+                formatTime(remainingSeconds),
                 style: TextFontStyle.textStyle16w400c999999StyleGTWalsheim
-                    .copyWith(color: AppColors.black),
+                    .copyWith(color: AppColors.c222222),
               )
             ],
           )),

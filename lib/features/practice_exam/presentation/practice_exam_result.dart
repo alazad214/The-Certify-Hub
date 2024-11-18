@@ -34,9 +34,7 @@ class _MockTestResultState extends State<PracticeExmaResult> {
     return Scaffold(
       appBar: CustomAppbar(
         title: 'practice: Managing Your Time Wisely',
-        onCallBack: () {
-          NavigationService.goBack();
-        },
+        onCallBack: () {},
       ),
       body: SafeArea(
         child: SingleChildScrollView(
