@@ -172,61 +172,75 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
               NavigationService.navigateTo(Routes.mockTestSectionScreen);
             },
             child: Container(
-              height: 84.h,
-              margin: EdgeInsets.symmetric(vertical: 8.h),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16.r),
-                  color: AppColors.white),
-              child: ListTile(
-                leading: Container(
-                  height: 52.h,
-                  width: 52.w,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: AppColors.cFAFBFC,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        spreadRadius: 2.sp,
-                        blurRadius: 8.sp,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Text(
-                    '01',
-                    style: TextFontStyle.headline24w400c222222StyleGTWalsheim
-                        .copyWith(color: AppColors.c245741),
-                  ),
-                ),
-                title: Text(
-                  overflow: TextOverflow.ellipsis,
-                  'Managing Your Time Wisely',
-                  style: TextFontStyle.headline18w500c222222StyleGTWalsheim,
-                ),
-                subtitle: Row(
+                alignment: Alignment.center,
+                height: 84.h,
+                margin: EdgeInsets.symmetric(vertical: 8.h),
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.r),
+                    color: AppColors.white),
+                child: Row(
                   children: [
-                    Flexible(
+                    Container(
+                      height: 52.h,
+                      width: 52.w,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: AppColors.cFAFBFC,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            spreadRadius: 2.sp,
+                            blurRadius: 8.sp,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
                       child: Text(
-                        '05 Tests',
-                        overflow: TextOverflow.ellipsis,
+                        '01',
                         style: TextFontStyle
-                            .textStyle12w400c9AB2A8StyleGTWalsheim
-                            .copyWith(
-                          color: AppColors.c8C8C8C,
-                        ),
+                            .headline24w400c222222StyleGTWalsheim
+                            .copyWith(color: AppColors.c245741),
                       ),
                     ),
+                    UIHelper.horizontalSpace(8.w),
+                    Flexible(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            overflow: TextOverflow.ellipsis,
+                            'Managing Your Time WiselyManaging Your Time Wisel',
+                            style: TextFontStyle
+                                .headline18w500c222222StyleGTWalsheim,
+                          ),
+                          UIHelper.verticalSpace(8.h),
+                          Row(
+                            children: [
+                              Text(
+                                '79 tests',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextFontStyle
+                                    .textStyle12w400c9AB2A8StyleGTWalsheim
+                                    .copyWith(
+                                  color: AppColors.c8C8C8C,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
                   ],
-                ),
-              ),
-            ),
+                )),
           );
         });
   }
 
   ///build course item....
+
   Widget _buildCourseItem() {
     return ListView.builder(
         itemCount: 8,
@@ -238,71 +252,82 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
               NavigationService.navigateTo(Routes.certificationSectionScreen);
             },
             child: Container(
-              height: 84.h,
-              margin: EdgeInsets.symmetric(vertical: 8.h),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16.r),
-                  color: AppColors.white),
-              child: ListTile(
-                leading: Container(
-                  height: 52.h,
-                  width: 52.w,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: AppColors.cFAFBFC,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        spreadRadius: 2.sp,
-                        blurRadius: 8.sp,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Text(
-                    '01',
-                    style: TextFontStyle.headline24w400c222222StyleGTWalsheim
-                        .copyWith(color: AppColors.c245741),
-                  ),
-                ),
-                title: Text(
-                  overflow: TextOverflow.ellipsis,
-                  'Managing Your Time Wisely',
-                  style: TextFontStyle.headline18w500c222222StyleGTWalsheim,
-                ),
-                subtitle: Row(
+                alignment: Alignment.center,
+                height: 84.h,
+                margin: EdgeInsets.symmetric(vertical: 8.h),
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.r),
+                    color: AppColors.white),
+                child: Row(
                   children: [
-                    Flexible(
-                      child: Text(
-                        '79 Lessons',
-                        overflow: TextOverflow.ellipsis,
-                        style: TextFontStyle
-                            .textStyle12w400c9AB2A8StyleGTWalsheim
-                            .copyWith(
-                          color: AppColors.c8C8C8C,
-                        ),
-                      ),
-                    ),
                     Container(
-                      width: 2.w,
-                      height: 12.h,
-                      margin: EdgeInsets.symmetric(horizontal: 5.w),
-                      color: AppColors.c8C8C8C,
-                    ),
-                    Flexible(
+                      height: 52.h,
+                      width: 52.w,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: AppColors.cFAFBFC,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            spreadRadius: 2.sp,
+                            blurRadius: 8.sp,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
                       child: Text(
-                        '3 Pdf',
-                        overflow: TextOverflow.ellipsis,
+                        '01',
                         style: TextFontStyle
-                            .textStyle14w400c9AB2A8StyleGTWalsheim
-                            .copyWith(color: AppColors.c8C8C8C),
+                            .headline24w400c222222StyleGTWalsheim
+                            .copyWith(color: AppColors.c245741),
                       ),
                     ),
+                    UIHelper.horizontalSpace(8.w),
+                    Flexible(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            overflow: TextOverflow.ellipsis,
+                            'Managing Your Time WiselyManaging Your Time Wisel',
+                            style: TextFontStyle
+                                .headline18w500c222222StyleGTWalsheim,
+                          ),
+                          UIHelper.verticalSpace(8.h),
+                          Row(
+                            children: [
+                              Text(
+                                '79 Lessons',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextFontStyle
+                                    .textStyle12w400c9AB2A8StyleGTWalsheim
+                                    .copyWith(
+                                  color: AppColors.c8C8C8C,
+                                ),
+                              ),
+                              Container(
+                                width: 2.w,
+                                height: 12.h,
+                                margin: EdgeInsets.symmetric(horizontal: 5.w),
+                                color: AppColors.c8C8C8C,
+                              ),
+                              Text(
+                                '3 Pdf',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextFontStyle
+                                    .textStyle14w400c9AB2A8StyleGTWalsheim
+                                    .copyWith(color: AppColors.c8C8C8C),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
                   ],
-                ),
-              ),
-            ),
+                )),
           );
         });
   }
@@ -372,9 +397,4 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
       ),
     );
   }
-
-
-
-
-
 }

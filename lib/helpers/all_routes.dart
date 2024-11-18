@@ -6,13 +6,12 @@ import 'package:christiandimene/features/certification/presentation/certificatio
 import 'package:christiandimene/features/certification/presentation/certification_video_player_screen.dart';
 import 'package:christiandimene/features/certification/presentation/course_section_screen.dart';
 import 'package:christiandimene/features/certification/presentation/mock_test_section_screen.dart';
-
 import 'package:christiandimene/features/auth/presentation/otp_screen/otp_verification.dart';
 import 'package:christiandimene/features/home/presentation/home.dart';
-import 'package:christiandimene/features/mock_test/presentation/mock_test_instruction/mock_test_instruction_screen.dart';
-import 'package:christiandimene/features/mock_test/presentation/mock_test_result/mock_result_screen.dart';
-import 'package:christiandimene/features/mock_test/presentation/mock_test_screen/question_screen.dart';
-
+import 'package:christiandimene/features/practice_exam/presentation/practice_exam_instruction_screen.dart';
+import 'package:christiandimene/features/practice_exam/presentation/practice_exam_result.dart';
+import 'package:christiandimene/features/practice_exam/presentation/practice_question_screen.dart';
+import 'package:christiandimene/features/nav_screen/presentation/nav_screen.dart';
 import 'package:christiandimene/features/onboading/presentation/another_onboading.dart';
 import 'package:christiandimene/features/onboading/presentation/onbording_screen.dart';
 import 'package:christiandimene/features/auth/presentation/registration_screen/login_screen.dart';
@@ -20,6 +19,10 @@ import 'package:christiandimene/features/auth/presentation/registration_screen/s
 import 'package:christiandimene/features/profile_screen/presentation/notification/notification_screen.dart';
 import 'package:christiandimene/features/profile_screen/presentation/profile/edit_profile.dart';
 import 'package:christiandimene/features/test_exam/presentation/test_passed_result.dart';
+import 'package:christiandimene/features/test_exam/presentation/test_exam_instruction_screen.dart';
+import 'package:christiandimene/features/test_exam/presentation/test_exam_question_screen.dart';
+import 'package:christiandimene/features/test_exam/presentation/test_exam_result.dart';
+
 import 'package:flutter/cupertino.dart';
 
 final class Routes {
@@ -58,6 +61,14 @@ final class Routes {
   static const String question_screen = '/question_screen';
   static const String mock_test_result = '/mock_test_result';
   static const String testPassedResult = '/test_passed_result';
+
+  static const String practiceQuestionScreen = '/practice_question_screen';
+  static const String testExamQuestionScreen = '/test_exam_question_screen';
+  static const String testExamInstructionScreen = '/test_exam_instruction';
+  static const String practiceExamResult = '/practice_exam_result_screen';
+  static const String testExamResult = '/test_exam_result_screen';
+  static const String bottomNavBarScreen = '/bottom_vavBar_screen';
+  static const String practiceExamInstruction = '/practice_exam_instruction';
 }
 
 final class RouteGenerator {
@@ -150,23 +161,57 @@ final class RouteGenerator {
                 widget: NotificationScreen(), settings: settings)
             : CupertinoPageRoute(builder: (context) => NotificationScreen());
 
-      case Routes.mock_test_instruction_screen:
+      case Routes.practiceExamInstruction:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-                widget: MockTestInstructions(), settings: settings)
-            : CupertinoPageRoute(builder: (context) => MockTestInstructions());
+                widget: PracticeExamInstructionScreen(), settings: settings)
+            : CupertinoPageRoute(
+                builder: (context) => PracticeExamInstructionScreen());
 
-      case Routes.question_screen:
+      case Routes.practiceQuestionScreen:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-                widget: QuestionWidget(), settings: settings)
-            : CupertinoPageRoute(builder: (context) => QuestionWidget());
+                widget: PracticeQuestionScreen(), settings: settings)
+            : CupertinoPageRoute(
+                builder: (context) => PracticeQuestionScreen());
 
-      case Routes.mock_test_result:
+      case Routes.practiceExamResult:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-                widget: MockTestResult(), settings: settings)
-            : CupertinoPageRoute(builder: (context) => MockTestResult());
+                widget: PracticeExmaResult(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => PracticeExmaResult());
+
+      case Routes.createNewPassword:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: CreateNewPassScreen(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => CreateNewPassScreen());
+
+      case Routes.bottomNavBarScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: BottomNavBarScreen(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => BottomNavBarScreen());
+
+      case Routes.testExamInstructionScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: TestExamInstructionScreen(), settings: settings)
+            : CupertinoPageRoute(
+                builder: (context) => TestExamInstructionScreen());
+
+      case Routes.testExamQuestionScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: TestExamQuestionScreen(), settings: settings)
+            : CupertinoPageRoute(
+                builder: (context) => TestExamQuestionScreen());
+
+      case Routes.testExamResult:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: TestExamResult(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => TestExamResult());
 
       case Routes.createNewPassword:
         return Platform.isAndroid
@@ -180,6 +225,13 @@ final class RouteGenerator {
                 widget: TestPassesResultScreen(), settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => TestPassesResultScreen());
+
+      case Routes.mock_test_instruction_screen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: PracticeExamInstructionScreen(), settings: settings)
+            : CupertinoPageRoute(
+                builder: (context) => PracticeExamInstructionScreen());
 
       default:
         return null;
@@ -202,6 +254,7 @@ final class RouteGenerator {
 //     );
 //   },
 // );
+//
 
 class _FadedTransitionRoute extends PageRouteBuilder {
   final Widget widget;

@@ -19,23 +19,32 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  var isVisibility = false;
+  var isPassChecked = false;
+  var isConPassChecked = false;
 
   togglePassword() {
     setState(() {
-      isVisibility = !isVisibility;
+      isPassChecked = !isPassChecked;
+    });
+  }
+
+  toggleConfirmPassword() {
+    setState(() {
+      isConPassChecked = !isConPassChecked;
     });
   }
 
   @override
   void initState() {
     togglePassword();
+    toggleConfirmPassword();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -73,14 +82,14 @@ class _SignupScreenState extends State<SignupScreen> {
                   hintText: 'Password',
                   borderRadius: 10.r,
                   controller: null,
-                  isObsecure: isVisibility,
+                  isObsecure: isPassChecked,
                   suffixIcon: IconButton(
                     onPressed: () {
                       setState(() {
                         togglePassword();
                       });
                     },
-                    icon: isVisibility == false
+                    icon: isPassChecked == false
                         ? Icon(Icons.visibility)
                         : Icon(Icons.visibility_off),
                   ),
@@ -90,14 +99,14 @@ class _SignupScreenState extends State<SignupScreen> {
                   hintText: 'Confirm Password',
                   borderRadius: 10.r,
                   controller: null,
-                  isObsecure: isVisibility,
+                  isObsecure: isConPassChecked,
                   suffixIcon: IconButton(
                     onPressed: () {
                       setState(() {
-                        togglePassword();
+                        toggleConfirmPassword();
                       });
                     },
-                    icon: isVisibility == false
+                    icon: isConPassChecked == false
                         ? Icon(Icons.visibility)
                         : Icon(Icons.visibility_off),
                   ),

@@ -22,6 +22,7 @@ class _OtpVerificationState extends State<OtpVerification> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+            backgroundColor: AppColors.white,
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 55.h),
@@ -135,7 +136,9 @@ class _OtpVerificationState extends State<OtpVerification> {
                     context: context,
                     textStyle: TextFontStyle
                         .headline18w500c222222StyleGTWalsheim
-                        .copyWith(color: AppColors.c000000),
+                        .copyWith(
+                      color: AppColors.c000000,
+                    ),
                   ),
                 ],
               ),

@@ -1,5 +1,6 @@
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
+import 'package:christiandimene/features/widgets/exam_finish_popup.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
@@ -7,15 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../../gen/assets.gen.dart';
-import '../../../../helpers/all_routes.dart';
+import '../../../gen/assets.gen.dart';
+import '../../../helpers/all_routes.dart';
 
-class QuestionWidget extends StatefulWidget {
+class TestExamQuestionScreen extends StatefulWidget {
   @override
   _QuestionWidgetState createState() => _QuestionWidgetState();
 }
 
-class _QuestionWidgetState extends State<QuestionWidget> {
+class _QuestionWidgetState extends State<TestExamQuestionScreen> {
   int _selectedOption = -1;
 
   int _selectedQuestionIndex = -1;
@@ -34,28 +35,35 @@ class _QuestionWidgetState extends State<QuestionWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-        title: 'Practice: Managing Your Time Wisely',
+        title: 'Test: Managing Your Time Wisely',
         onCallBack: () {},
-        leadingIconUnVisible: true,
       ),
       backgroundColor: Colors.grey[200],
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.sp),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              //build time widget...
+              _buildTimeWidget(),
+              UIHelper.verticalSpace(24.h),
+
+              //question....
               Text(
-                "Question 2",
+                "Question 1",
                 style: TextFontStyle.textStyle12w400c9AB2A8StyleGTWalsheim,
                 textAlign: TextAlign.center,
               ),
+              UIHelper.verticalSpace(5.h),
               Text(
                 "What Is The Primary Function Of The Operating System In A Computer?",
                 style: TextFontStyle.headline18w500c222222StyleGTWalsheim,
                 textAlign: TextAlign.center,
               ),
               UIHelper.verticalSpace(40.h),
+
+              //question option...
               _questionItem(),
               UIHelper.verticalSpace(40.h),
               Text.rich(
@@ -194,26 +202,6 @@ class _QuestionWidgetState extends State<QuestionWidget> {
                       ),
                     ),
                   ),
-                  // if (index == 1) // Add badge on question 2 (index 1)
-                  //   Positioned(
-                  //     top: -2,
-                  //     right: -2,
-                  //     child: Container(
-                  //       padding: EdgeInsets.all(4),
-                  //       decoration: BoxDecoration(
-                  //         color: Colors.orange,
-                  //         shape: BoxShape.circle,
-                  //       ),
-                  //       child: Text(
-                  //         "P",
-                  //         style: TextStyle(
-                  //           color: Colors.white,
-                  //           fontSize: 10,
-                  //           fontWeight: FontWeight.bold,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
                 ],
               ),
             );
@@ -253,7 +241,16 @@ class _QuestionWidgetState extends State<QuestionWidget> {
             ),
             GestureDetector(
               onTap: () {
-                NavigationService.navigateTo(Routes.mock_test_result);
+                examFinishPopup(
+                  context,
+                  () {
+                    NavigationService.navigateToReplacement(
+                        Routes.testExamResult);
+                  },
+                  '08:11',
+                  '08',
+                  '08',
+                );
               },
               child: Container(
                 width: 176.w,
@@ -299,6 +296,38 @@ class _QuestionWidgetState extends State<QuestionWidget> {
           ],
         ),
       ],
+    );
+  }
+}
+
+class _buildTimeWidget extends StatelessWidget {
+  const _buildTimeWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+          width: 95.w,
+          height: 34.h,
+          padding: EdgeInsets.symmetric(horizontal: 5.w),
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(4.r),
+          ),
+          child: Row(
+            children: [
+              SvgPicture.asset(Assets.icons.clock),
+              UIHelper.horizontalSpace(5.w),
+              Text(
+                '13:30',
+                style: TextFontStyle.textStyle16w400c999999StyleGTWalsheim
+                    .copyWith(color: AppColors.black),
+              )
+            ],
+          )),
     );
   }
 }

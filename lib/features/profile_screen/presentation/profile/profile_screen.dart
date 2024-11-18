@@ -1,4 +1,3 @@
-import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
@@ -58,7 +57,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 profileItem(
                   title: 'Notification',
                   svg: SvgPicture.asset(Assets.icons.notification),
-                  onPressed: () {},
+                  onPressed: () {
+                    NavigationService.navigateTo(Routes.notification);
+                  },
                 ),
                 Divider(
                   color: AppColors.c000000,
@@ -88,21 +89,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onPressed: () {},
                 ),
                 UIHelper.verticalSpace(24.h),
-                // customButton(
-                //     isTrue: true,
-                //     svgImage: Assets.icons.logout,
-                //     name: 'Logout',
-                //     onCallBack: () {},
-                //     context: context,
-                //     borderRadius: 16.r,
-                //     textStyle: TextFontStyle
-                //         .headline18w500c222222StyleGTWalsheim
-                //         .copyWith(color: AppColors.cFFFFFF)),
-                customButton(
-                    name: 'Logout', onCallBack: () {}, context: context)
+
+                ///logout button....
+                _buildLogoutButton(),
+                UIHelper.verticalSpace(30.h),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  GestureDetector _buildLogoutButton() {
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        height: 62.h,
+        width: double.infinity,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            color: AppColors.cFDB338,
+            borderRadius: BorderRadius.circular(16.r),
+            border: Border.all(
+              color: AppColors.cFDB338,
+            )),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              Assets.icons.logout,
+              height: 24.h,
+              width: 24.w,
+            ),
+            UIHelper.horizontalSpace(10.w),
+            Text(
+              'Logout',
+              overflow: TextOverflow.ellipsis,
+              style: TextFontStyle.headline18w500c222222StyleGTWalsheim,
+            ),
+          ],
         ),
       ),
     );

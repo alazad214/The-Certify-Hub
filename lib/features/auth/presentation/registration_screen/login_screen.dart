@@ -7,7 +7,6 @@ import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/gen/assets.gen.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
@@ -39,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -87,19 +87,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Checkbox(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4.r),
-                        side: BorderSide(color: AppColors.c999999),
-                      ),
                       value: _isChecked,
-                      focusColor: AppColors.c999999,
-                      activeColor: AppColors.c999999,
-                      checkColor: AppColors.cFFFFFF,
                       onChanged: (bool? value) {
                         setState(() {
                           _isChecked = value ?? false;
                         });
                       },
+                      checkColor: AppColors.white,
+                      activeColor: AppColors.c999999,
+                      side: BorderSide(
+                        color: AppColors.c999999,
+                        width: 1.0,
+                      ),
                     ),
                     Text(
                       'Remember me'.tr,
@@ -112,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 customButton(
                   name: 'Log In',
                   onCallBack: () {
-                    NavigationService.navigateTo(Routes.home);
+                    NavigationService.navigateTo(Routes.bottomNavBarScreen);
                   },
                   context: context,
                   borderRadius: 12.r,

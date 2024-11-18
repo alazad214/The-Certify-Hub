@@ -60,11 +60,17 @@ class $AssetsIconsGen {
   /// File path: assets/icons/clock_color.svg
   String get clockColor => 'assets/icons/clock_color.svg';
 
+  /// File path: assets/icons/close-circle.svg
+  String get closeCircle => 'assets/icons/close-circle.svg';
+
   /// File path: assets/icons/close.svg
   String get close => 'assets/icons/close.svg';
 
   /// File path: assets/icons/correct.svg
   String get correct => 'assets/icons/correct.svg';
+
+  /// File path: assets/icons/course.svg
+  String get course => 'assets/icons/course.svg';
 
   /// File path: assets/icons/edit.svg
   String get edit => 'assets/icons/edit.svg';
@@ -77,6 +83,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/google.svg
   String get google => 'assets/icons/google.svg';
+
+  /// File path: assets/icons/home.svg
+  String get home => 'assets/icons/home.svg';
 
   /// File path: assets/icons/marks.svg
   String get marks => 'assets/icons/marks.svg';
@@ -132,12 +141,15 @@ class $AssetsIconsGen {
         arrowleft,
         clock,
         clockColor,
+        closeCircle,
         close,
         correct,
+        course,
         edit,
         facebook,
         filledCheck,
         google,
+        home,
         marks,
         notification,
         notificationOne,

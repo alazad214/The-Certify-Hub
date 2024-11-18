@@ -76,6 +76,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
 
               ///ONGOING COURSE...
               if (_selectedType == 'complete') _buildCompletedCourseCard(),
+              UIHelper.verticalSpace(26.h),
             ],
           ),
         ),
