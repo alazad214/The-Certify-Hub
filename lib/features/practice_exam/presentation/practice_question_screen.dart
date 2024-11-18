@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/widgets/exam_finish_popup.dart';
@@ -17,6 +19,8 @@ class PracticeQuestionScreen extends StatefulWidget {
 }
 
 class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
+
+
   int _selectedQuestionIndex = 0;
   int _previousSelectedIndex = -1;
 
@@ -66,57 +70,6 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
       ],
       "correctIndex": 0,
     },
-    {
-      "question": "Which type of memory is used to store data temporarily?",
-      "options": [
-        "RAM",
-        "ROM",
-        "Hard Disk",
-        "Flash Drive",
-      ],
-      "correctIndex": 0,
-    },
-    {
-      "question": "Which company developed the Windows operating system?",
-      "options": [
-        "Apple",
-        "Microsoft",
-        "Google",
-        "IBM",
-      ],
-      "correctIndex": 1,
-    },
-    {
-      "question": "What is the binary equivalent of the decimal number 5?",
-      "options": [
-        "101",
-        "110",
-        "111",
-        "100",
-      ],
-      "correctIndex": 0,
-    },
-    {
-      "question": "Which of these is an open-source operating system?",
-      "options": [
-        "Windows",
-        "Linux",
-        "MacOS",
-        "iOS",
-      ],
-      "correctIndex": 1,
-    },
-    {
-      "question":
-          "Which protocol is used for secure communication over the internet?",
-      "options": [
-        "HTTP",
-        "FTP",
-        "SMTP",
-        "HTTPS",
-      ],
-      "correctIndex": 3,
-    },
   ];
 
   @override
@@ -124,11 +77,11 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
     return Scaffold(
       appBar: CustomAppbar(
         title: 'Practice: Managing Your Time Wisely',
-     onCallBack: () {
+        onCallBack: () {
           examFinishPopup(
             context,
             () {
-              NavigationService.navigateToReplacement(Routes.testExamResult);
+              NavigationService.navigateToReplacement(Routes.practiceExamResult);
             },
             '08:11',
             '08',
@@ -170,8 +123,6 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
     );
   }
 
-
-  
   InkWell _buildFlagButton() {
     return InkWell(
       onTap: () {},
