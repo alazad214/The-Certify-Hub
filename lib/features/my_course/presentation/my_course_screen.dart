@@ -5,7 +5,7 @@ import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class MyCourseScreen extends StatefulWidget {
   const MyCourseScreen({super.key});
@@ -35,7 +35,6 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
     {"progress": 1.0},
   ];
 
-//
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +50,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
               ),
               UIHelper.verticalSpace(16.h),
 
-              ///SEARCH TEXTFIELD...
+              //SEARCH TEXTFIELD...
               CustomTextfield(
                 hintText: 'Search a certification',
                 fillColor: AppColors.white,
@@ -68,13 +67,13 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
 
               UIHelper.verticalSpace(24.h),
 
-              ///ONGOING AND COMPLETED BUTTON...
+              //ONGOING AND COMPLETED BUTTON...
               _buildOngoingAndCompletedButton(),
 
               ///ONGOING COURSE...
               if (_selectedType == 'Ongoing') _buildOngoingCourseCard(),
 
-              ///ONGOING COURSE...
+              //ONGOING COURSE...
               if (_selectedType == 'complete') _buildCompletedCourseCard(),
               UIHelper.verticalSpace(26.h),
             ],
@@ -84,7 +83,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
     );
   }
 
-  ///ONGOING AND COMPLETED BUTTON...
+  //ONGOING AND COMPLETED BUTTON...
   Widget _buildOngoingAndCompletedButton() {
     return Row(
       children: [
@@ -128,31 +127,29 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
               _selectedType = 'complete';
             });
           },
-          child: Flexible(
-            child: Container(
-              height: 39.h,
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              margin: EdgeInsets.only(bottom: 10.h),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
+          child: Container(
+            height: 39.h,
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            margin: EdgeInsets.only(bottom: 10.h),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: _selectedType == 'complete'
+                    ? AppColors.c245741
+                    : AppColors.white,
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(
                   color: _selectedType == 'complete'
                       ? AppColors.c245741
-                      : AppColors.white,
-                  borderRadius: BorderRadius.circular(8.r),
-                  border: Border.all(
-                    color: _selectedType == 'complete'
-                        ? AppColors.c245741
-                        : AppColors.c8C8C8C,
-                  )),
-              child: Text(
-                'Completed',
-                overflow: TextOverflow.ellipsis,
-                style:
-                    TextFontStyle.textStyle14w500c6B6B6BtyleGTWalsheim.copyWith(
-                  color: _selectedType == 'complete'
-                      ? AppColors.cFFFFFF
                       : AppColors.c8C8C8C,
-                ),
+                )),
+            child: Text(
+              'Completed',
+              overflow: TextOverflow.ellipsis,
+              style:
+                  TextFontStyle.textStyle14w500c6B6B6BtyleGTWalsheim.copyWith(
+                color: _selectedType == 'complete'
+                    ? AppColors.cFFFFFF
+                    : AppColors.c8C8C8C,
               ),
             ),
           ),
@@ -161,7 +158,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
     );
   }
 
-  ///ONGOING COURSE...
+  //ONGOING COURSE...
   Widget _buildOngoingCourseCard() {
     return ListView.builder(
         shrinkWrap: true,
@@ -228,7 +225,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
         });
   }
 
-  ///ONGOING COURSE...
+  //COMPLETED COURSE...
   Widget _buildCompletedCourseCard() {
     return ListView.builder(
         shrinkWrap: true,

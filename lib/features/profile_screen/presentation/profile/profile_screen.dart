@@ -1,4 +1,5 @@
 import 'package:christiandimene/constants/text_font_style.dart';
+import 'package:christiandimene/features/profile_screen/widget/logout_button_dialog.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
@@ -51,7 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
                 ),
                 Divider(
-                  color: AppColors.c000000,
+                  color: AppColors.cBBCBC4,
                   thickness: 0.5,
                 ),
                 profileItem(
@@ -62,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
                 ),
                 Divider(
-                  color: AppColors.c000000,
+                  color: AppColors.cBBCBC4,
                   thickness: 0.5,
                 ),
                 profileItem(
@@ -71,7 +72,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onPressed: () {},
                 ),
                 Divider(
-                  color: AppColors.c000000,
+                  color: AppColors.cBBCBC4,
                   thickness: 0.5,
                 ),
                 profileItem(
@@ -80,7 +81,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onPressed: () {},
                 ),
                 Divider(
-                  color: AppColors.c000000,
+                  color: AppColors.cBBCBC4,
                   thickness: 0.5,
                 ),
                 profileItem(
@@ -103,7 +104,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   GestureDetector _buildLogoutButton() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        logOutButtonDialog(context, () {
+          NavigationService.navigateToReplacement(Routes.anotherOnboading);
+        });
+      },
       child: Container(
         height: 62.h,
         width: double.infinity,
@@ -121,6 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Assets.icons.logout,
               height: 24.h,
               width: 24.w,
+              color: AppColors.c222222,
             ),
             UIHelper.horizontalSpace(10.w),
             Text(
@@ -152,7 +158,7 @@ class profileItem extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15.0.w, vertical: 16.0.h),
+        padding: EdgeInsets.symmetric(horizontal: 15.0.w, vertical: 12.0.h),
         child: Row(
           children: [
             svg,
@@ -168,6 +174,7 @@ class profileItem extends StatelessWidget {
               Assets.icons.arrowBlacks,
               height: 24.h,
               width: 24.w,
+              color: AppColors.c222222,
             ),
           ],
         ),

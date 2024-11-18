@@ -20,6 +20,9 @@ void examFinishPopup(
     builder: (BuildContext context) {
       return Dialog(
         elevation: 12,
+         shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
         child: Container(
           padding: EdgeInsets.all(20.sp),
           width: double.infinity,

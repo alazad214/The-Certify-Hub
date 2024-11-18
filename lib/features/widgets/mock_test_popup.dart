@@ -15,21 +15,28 @@ void mockTestPopup(
     builder: (BuildContext context) {
       return Dialog(
         elevation: 12,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
         child: Container(
           padding: EdgeInsets.all(20.sp),
           width: double.infinity,
           decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(16.r)),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16.r),
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Align(
-                  alignment: Alignment.centerRight,
-                  child: InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: SvgPicture.asset(Assets.icons.close))),
+                alignment: Alignment.centerRight,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: SvgPicture.asset(Assets.icons.close),
+                ),
+              ),
               UIHelper.verticalSpace(24.h),
               Text(
                 'Pick your mode and let’s go!',

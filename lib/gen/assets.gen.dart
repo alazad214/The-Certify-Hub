@@ -75,6 +75,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/filled_check.svg
   String get filledCheck => 'assets/icons/filled_check.svg';
 
+  /// File path: assets/icons/flag.svg
+  String get flag => 'assets/icons/flag.svg';
+
+  /// File path: assets/icons/flat_outline.svg
+  String get flatOutline => 'assets/icons/flat_outline.svg';
+
   /// File path: assets/icons/google.svg
   String get google => 'assets/icons/google.svg';
 
@@ -114,6 +120,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/tick-circle.svg
   String get tickCircle => 'assets/icons/tick-circle.svg';
 
+  /// File path: assets/icons/time.svg
+  String get time => 'assets/icons/time.svg';
+
   /// File path: assets/icons/warning-2.svg
   String get warning2 => 'assets/icons/warning-2.svg';
 
@@ -140,6 +149,8 @@ class $AssetsIconsGen {
         edit,
         facebook,
         filledCheck,
+        flag,
+        flatOutline,
         google,
         home,
         marks,
@@ -153,6 +164,7 @@ class $AssetsIconsGen {
         search,
         shieldTick,
         tickCircle,
+        time,
         warning2
       ];
 }

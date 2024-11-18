@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:christiandimene/features/auth/presentation/forget_pass_screen.dart/create_new_pass.dart';
 import 'package:christiandimene/features/auth/presentation/forget_pass_screen.dart/forget_pass_screen.dart';
+import 'package:christiandimene/features/auth/presentation/otp_screen/forget_verify_screen.dart';
 import 'package:christiandimene/features/certification/presentation/certification_main_screen.dart';
 import 'package:christiandimene/features/certification/presentation/certification_video_player_screen.dart';
 import 'package:christiandimene/features/certification/presentation/course_section_screen.dart';
@@ -64,6 +65,7 @@ final class Routes {
   static const String testExamResult = '/test_exam_result_screen';
   static const String bottomNavBarScreen = '/bottom_vavBar_screen';
   static const String practiceExamInstruction = '/practice_exam_instruction';
+  static const String forgetVerifyScreen = '/forget_verify_screen';
 }
 
 final class RouteGenerator {
@@ -204,8 +206,13 @@ final class RouteGenerator {
         return Platform.isAndroid
             ? _FadedTransitionRoute(
                 widget: TestExamResult(), settings: settings)
-            : CupertinoPageRoute(
-                builder: (context) => TestExamResult());
+            : CupertinoPageRoute(builder: (context) => TestExamResult());
+
+      case Routes.forgetVerifyScreen:
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: ForgetVerifyScreen(), settings: settings)
+            : CupertinoPageRoute(builder: (context) => ForgetVerifyScreen());
 
       default:
         return null;
