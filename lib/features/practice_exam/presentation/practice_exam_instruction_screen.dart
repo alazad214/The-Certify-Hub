@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-
 import '../../../gen/assets.gen.dart';
 import '../../../gen/colors.gen.dart';
 import '../../../helpers/all_routes.dart';
@@ -35,9 +34,7 @@ class _PracticeExamInstructionScreenState
     return Scaffold(
       appBar: CustomAppbar(
         title: 'practice: Managing Your Time Wisely',
-        onCallBack: () {
-          NavigationService.goBack();
-        },
+       
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -53,7 +50,9 @@ class _PracticeExamInstructionScreenState
                     Text(
                       'Key Features'.tr,
                       style: TextFontStyle.textStyle16w400c999999StyleGTWalsheim
-                          .copyWith(color: AppColors.c222222),
+                          .copyWith(
+                        color: AppColors.c222222,
+                      ),
                     )
                   ],
                 ),
