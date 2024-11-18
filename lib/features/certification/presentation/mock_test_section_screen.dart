@@ -62,8 +62,6 @@ class _CertificationMainScreenState extends State<MockTestSectionScreen> {
     );
   }
 
-////
-  ///
   ///build pdf item......
   Widget _buildPDFItem() {
     return ListView.builder(
@@ -76,13 +74,10 @@ class _CertificationMainScreenState extends State<MockTestSectionScreen> {
             mockTestPopup(
               context,
               () {
-                NavigationService.navigateTo(
-                    Routes.mock_test_instruction_screen);
+                NavigationService.navigateTo(Routes.practiceExamInstruction);
               },
               () {
-                NavigationService.navigateTo(Routes.testPassedResult);
-
-                NavigationService.navigateTo(Routes.practiceExamInstruction);
+                NavigationService.navigateTo(Routes.testExamInstructionScreen);
               },
             );
           },

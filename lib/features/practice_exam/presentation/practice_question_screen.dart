@@ -124,7 +124,21 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
     return Scaffold(
       appBar: CustomAppbar(
         title: 'Practice: Managing Your Time Wisely',
-        onCallBack: () {},
+     onCallBack: () {
+          examFinishPopup(
+            context,
+            () {
+              NavigationService.navigateToReplacement(Routes.testExamResult);
+            },
+            '08:11',
+            '08',
+            '08',
+          );
+        },
+        actions: [
+          //build flag button..
+          _buildFlagButton(),
+        ],
       ),
       backgroundColor: Colors.grey[200],
       body: SingleChildScrollView(
@@ -151,6 +165,27 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
               _navigationButtons(),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+
+  
+  InkWell _buildFlagButton() {
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        height: 32.h,
+        width: 32.w,
+        padding: EdgeInsets.all(5.sp),
+        margin: EdgeInsets.only(right: 10.w),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: AppColors.white,
+        ),
+        child: SvgPicture.asset(
+          Assets.icons.flag,
         ),
       ),
     );

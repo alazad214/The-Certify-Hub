@@ -10,13 +10,13 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppbar({
     super.key,
     required this.title,
-     this.onCallBack,
+    this.onCallBack,
     this.leadingIconUnVisible = false,
     this.actions,
   });
 
   final String title;
-  final  onCallBack;
+  final onCallBack;
   final bool leadingIconUnVisible;
   final actions;
 
@@ -29,9 +29,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
           child: Padding(
               padding: EdgeInsets.all(12.sp),
               child: InkWell(
-                onTap: onCallBack??  () {
-                  NavigationService.goBack();
-                },
+                onTap: onCallBack,
                 child: SvgPicture.asset(
                   Assets.icons.backButton,
                   height: 32.h,

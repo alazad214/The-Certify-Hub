@@ -230,12 +230,7 @@ final class RouteGenerator {
             : CupertinoPageRoute(
                 builder: (context) => TestPassesResultScreen());
 
-      case Routes.mock_test_instruction_screen:
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-                widget: PracticeExamInstructionScreen(), settings: settings)
-            : CupertinoPageRoute(
-                builder: (context) => PracticeExamInstructionScreen());
+
 
 
       default:
