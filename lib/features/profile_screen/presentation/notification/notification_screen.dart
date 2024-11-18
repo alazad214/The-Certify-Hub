@@ -1,5 +1,6 @@
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
+import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,7 +23,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return Scaffold(
       appBar: CustomAppbar(
         title: 'Notification'.tr,
-        onCallBack: () {},
+        onCallBack: () {
+                 NavigationService.goBack;
+        },
       ),
       body: SafeArea(
         child: SingleChildScrollView(

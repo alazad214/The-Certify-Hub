@@ -36,9 +36,8 @@ class _PracticeExamInstructionScreenState
       appBar: CustomAppbar(
         title: 'Test: Managing Your Time Wisely',
         onCallBack: () {
-          NavigationService.goBack();
-        },
         
+        },
       ),
       body: SafeArea(
         child: SingleChildScrollView(

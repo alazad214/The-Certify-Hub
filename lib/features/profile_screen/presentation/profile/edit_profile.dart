@@ -60,7 +60,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     if (pickedFile != null) {
       setState(() {
-        _profileImage = File(pickedFile.path); 
+        _profileImage = File(pickedFile.path);
       });
     }
   }
@@ -71,7 +71,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       appBar: CustomAppbar(
         title: 'Edit Profile',
         onCallBack: () {
-          NavigationService.goBack();
+          NavigationService.goBack;
         },
       ),
       body: SingleChildScrollView(
