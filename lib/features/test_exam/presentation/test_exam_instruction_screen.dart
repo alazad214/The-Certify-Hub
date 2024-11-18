@@ -35,9 +35,7 @@ class _PracticeExamInstructionScreenState
     return Scaffold(
       appBar: CustomAppbar(
         title: 'Test: Managing Your Time Wisely',
-        onCallBack: () {
-        
-        },
+        onCallBack: () {},
       ),
       body: SafeArea(
         child: SingleChildScrollView(
