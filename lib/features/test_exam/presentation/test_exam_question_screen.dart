@@ -98,6 +98,16 @@ class _PracticeQuestionScreenState extends State<TestExamQuestionScreen> {
       ],
       "correctIndex": 0,
     },
+    {
+      "question": "What does CPU stand for?",
+      "options": [
+        "Central Processing Unit",
+        "Computer Processing Unit",
+        "Central Programming Unit",
+        "Core Processing Utility",
+      ],
+      "correctIndex": 0,
+    },
   ];
 
   @override
@@ -128,26 +138,34 @@ class _PracticeQuestionScreenState extends State<TestExamQuestionScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-
-
-                            //build time widget...
+              //BUILD TIME WIDGET...
               _buildTimewidget(),
               UIHelper.verticalSpace(24.h),
+
+              //QUESTION NO...
               Text(
                 "Question ${_selectedQuestionIndex + 1}",
                 style: TextFontStyle.textStyle12w400c9AB2A8StyleGTWalsheim,
                 textAlign: TextAlign.center,
               ),
+              //QUESTION NAME...
               Text(
                 questionData[_selectedQuestionIndex]['question'],
                 style: TextFontStyle.headline18w500c222222StyleGTWalsheim,
                 textAlign: TextAlign.center,
               ),
               UIHelper.verticalSpace(40.h),
-              _questionItem(),
+
+              //QUESTION OPTION...
+
+              _buildQuestionOption(),
               UIHelper.verticalSpace(40.h),
+
+              //QUESTION ITEM LIST...
               _questionList(),
               UIHelper.verticalSpace(40.h),
+
+              //NAVIGATION BUTTONS...
               _navigationButtons(),
             ],
           ),
@@ -156,21 +174,20 @@ class _PracticeQuestionScreenState extends State<TestExamQuestionScreen> {
     );
   }
 
-
-
-  
   Widget _buildTimewidget() {
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
           width: 95.w,
-          height: 34.h,
+          height: 45.h,
           padding: EdgeInsets.symmetric(horizontal: 5.w),
+          alignment: Alignment.center,
           decoration: BoxDecoration(
             color: AppColors.white,
             borderRadius: BorderRadius.circular(4.r),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SvgPicture.asset(Assets.icons.time),
               UIHelper.horizontalSpace(5.w),
@@ -353,9 +370,7 @@ class _PracticeQuestionScreenState extends State<TestExamQuestionScreen> {
               "${index + 1}",
               style:
                   TextFontStyle.textStyle14w500c6B6B6BtyleGTWalsheim.copyWith(
-                color: isSelected || isPrevious
-                    ? AppColors.cFFFFFF
-                    : AppColors.c000000,
+                color: isSelected ? AppColors.cFFFFFF : AppColors.c000000,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -365,7 +380,7 @@ class _PracticeQuestionScreenState extends State<TestExamQuestionScreen> {
     );
   }
 
-  Widget _questionItem() {
+  Widget _buildQuestionOption() {
     final options = questionData[_selectedQuestionIndex]['options'];
     final correctIndex = questionData[_selectedQuestionIndex]['correctIndex'];
 
@@ -391,11 +406,11 @@ class _PracticeQuestionScreenState extends State<TestExamQuestionScreen> {
             }
           },
           child: Container(
-            margin: EdgeInsets.symmetric(vertical: 8),
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+            margin: EdgeInsets.symmetric(vertical: 8.h),
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(8.r),
               border: Border.all(
                 color: isSelected
                     ? (isCorrect ? AppColors.c31CD63 : AppColors.cFF402F)
@@ -408,8 +423,8 @@ class _PracticeQuestionScreenState extends State<TestExamQuestionScreen> {
               children: [
                 // Circle Radio Button
                 Container(
-                  height: 20,
-                  width: 20,
+                  height: 20.h,
+                  width: 20.w,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
@@ -419,14 +434,14 @@ class _PracticeQuestionScreenState extends State<TestExamQuestionScreen> {
                     ),
                   ),
                   child: Center(
-                    child: Radio<int>(
+                    child: Radio(
                       value: index,
                       groupValue: selectedOption,
-                      onChanged: null, // Disable changing answers
+                      onChanged: null,
                     ),
                   ),
                 ),
-                SizedBox(width: 10),
+                UIHelper.horizontalSpace(6.h),
                 Expanded(
                   child: Text(
                     options[index],
