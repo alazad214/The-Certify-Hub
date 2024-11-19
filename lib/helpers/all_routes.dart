@@ -215,23 +215,19 @@ final class RouteGenerator {
                 widget: TestExamResult(), settings: settings)
             : CupertinoPageRoute(builder: (context) => TestExamResult());
 
-
       case Routes.forgetVerifyScreen:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
                 widget: ForgetVerifyScreen(), settings: settings)
             : CupertinoPageRoute(builder: (context) => ForgetVerifyScreen());
 
-
       case Routes.testPassedResult:
+        final args = settings.arguments as String;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
                 widget: TestPassesResultScreen(), settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => TestPassesResultScreen());
-
-
-
 
       default:
         return null;

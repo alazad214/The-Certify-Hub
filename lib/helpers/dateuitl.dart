@@ -42,7 +42,8 @@ final class DateFormatedUtils {
   }
 
   static String comapareDate(String date) {
-    var now = new DateTime.now().copyWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
+    var now = new DateTime.now().copyWith(
+        hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
     DateTime incomingDate = DateFormat("dd-MM-yyyy").parse(date);
 
     if (now.compareTo(incomingDate) == 0) {
@@ -50,7 +51,8 @@ final class DateFormatedUtils {
     }
 
     if (incomingDate.difference(now).inDays == 1) {
-      return "Amanha".tr + " - ${incomingDate.day}" "/" " ${incomingDate.month}";
+      return "Amanha".tr +
+          " - ${incomingDate.day}" "/" " ${incomingDate.month}";
     }
     return date;
   }
