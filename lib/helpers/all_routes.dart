@@ -19,7 +19,6 @@ import 'package:christiandimene/features/auth/presentation/registration_screen/l
 import 'package:christiandimene/features/auth/presentation/registration_screen/signup_screen.dart';
 import 'package:christiandimene/features/profile_screen/presentation/notification/notification_screen.dart';
 import 'package:christiandimene/features/profile_screen/presentation/profile/edit_profile.dart';
-import 'package:christiandimene/features/test_exam/presentation/test_passed_result.dart';
 import 'package:christiandimene/features/test_exam/presentation/test_exam_instruction_screen.dart';
 import 'package:christiandimene/features/test_exam/presentation/test_exam_question_screen.dart';
 import 'package:christiandimene/features/test_exam/presentation/test_exam_result.dart';
@@ -221,13 +220,7 @@ final class RouteGenerator {
                 widget: ForgetVerifyScreen(), settings: settings)
             : CupertinoPageRoute(builder: (context) => ForgetVerifyScreen());
 
-      case Routes.testPassedResult:
-        final args = settings.arguments as String;
-        return Platform.isAndroid
-            ? _FadedTransitionRoute(
-                widget: TestPassesResultScreen(), settings: settings)
-            : CupertinoPageRoute(
-                builder: (context) => TestPassesResultScreen());
+  
 
       default:
         return null;

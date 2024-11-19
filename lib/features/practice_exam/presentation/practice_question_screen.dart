@@ -1,15 +1,13 @@
-import 'dart:async';
-
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/widgets/exam_finish_popup.dart';
+import 'package:christiandimene/features/widgets/practice_exam_finish.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../../../gen/assets.gen.dart';
 import '../../../helpers/all_routes.dart';
 
@@ -25,6 +23,7 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
   Map<int, int> selectedOptions = {};
 
   Map<int, bool> completedQuestionsStatus = {};
+  Set<int> flaggedQuestions = {};
 
   final List<Map<String, dynamic>> questionData = [
     {
@@ -39,14 +38,14 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
       "correctIndex": 1,
     },
     {
-      "question": "Which is not a programming language?",
+      "question": "Which protocol is used to send emails?",
       "options": [
-        "Python",
-        "Java",
-        "HTML",
-        "C++",
+        "SMTP",
+        "HTTP",
+        "FTP",
+        "IMAP",
       ],
-      "correctIndex": 2,
+      "correctIndex": 0,
     },
   ];
 
@@ -56,20 +55,13 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
       appBar: CustomAppbar(
         title: 'Practice: Managing Your Time Wisely',
         onCallBack: () {
-          examFinishPopup(
-            context,
-            () {
-              NavigationService.navigateToReplacement(
-                Routes.practiceExamResult,
-              );
-            },
-            '08:11',
-            '08',
-            '08',
-          );
+          practiceExamFinish(context, () {
+            NavigationService.navigateToReplacement(Routes.bottomNavBarScreen);
+          });
         },
         actions: [
           //build flag button..
+
           _buildFlagButton(),
         ],
       ),
@@ -114,8 +106,17 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
   }
 
   InkWell _buildFlagButton() {
+    bool isFlagged = flaggedQuestions.contains(_selectedQuestionIndex);
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        setState(() {
+          if (isFlagged) {
+            flaggedQuestions.remove(_selectedQuestionIndex);
+          } else {
+            flaggedQuestions.add(_selectedQuestionIndex);
+          }
+        });
+      },
       child: Container(
         height: 32.h,
         width: 32.w,
@@ -126,7 +127,7 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
           color: AppColors.white,
         ),
         child: SvgPicture.asset(
-          Assets.icons.flag,
+          isFlagged ? Assets.icons.flag : Assets.icons.flatOutline,
         ),
       ),
     );
@@ -227,6 +228,7 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
       children: List.generate(questionData.length, (index) {
         bool isSelected = _selectedQuestionIndex == index;
         bool isPrevious = _previousSelectedIndex == index;
+        bool isFlagged = flaggedQuestions.contains(index);
 
         bool? isCorrect = completedQuestionsStatus[index];
         Color backgroundColor;
@@ -239,35 +241,51 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
         }
 
         return GestureDetector(
-          onTap: () {
-            setState(() {
-              _previousSelectedIndex = _selectedQuestionIndex;
-              _selectedQuestionIndex = index;
-            });
-          },
-          child: Container(
-            width: 40.w,
-            height: 45.h,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: isSelected ? AppColors.c245741 : backgroundColor,
-              borderRadius: BorderRadius.circular(4.r),
-              border: Border.all(
-                color: isSelected || isPrevious
-                    ? AppColors.c31CD63.withOpacity(0.5)
-                    : AppColors.c31CD63.withOpacity(0.5),
-              ),
-            ),
-            child: Text(
-              "${index + 1}",
-              style:
-                  TextFontStyle.textStyle14w500c6B6B6BtyleGTWalsheim.copyWith(
-                color: isSelected ? AppColors.cFFFFFF : AppColors.c000000,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        );
+            onTap: () {
+              setState(() {
+                _previousSelectedIndex = _selectedQuestionIndex;
+                _selectedQuestionIndex = index;
+              });
+            },
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  width: 40.w,
+                  height: 40.h,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: isSelected ? AppColors.c245741 : backgroundColor,
+                    borderRadius: BorderRadius.circular(4.r),
+                    border: Border.all(
+                      color: isSelected || isPrevious
+                          ? AppColors.c245741
+                          : AppColors.c31CD63.withOpacity(0.5),
+                    ),
+                  ),
+                  child: Text(
+                    "${index + 1}",
+                    style: TextFontStyle.textStyle14w500c6B6B6BtyleGTWalsheim
+                        .copyWith(
+                      color: isSelected ? AppColors.cFFFFFF : AppColors.c000000,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                if (isFlagged)
+                  Positioned(
+                      top: -5,
+                      right: -5,
+                      child: SvgPicture.asset(
+                        Assets.icons.flagBorder,
+                        height: 18.h,
+                        width: 18.w,
+                      ))
+              ],
+            ));
+     
+     
+     
       }),
     );
   }

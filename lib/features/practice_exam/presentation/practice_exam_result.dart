@@ -19,15 +19,25 @@ class PracticeExmaResult extends StatefulWidget {
 }
 
 class _MockTestResultState extends State<PracticeExmaResult> {
-  int _selectedOption = -1;
-  final List<String> options = [
-    "To provide a platform for applications to run",
-    "To manage hardware and software resources",
-    "To provide a platform for applications to run",
-    "To provide a platform for applications to run",
+  final List<Map<String, dynamic>> questions = [
+    {
+      "question": "What is the primary function of an operating system?",
+      "options": [
+        "To provide a platform for applications to run",
+        "To manage hardware and software resources",
+        "To secure the computer from viruses",
+        "To increase processing speed"
+      ],
+      "correctIndex": 1,
+      "userSelectedIndex": 1,
+    },
+    {
+      "question": "Which language is primarily used for Android development?",
+      "options": ["Python", "Java", "Swift", "Kotlin"],
+      "correctIndex": 3,
+      "userSelectedIndex": 2,
+    },
   ];
-
-  final List<int> questions = List.generate(13, (index) => index + 1);
 
   @override
   Widget build(BuildContext context) {
@@ -97,62 +107,59 @@ class _MockTestResultState extends State<PracticeExmaResult> {
               ),
               UIHelper.verticalSpace(16.h),
               ListView.builder(
-                  shrinkWrap: true,
-                  primary: false,
-                  itemCount: 13,
-                  itemBuilder: (_, index) {
-                    return Padding(
-                      padding: EdgeInsets.all(24.0),
-                      child: Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.cFFFFFF,
-                            borderRadius: BorderRadius.circular(12),
+                shrinkWrap: true,
+                physics:
+                    NeverScrollableScrollPhysics(), // Disable internal scrolling
+                padding: EdgeInsets.only(
+                    bottom: 100.h), // Disable internal scrolling
+                itemCount: questions.length,
+                itemBuilder: (context, index) {
+                  final questionData = questions[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.1),
+                            spreadRadius: 1,
+                            blurRadius: 5,
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(24.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Question ${index + 1}",
-                                  style: TextFontStyle
-                                      .textStyle12w400c9AB2A8StyleGTWalsheim,
-                                  textAlign: TextAlign.center,
-                                ),
-                                Text(
-                                  'What is the primary function of the operating system in a computer?',
-                                  style: TextFontStyle
-                                      .headline18w500c222222StyleGTWalsheim,
-                                  textAlign: TextAlign.center,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: _questionItem(),
-                                ),
-                                UIHelper.verticalSpace(16.h),
-                                Text.rich(
-                                  TextSpan(
-                                    text: "Description: ",
-                                    children: [
-                                      TextSpan(
-                                        text:
-                                            "The operating system (OS) is essential for managing the computer's hardware and software. It acts as an intermediary between users and the computer hardware, ensuring that applications have the resources they need to function properly.",
-                                        style: TextFontStyle
-                                            .textStyle12w400c9AB2A8StyleGTWalsheim,
-                                      ),
-                                    ],
-                                    style: TextFontStyle
-                                        .textStyle12w400c9AB2A8StyleGTWalsheim
-                                        .copyWith(
-                                            fontWeight: FontWeight.bold,
-                                            color: AppColors.c000000),
-                                  ),
-                                ),
-                              ],
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Question ${index + 1}",
+                              style: TextFontStyle
+                                  .textStyle12w400c9AB2A8StyleGTWalsheim,
                             ),
-                          )),
-                    );
-                  }),
+                            SizedBox(height: 8),
+                            Text(
+                              questionData["question"],
+                              style: TextFontStyle
+                                  .headline18w500c222222StyleGTWalsheim,
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: 16),
+                            _buildOptions(
+                              questionData["options"],
+                              questionData["correctIndex"],
+                              questionData["userSelectedIndex"],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
               UIHelper.verticalSpace(100.h),
             ],
           ),
@@ -178,67 +185,55 @@ class _MockTestResultState extends State<PracticeExmaResult> {
     );
   }
 
-  Widget _questionItem() {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: options.length,
-      itemBuilder: (context, index) {
-        final isSelected = _selectedOption == index;
-        return GestureDetector(
-          onTap: () {
-            setState(() {
-              _selectedOption = index;
-            });
-          },
-          child: Container(
-            margin: EdgeInsets.symmetric(vertical: 8),
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-            decoration: BoxDecoration(
-              color: AppColors.cE9EEEC,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                color: isSelected ? AppColors.c31CD63 : Colors.transparent,
-              ),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  height: 20,
-                  width: 20,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: isSelected ? AppColors.c6B6B6B : Colors.grey,
-                    ),
-                  ),
-                  child: Center(
-                    child: Radio<int>(
-                      value: index,
-                      groupValue: _selectedOption,
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedOption = value!;
-                        });
-                      },
-                      activeColor: AppColors.c6B6B6B,
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    options[index],
-                    style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim
-                        .copyWith(color: AppColors.c6B6B6B),
-                  ),
-                ),
-                if (isSelected) SvgPicture.asset(Assets.icons.correct)
-              ],
+  Widget _buildOptions(
+      List<String> options, int correctIndex, int userSelectedIndex) {
+    return Column(
+      children: List.generate(options.length, (index) {
+        final isCorrect = index == correctIndex;
+        final isSelected = index == userSelectedIndex;
+
+        final outlineColor = isCorrect
+            ? Colors.green
+            : (isSelected && !isCorrect ? Colors.red : Colors.transparent);
+
+        return Container(
+          margin: const EdgeInsets.symmetric(vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: outlineColor,
+              width: 2,
             ),
           ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.circle_outlined,
+              ),
+              SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  options[index],
+                  style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim
+                      .copyWith(color: Colors.grey),
+                ),
+              ),
+              SizedBox(width: 10),
+              Icon(
+                isCorrect
+                    ? Icons.check_circle
+                    : (isSelected ? Icons.cancel : Icons.circle_outlined),
+                color: isCorrect
+                    ? Colors.green
+                    : (isSelected ? Colors.red : Colors.transparent),
+              ),
+            ],
+          ),
         );
-      },
+      }),
     );
   }
 }
