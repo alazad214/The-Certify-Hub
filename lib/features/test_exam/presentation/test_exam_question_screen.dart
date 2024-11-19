@@ -19,10 +19,15 @@ class TestExamQuestionScreen extends StatefulWidget {
 }
 
 class _PracticeQuestionScreenState extends State<TestExamQuestionScreen> {
-  ///time
   final int durationMinutes = 15;
   late int remainingSeconds;
   Timer? _timer;
+  int _selectedQuestionIndex = 0;
+  int _previousSelectedIndex = -1;
+  Map<int, int> selectedOptions = {};
+  Map<int, bool> completedQuestionsStatus = {};
+
+  Set<int> flaggedQuestions = {};
 
   @override
   void initState() {
@@ -48,13 +53,6 @@ class _PracticeQuestionScreenState extends State<TestExamQuestionScreen> {
     final secs = seconds % 60;
     return '${minutes.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}';
   }
-
-  int _selectedQuestionIndex = 0;
-  int _previousSelectedIndex = -1;
-
-  Map<int, int> selectedOptions = {};
-
-  Map<int, bool> completedQuestionsStatus = {};
 
   final List<Map<String, dynamic>> questionData = [
     {
@@ -202,8 +200,17 @@ class _PracticeQuestionScreenState extends State<TestExamQuestionScreen> {
   }
 
   InkWell _buildFlagButton() {
+    bool isFlagged = flaggedQuestions.contains(_selectedQuestionIndex);
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        setState(() {
+          if (isFlagged) {
+            flaggedQuestions.remove(_selectedQuestionIndex);
+          } else {
+            flaggedQuestions.add(_selectedQuestionIndex);
+          }
+        });
+      },
       child: Container(
         height: 32.h,
         width: 32.w,
@@ -214,7 +221,7 @@ class _PracticeQuestionScreenState extends State<TestExamQuestionScreen> {
           color: AppColors.white,
         ),
         child: SvgPicture.asset(
-          Assets.icons.flag,
+          isFlagged ? Assets.icons.flag : Assets.icons.flatOutline,
         ),
       ),
     );
@@ -264,7 +271,7 @@ class _PracticeQuestionScreenState extends State<TestExamQuestionScreen> {
                 context,
                 () {
                   NavigationService.navigateToReplacement(
-                      Routes.practiceExamResult);
+                      Routes.testExamResult);
                 },
                 '08:11',
                 '08',
@@ -335,8 +342,8 @@ class _PracticeQuestionScreenState extends State<TestExamQuestionScreen> {
       children: List.generate(questionData.length, (index) {
         bool isSelected = _selectedQuestionIndex == index;
         bool isPrevious = _previousSelectedIndex == index;
-
         bool? isCorrect = completedQuestionsStatus[index];
+             bool isFlagged = flaggedQuestions.contains(index);
         Color backgroundColor;
         if (isCorrect == true) {
           backgroundColor = AppColors.c31CD63.withOpacity(0.5);
@@ -346,36 +353,50 @@ class _PracticeQuestionScreenState extends State<TestExamQuestionScreen> {
           backgroundColor = Colors.transparent;
         }
 
-        return GestureDetector(
-          onTap: () {
-            setState(() {
-              _previousSelectedIndex = _selectedQuestionIndex;
-              _selectedQuestionIndex = index;
-            });
-          },
-          child: Container(
-            width: 40,
-            height: 40,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: isSelected ? AppColors.c245741 : backgroundColor,
-              borderRadius: BorderRadius.circular(4.r),
-              border: Border.all(
-                color: isSelected || isPrevious
-                    ? AppColors.c31CD63.withOpacity(0.5)
-                    : AppColors.c31CD63.withOpacity(0.5),
-              ),
-            ),
-            child: Text(
-              "${index + 1}",
-              style:
-                  TextFontStyle.textStyle14w500c6B6B6BtyleGTWalsheim.copyWith(
-                color: isSelected ? AppColors.cFFFFFF : AppColors.c000000,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        );
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                _previousSelectedIndex = _selectedQuestionIndex;
+                _selectedQuestionIndex = index;
+              });
+            },
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  width: 40.w,
+                  height: 40.h,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: isSelected ? AppColors.c245741 : backgroundColor,
+                    borderRadius: BorderRadius.circular(4.r),
+                    border: Border.all(
+                      color: isSelected || isPrevious
+                          ? AppColors.c245741
+                          : AppColors.c31CD63.withOpacity(0.5),
+                    ),
+                  ),
+                  child: Text(
+                    "${index + 1}",
+                    style: TextFontStyle.textStyle14w500c6B6B6BtyleGTWalsheim
+                        .copyWith(
+                      color: isSelected ? AppColors.cFFFFFF : AppColors.c000000,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                if (isFlagged)
+                  Positioned(
+                      top: -5,
+                      right: -5,
+                      child: SvgPicture.asset(
+                        Assets.icons.flagBorder,
+                        height: 18.h,
+                        width: 18.w,
+                      ))
+              ],
+            ));
+     
       }),
     );
   }

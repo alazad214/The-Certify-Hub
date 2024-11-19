@@ -8,7 +8,6 @@ import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../helpers/all_routes.dart';
 
@@ -37,139 +36,6 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
         "To improve hardware speed",
       ],
       "correctIndex": 1,
-    },
-    {
-      "question": "Which is not a programming language?",
-      "options": [
-        "Python",
-        "Java",
-        "HTML",
-        "C++",
-      ],
-      "correctIndex": 2,
-    },
-    {
-      "question": "What does HTTP stand for?",
-      "options": [
-        "Hyper Text Transfer Protocol",
-        "High Text Transfer Protocol",
-        "Hyperlink Text Transfer Protocol",
-        "Hyper Transfer Text Protocol",
-      ],
-      "correctIndex": 0,
-    },
-    {
-      "question": "What is the smallest unit of data in a computer?",
-      "options": [
-        "Bit",
-        "Byte",
-        "Kilobyte",
-        "Megabyte",
-      ],
-      "correctIndex": 0,
-    },
-    {
-      "question":
-          "Which programming language is primarily used for iOS app development?",
-      "options": [
-        "Java",
-        "Kotlin",
-        "Swift",
-        "C++",
-      ],
-      "correctIndex": 2,
-    },
-    {
-      "question": "What does CPU stand for?",
-      "options": [
-        "Central Processing Unit",
-        "Control Processing Unit",
-        "Central Programming Unit",
-        "Computer Processing Unit",
-      ],
-      "correctIndex": 0,
-    },
-    {
-      "question": "What is the main function of a web browser?",
-      "options": [
-        "To run applications",
-        "To manage system resources",
-        "To display web pages",
-        "To compile programs",
-      ],
-      "correctIndex": 2,
-    },
-    {
-      "question": "Which of the following is an example of an input device?",
-      "options": [
-        "Monitor",
-        "Printer",
-        "Keyboard",
-        "Speaker",
-      ],
-      "correctIndex": 2,
-    },
-    {
-      "question": "What does RAM stand for?",
-      "options": [
-        "Read-Only Memory",
-        "Random Access Memory",
-        "Ready Access Memory",
-        "Run Access Memory",
-      ],
-      "correctIndex": 1,
-    },
-    {
-      "question":
-          "Which of the following is used to write Android applications?",
-      "options": [
-        "Java",
-        "Python",
-        "C",
-        "Ruby",
-      ],
-      "correctIndex": 0,
-    },
-    {
-      "question": "What is the full form of IP in computer networking?",
-      "options": [
-        "Internet Protocol",
-        "Internal Process",
-        "Interface Program",
-        "Internet Procedure",
-      ],
-      "correctIndex": 0,
-    },
-    {
-      "question": "Which company developed the Windows operating system?",
-      "options": [
-        "Apple",
-        "Microsoft",
-        "Google",
-        "IBM",
-      ],
-      "correctIndex": 1,
-    },
-    {
-      "question": "What is the primary purpose of a firewall in a network?",
-      "options": [
-        "To speed up data transmission",
-        "To prevent unauthorized access",
-        "To increase server performance",
-        "To organize data packets",
-      ],
-      "correctIndex": 1,
-    },
-    {
-      "question":
-          "Which of the following is an example of open-source software?",
-      "options": [
-        "Microsoft Word",
-        "Adobe Photoshop",
-        "Linux",
-        "Windows 11",
-      ],
-      "correctIndex": 2,
     },
     {
       "question": "Which protocol is used to send emails?",
@@ -417,6 +283,9 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
                       ))
               ],
             ));
+     
+     
+     
       }),
     );
   }
