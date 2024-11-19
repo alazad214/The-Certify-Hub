@@ -1,15 +1,14 @@
-import 'dart:async';
-
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/widgets/exam_finish_popup.dart';
+import 'package:christiandimene/features/widgets/practice_exam_finish.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-
+import 'package:get/get.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../helpers/all_routes.dart';
 
@@ -25,6 +24,7 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
   Map<int, int> selectedOptions = {};
 
   Map<int, bool> completedQuestionsStatus = {};
+  Set<int> flaggedQuestions = {};
 
   final List<Map<String, dynamic>> questionData = [
     {
@@ -48,6 +48,139 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
       ],
       "correctIndex": 2,
     },
+    {
+      "question": "What does HTTP stand for?",
+      "options": [
+        "Hyper Text Transfer Protocol",
+        "High Text Transfer Protocol",
+        "Hyperlink Text Transfer Protocol",
+        "Hyper Transfer Text Protocol",
+      ],
+      "correctIndex": 0,
+    },
+    {
+      "question": "What is the smallest unit of data in a computer?",
+      "options": [
+        "Bit",
+        "Byte",
+        "Kilobyte",
+        "Megabyte",
+      ],
+      "correctIndex": 0,
+    },
+    {
+      "question":
+          "Which programming language is primarily used for iOS app development?",
+      "options": [
+        "Java",
+        "Kotlin",
+        "Swift",
+        "C++",
+      ],
+      "correctIndex": 2,
+    },
+    {
+      "question": "What does CPU stand for?",
+      "options": [
+        "Central Processing Unit",
+        "Control Processing Unit",
+        "Central Programming Unit",
+        "Computer Processing Unit",
+      ],
+      "correctIndex": 0,
+    },
+    {
+      "question": "What is the main function of a web browser?",
+      "options": [
+        "To run applications",
+        "To manage system resources",
+        "To display web pages",
+        "To compile programs",
+      ],
+      "correctIndex": 2,
+    },
+    {
+      "question": "Which of the following is an example of an input device?",
+      "options": [
+        "Monitor",
+        "Printer",
+        "Keyboard",
+        "Speaker",
+      ],
+      "correctIndex": 2,
+    },
+    {
+      "question": "What does RAM stand for?",
+      "options": [
+        "Read-Only Memory",
+        "Random Access Memory",
+        "Ready Access Memory",
+        "Run Access Memory",
+      ],
+      "correctIndex": 1,
+    },
+    {
+      "question":
+          "Which of the following is used to write Android applications?",
+      "options": [
+        "Java",
+        "Python",
+        "C",
+        "Ruby",
+      ],
+      "correctIndex": 0,
+    },
+    {
+      "question": "What is the full form of IP in computer networking?",
+      "options": [
+        "Internet Protocol",
+        "Internal Process",
+        "Interface Program",
+        "Internet Procedure",
+      ],
+      "correctIndex": 0,
+    },
+    {
+      "question": "Which company developed the Windows operating system?",
+      "options": [
+        "Apple",
+        "Microsoft",
+        "Google",
+        "IBM",
+      ],
+      "correctIndex": 1,
+    },
+    {
+      "question": "What is the primary purpose of a firewall in a network?",
+      "options": [
+        "To speed up data transmission",
+        "To prevent unauthorized access",
+        "To increase server performance",
+        "To organize data packets",
+      ],
+      "correctIndex": 1,
+    },
+    {
+      "question":
+          "Which of the following is an example of open-source software?",
+      "options": [
+        "Microsoft Word",
+        "Adobe Photoshop",
+        "Linux",
+        "Windows 11",
+      ],
+      "correctIndex": 2,
+    },
+    {
+      "question": "Which protocol is used to send emails?",
+      "options": [
+        "SMTP",
+        "HTTP",
+        "FTP",
+        "IMAP",
+      ],
+      "correctIndex": 0,
+    },
   ];
 
   @override
@@ -56,20 +189,13 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
       appBar: CustomAppbar(
         title: 'Practice: Managing Your Time Wisely',
         onCallBack: () {
-          examFinishPopup(
-            context,
-            () {
-              NavigationService.navigateToReplacement(
-                Routes.practiceExamResult,
-              );
-            },
-            '08:11',
-            '08',
-            '08',
-          );
+          practiceExamFinish(context, () {
+            NavigationService.navigateToReplacement(Routes.bottomNavBarScreen);
+          });
         },
         actions: [
           //build flag button..
+
           _buildFlagButton(),
         ],
       ),
@@ -114,8 +240,17 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
   }
 
   InkWell _buildFlagButton() {
+    bool isFlagged = flaggedQuestions.contains(_selectedQuestionIndex);
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        setState(() {
+          if (isFlagged) {
+            flaggedQuestions.remove(_selectedQuestionIndex);
+          } else {
+            flaggedQuestions.add(_selectedQuestionIndex);
+          }
+        });
+      },
       child: Container(
         height: 32.h,
         width: 32.w,
@@ -126,7 +261,7 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
           color: AppColors.white,
         ),
         child: SvgPicture.asset(
-          Assets.icons.flag,
+          isFlagged ? Assets.icons.flag : Assets.icons.flatOutline,
         ),
       ),
     );
@@ -227,6 +362,7 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
       children: List.generate(questionData.length, (index) {
         bool isSelected = _selectedQuestionIndex == index;
         bool isPrevious = _previousSelectedIndex == index;
+        bool isFlagged = flaggedQuestions.contains(index);
 
         bool? isCorrect = completedQuestionsStatus[index];
         Color backgroundColor;
@@ -239,35 +375,48 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
         }
 
         return GestureDetector(
-          onTap: () {
-            setState(() {
-              _previousSelectedIndex = _selectedQuestionIndex;
-              _selectedQuestionIndex = index;
-            });
-          },
-          child: Container(
-            width: 40.w,
-            height: 45.h,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: isSelected ? AppColors.c245741 : backgroundColor,
-              borderRadius: BorderRadius.circular(4.r),
-              border: Border.all(
-                color: isSelected || isPrevious
-                    ? AppColors.c31CD63.withOpacity(0.5)
-                    : AppColors.c31CD63.withOpacity(0.5),
-              ),
-            ),
-            child: Text(
-              "${index + 1}",
-              style:
-                  TextFontStyle.textStyle14w500c6B6B6BtyleGTWalsheim.copyWith(
-                color: isSelected ? AppColors.cFFFFFF : AppColors.c000000,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        );
+            onTap: () {
+              setState(() {
+                _previousSelectedIndex = _selectedQuestionIndex;
+                _selectedQuestionIndex = index;
+              });
+            },
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  width: 40.w,
+                  height: 40.h,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: isSelected ? AppColors.c245741 : backgroundColor,
+                    borderRadius: BorderRadius.circular(4.r),
+                    border: Border.all(
+                      color: isSelected || isPrevious
+                          ? AppColors.c245741
+                          : AppColors.c31CD63.withOpacity(0.5),
+                    ),
+                  ),
+                  child: Text(
+                    "${index + 1}",
+                    style: TextFontStyle.textStyle14w500c6B6B6BtyleGTWalsheim
+                        .copyWith(
+                      color: isSelected ? AppColors.cFFFFFF : AppColors.c000000,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                if (isFlagged)
+                  Positioned(
+                      top: -5,
+                      right: -5,
+                      child: SvgPicture.asset(
+                        Assets.icons.flagBorder,
+                        height: 18.h,
+                        width: 18.w,
+                      ))
+              ],
+            ));
       }),
     );
   }

@@ -9,6 +9,20 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsFontsGen {
+  const $AssetsFontsGen();
+
+  /// File path: assets/fonts/DMSans-Regular.ttf
+  String get dMSansRegular => 'assets/fonts/DMSans-Regular.ttf';
+
+  /// File path: assets/fonts/GT-Walsheim-Regular-Trial.otf
+  String get gTWalsheimRegularTrial =>
+      'assets/fonts/GT-Walsheim-Regular-Trial.otf';
+
+  /// List of all assets
+  List<String> get values => [dMSansRegular, gTWalsheimRegularTrial];
+}
+
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
@@ -84,6 +98,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/flag.svg
   String get flag => 'assets/icons/flag.svg';
 
+  /// File path: assets/icons/flag_border.svg
+  String get flagBorder => 'assets/icons/flag_border.svg';
+
   /// File path: assets/icons/flat_outline.svg
   String get flatOutline => 'assets/icons/flat_outline.svg';
 
@@ -158,6 +175,7 @@ class $AssetsIconsGen {
         facebook,
         filledCheck,
         flag,
+        flagBorder,
         flatOutline,
         google,
         home,
@@ -377,6 +395,7 @@ class $AssetsLottieGen {
 class Assets {
   Assets._();
 
+  static const $AssetsFontsGen fonts = $AssetsFontsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsLottieGen lottie = $AssetsLottieGen();
