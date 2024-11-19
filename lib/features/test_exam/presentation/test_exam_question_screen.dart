@@ -264,7 +264,7 @@ class _PracticeQuestionScreenState extends State<TestExamQuestionScreen> {
                 context,
                 () {
                   NavigationService.navigateToReplacement(
-                      Routes.practiceExamResult);
+                      Routes.testExamResult);
                 },
                 '08:11',
                 '08',
