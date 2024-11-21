@@ -17,7 +17,7 @@ final class Loading extends StatefulWidget {
 
 class _LoadingState extends State<Loading> {
   bool _isLoading = true;
-  bool isFirstTime = true;
+  bool isFirstTime = false;
 
   @override
   void initState() {

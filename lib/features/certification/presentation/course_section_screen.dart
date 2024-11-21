@@ -41,9 +41,13 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                 title: 'Managing Your Time Wisely',
                 subtitle:
                     _selectedType == 'lesson' ? '0/5 lesson(s) completed' : '',
+                ontap: () {
+                  NavigationService.navigateToReplacement(
+                      Routes.certificationScreen);
+                },
               ),
 
-              UIHelper.verticalSpace(21.h),
+              if (_selectedType == 'lesson') UIHelper.verticalSpace(21.h),
               if (_selectedType == 'lesson') CustomAskMeCard(),
 
               UIHelper.verticalSpace(25.h),

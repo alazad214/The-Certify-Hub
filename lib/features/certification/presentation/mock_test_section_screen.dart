@@ -31,6 +31,10 @@ class _CertificationMainScreenState extends State<MockTestSectionScreen> {
               CustomAppbar2(
                 title: 'Managing Your Time Wisely',
                 subtitle: '0/5 lesson(s) completed',
+                    ontap: () {
+                  NavigationService.navigateToReplacement(
+                      Routes.certificationScreen);
+                },
               ),
               UIHelper.verticalSpace(26.h),
 

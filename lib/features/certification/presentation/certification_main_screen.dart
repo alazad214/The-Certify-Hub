@@ -33,7 +33,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
       appBar: CustomAppbar(
         title: 'Certification Details',
         onCallBack: () {
-          NavigationService.goBack;
+          NavigationService.navigateToReplacement(Routes.home);
         },
       ),
       body: SingleChildScrollView(
@@ -370,8 +370,9 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                       child: Text(
                         '79 Lessons',
                         overflow: TextOverflow.ellipsis,
-                        style:
-                            TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim,
+                        style: TextFontStyle
+                            .textStyle14w400c9AB2A8StyleGTWalsheim
+                            .copyWith(color: AppColors.c8C8C8C),
                       ),
                     ),
                     Container(
@@ -384,8 +385,9 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                       child: Text(
                         '8,289 Students',
                         overflow: TextOverflow.ellipsis,
-                        style:
-                            TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim,
+                        style: TextFontStyle
+                            .textStyle14w400c9AB2A8StyleGTWalsheim
+                            .copyWith(color: AppColors.c8C8C8C),
                       ),
                     ),
                   ],

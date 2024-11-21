@@ -126,6 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Assets.icons.logout,
               height: 24.h,
               width: 24.w,
+              // ignore: deprecated_member_use
               color: AppColors.c222222,
             ),
             UIHelper.horizontalSpace(10.w),
@@ -174,6 +175,7 @@ class profileItem extends StatelessWidget {
               Assets.icons.arrowBlacks,
               height: 24.h,
               width: 24.w,
+              // ignore: deprecated_member_use
               color: AppColors.c222222,
             ),
           ],

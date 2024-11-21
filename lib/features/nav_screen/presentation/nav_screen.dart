@@ -47,6 +47,7 @@ class _CustomNotchedBottomBarState extends State<BottomNavBarScreen> {
                     SvgPicture.asset(Assets.icons.course,
                         height: 24.h,
                         width: 24.w,
+                        // ignore: deprecated_member_use
                         color: _selectedIndex == 0
                             ? AppColors.c245741
                             : AppColors.c999999),
@@ -75,6 +76,7 @@ class _CustomNotchedBottomBarState extends State<BottomNavBarScreen> {
                     SvgPicture.asset(Assets.icons.profile,
                         height: 24.h,
                         width: 24.w,
+                        // ignore: deprecated_member_use
                         color: _selectedIndex == 1
                             ? AppColors.c245741
                             : AppColors.c999999),

@@ -8,9 +8,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class CustomAppbar2 extends StatelessWidget {
-  const CustomAppbar2({super.key, this.title, this.subtitle});
+  const CustomAppbar2({super.key, this.title, this.subtitle, this.ontap});
   final title;
   final subtitle;
+  final ontap;
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +20,10 @@ class CustomAppbar2 extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InkWell(
-            onTap: () {
-              NavigationService.goBack;
-            },
+            onTap: ontap ??
+                () {
+                  NavigationService.goBack;
+                },
             child: SvgPicture.asset(
               Assets.icons.backButton,
               height: 32.h,
