@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
       showItemInterval: const Duration(milliseconds: 150),
       child: PopScope(
         canPop: false,
+        // ignore: deprecated_member_use
         onPopInvoked: (bool didPop) async {
           showMaterialDialog(context);
         },

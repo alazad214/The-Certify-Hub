@@ -35,7 +35,7 @@ class _CreateNewPassScreenState extends State<CreateNewPassScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            backgroundColor: AppColors.white,
+      backgroundColor: AppColors.white,
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 27.0, vertical: 55.0),
@@ -102,7 +102,7 @@ class _CreateNewPassScreenState extends State<CreateNewPassScreen> {
                   ),
                   UIHelper.verticalSpace(129.0),
                   customButton(
-                    name: 'Sign Up',
+                    name: 'Reset Password',
                     onCallBack: () {
                       NavigationService.navigateTo(Routes.bottomNavBarScreen);
                     },
@@ -110,7 +110,9 @@ class _CreateNewPassScreenState extends State<CreateNewPassScreen> {
                     borderRadius: 12.r,
                     textStyle: TextFontStyle
                         .headline18w500c222222StyleGTWalsheim
-                        .copyWith(color: AppColors.cFFFFFF),
+                        .copyWith(
+                            color: AppColors.c222222,
+                            fontWeight: FontWeight.w700),
                   ),
                 ],
               ),
