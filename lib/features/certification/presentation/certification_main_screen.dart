@@ -33,7 +33,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
       appBar: CustomAppbar(
         title: 'Certification Details',
         onCallBack: () {
-          NavigationService.navigateToReplacement(Routes.home);
+          NavigationService.navigateToReplacement(Routes.bottomNavBarScreen);
         },
       ),
       body: SingleChildScrollView(

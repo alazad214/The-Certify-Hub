@@ -45,6 +45,7 @@ void mockTestPopup(
               UIHelper.verticalSpace(8.h),
               Text(
                 "How would you like to proceed with this topic? Select 'Practice' to learn at your own pace or 'Test' to simulate real exam conditions.",
+                textAlign: TextAlign.center,
                 style: TextFontStyle.textStyle12w400c9AB2A8StyleGTWalsheim,
               ),
               UIHelper.verticalSpace(24.h),

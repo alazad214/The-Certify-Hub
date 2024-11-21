@@ -140,6 +140,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/shield-tick.svg
   String get shieldTick => 'assets/icons/shield-tick.svg';
 
+  /// File path: assets/icons/test_time.svg
+  String get testTime => 'assets/icons/test_time.svg';
+
   /// File path: assets/icons/tick-circle.svg
   String get tickCircle => 'assets/icons/tick-circle.svg';
 
@@ -189,6 +192,7 @@ class $AssetsIconsGen {
         question,
         search,
         shieldTick,
+        testTime,
         tickCircle,
         time,
         warning2
