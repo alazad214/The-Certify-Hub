@@ -20,7 +20,7 @@ Widget customButton(
     child: Container(
       height: height ?? 62.h,
       width: minWidth ?? double.infinity,
-      padding: padding??EdgeInsets.all(0),
+      padding: padding ?? EdgeInsets.all(0),
       alignment: Alignment.center,
       decoration: BoxDecoration(
           color: color ?? AppColors.cFDB338,
@@ -36,5 +36,3 @@ Widget customButton(
     ),
   );
 }
-
-
