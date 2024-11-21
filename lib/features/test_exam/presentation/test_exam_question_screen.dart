@@ -343,7 +343,7 @@ class _PracticeQuestionScreenState extends State<TestExamQuestionScreen> {
         bool isSelected = _selectedQuestionIndex == index;
         bool isPrevious = _previousSelectedIndex == index;
         bool? isCorrect = completedQuestionsStatus[index];
-             bool isFlagged = flaggedQuestions.contains(index);
+        bool isFlagged = flaggedQuestions.contains(index);
         Color backgroundColor;
         if (isCorrect == true) {
           backgroundColor = AppColors.c31CD63.withOpacity(0.5);
@@ -353,7 +353,7 @@ class _PracticeQuestionScreenState extends State<TestExamQuestionScreen> {
           backgroundColor = Colors.transparent;
         }
 
-          return GestureDetector(
+        return GestureDetector(
             onTap: () {
               setState(() {
                 _previousSelectedIndex = _selectedQuestionIndex;
@@ -396,7 +396,6 @@ class _PracticeQuestionScreenState extends State<TestExamQuestionScreen> {
                       ))
               ],
             ));
-     
       }),
     );
   }

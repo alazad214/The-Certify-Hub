@@ -1,4 +1,4 @@
-import 'package:christiandimene/features/onboading/presentation/splash_screen.dart';
+import 'package:christiandimene/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -80,7 +80,7 @@ class UtillScreenMobile extends StatelessWidget {
             },
             navigatorKey: NavigationService.navigatorKey,
             onGenerateRoute: RouteGenerator.generateRoute,
-            home: const SplashScreen(),
+            home: const Loading(),
           ),
         );
       },
