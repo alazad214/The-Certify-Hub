@@ -103,7 +103,7 @@ class _PracticeExamInstructionScreenState
         ),
         child: Row(
           children: [
-            Expanded(
+            Flexible(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5.w),
                 child: Row(
@@ -119,7 +119,8 @@ class _PracticeExamInstructionScreenState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Questions'.tr,
+                            'Questions',
+                            maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextFontStyle
                                 .textStyle12w400c9AB2A8StyleGTWalsheim
@@ -144,20 +145,21 @@ class _PracticeExamInstructionScreenState
               width: 1.w,
               color: AppColors.cB5B5B5,
             ),
-            Expanded(
+            Flexible(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8.w),
                 child: Row(
                   children: [
-                    SvgPicture.asset(Assets.icons.marks),
+                    SvgPicture.asset(Assets.icons.testTime),
                     UIHelper.horizontalSpace(5.w),
                     Flexible(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Times'.tr,
+                            'Duration'.tr,
                             overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
                             style: TextFontStyle
                                 .textStyle12w400c9AB2A8StyleGTWalsheim
                                 .copyWith(color: AppColors.c000000),
@@ -182,26 +184,27 @@ class _PracticeExamInstructionScreenState
               width: 1.w,
               color: AppColors.cB5B5B5,
             ),
-            Expanded(
+            Flexible(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8.w),
                 child: Row(
                   children: [
                     SvgPicture.asset(Assets.icons.marks),
-                    UIHelper.horizontalSpace(5.w),
+                    UIHelper.horizontalSpace(8.w),
                     Flexible(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Marks'.tr,
+                            'Passing Score',
                             overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
                             style: TextFontStyle
                                 .textStyle12w400c9AB2A8StyleGTWalsheim
                                 .copyWith(color: AppColors.c000000),
                           ),
                           Text(
-                            '15'.tr,
+                            '70%'.tr,
                             overflow: TextOverflow.ellipsis,
                             style: TextFontStyle
                                 .textStyle16w500c222222StyleGTWalsheim

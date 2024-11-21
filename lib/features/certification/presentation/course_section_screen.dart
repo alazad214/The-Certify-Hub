@@ -126,7 +126,7 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                         children: [
                           Flexible(
                             child: Text(
-                              'Pdf',
+                              'PDFs',
                               overflow: TextOverflow.ellipsis,
                               style: TextFontStyle
                                   .textStyle14w400c9AB2A8StyleGTWalsheim
@@ -269,7 +269,7 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                         : AppColors.c8C8C8C,
                   )),
               child: Text(
-                'Lesson',
+                'Lessons',
                 overflow: TextOverflow.ellipsis,
                 style:
                     TextFontStyle.headline18w500c222222StyleGTWalsheim.copyWith(
@@ -303,7 +303,7 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                         : AppColors.c8C8C8C,
                   )),
               child: Text(
-                'PDF',
+                'PDFs',
                 overflow: TextOverflow.ellipsis,
                 style:
                     TextFontStyle.headline18w500c222222StyleGTWalsheim.copyWith(

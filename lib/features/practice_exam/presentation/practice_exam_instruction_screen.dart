@@ -34,7 +34,6 @@ class _PracticeExamInstructionScreenState
     return Scaffold(
       appBar: CustomAppbar(
         title: 'practice: Managing Your Time Wisely',
-       
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -158,7 +157,7 @@ class _PracticeExamInstructionScreenState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Markes'.tr,
+                            'Duration'.tr,
                             style: TextFontStyle
                                 .textStyle12w400c9AB2A8StyleGTWalsheim
                                 .copyWith(color: AppColors.c000000),
