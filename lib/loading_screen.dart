@@ -1,11 +1,10 @@
+import 'package:christiandimene/features/nav_screen/presentation/nav_screen.dart';
 import 'package:christiandimene/features/onboading/presentation/onbording_screen.dart';
 import 'package:christiandimene/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'constants/app_constants.dart';
-import 'features/home/presentation/home.dart';
 import 'helpers/di.dart';
 import 'helpers/helper_methods.dart';
-import 'helpers/post_login.dart';
 import 'networks/dio/dio.dart';
 
 final class Loading extends StatefulWidget {
@@ -22,20 +21,15 @@ class _LoadingState extends State<Loading> {
   @override
   void initState() {
     loadInitialData();
-
     super.initState();
   }
 
   loadInitialData() async {
-    //AutoAppUpdateUtil.instance.checkAppUpdate();
     await setInitValue();
 
     if (appData.read(kKeyIsLoggedIn)) {
       String token = appData.read(kKeyAccessToken);
       DioSingleton.instance.update(token);
-      performPostLoginActions();
-    } else {
-      //  NotificationService().cancelAllNotifications();
     }
     setState(() {
       _isLoading = false;
@@ -48,10 +42,8 @@ class _LoadingState extends State<Loading> {
       return const WelcomeScreen();
     } else {
       return appData.read(kKeyIsLoggedIn)
-          ? const HomeScreen()
-          : appData.read(kKeyfirstTime)
-              ? const OnBoardingScreen()
-              : const HomeScreen();
+          ? BottomNavBarScreen()
+          : OnBoardingScreen();
     }
   }
 }

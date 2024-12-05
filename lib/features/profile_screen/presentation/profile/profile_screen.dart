@@ -1,8 +1,12 @@
+import 'package:christiandimene/constants/app_constants.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/profile_screen/widget/logout_button_dialog.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
+import 'package:christiandimene/helpers/di.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
+import 'package:christiandimene/networks/api_acess.dart';
+import 'package:christiandimene/networks/dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -106,8 +110,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return GestureDetector(
       onTap: () {
         logOutButtonDialog(context, () {
-          NavigationService.navigateToReplacement(Routes.anotherOnboading);
+          postLogoutRxObj.logogoutF().then((value) {
+            NavigationService.navigateToReplacement(Routes.onboading);
+          });
         });
+           appData.write(kKeyIsLoggedIn, false);
+      appData.remove(kKeyAccessToken);
+
+ 
+      DioSingleton.instance.update('');
+      appData.erase();
       },
       child: Container(
         height: 62.h,

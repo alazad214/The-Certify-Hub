@@ -1,11 +1,15 @@
 import 'package:christiandimene/common_widgets/custom_textfeild.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
+import 'package:christiandimene/constants/textfield_validation.dart';
+import 'package:christiandimene/helpers/di.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
+import 'package:christiandimene/networks/api_acess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../../common_widgets/custom_button.dart';
+import '../../../../constants/app_constants.dart';
 import '../../../../gen/colors.gen.dart';
 import '../../../../helpers/all_routes.dart';
 import '../../../../helpers/navigation_service.dart';
@@ -18,6 +22,9 @@ class ForgetPasswordScreen extends StatefulWidget {
 }
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
+  TextEditingController emailController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +34,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           padding: EdgeInsets.symmetric(horizontal: 27.0, vertical: 55.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            //crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -63,23 +69,37 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     ),
                   ),
                   UIHelper.verticalSpace(16.0),
-                  CustomTextfield(
-                    hintText: 'Enter your email',
-                    borderRadius: 10.0,
-                    controller: null,
-                    style: TextFontStyle.textStyle16w400c999999StyleGTWalsheim,
+                  Form(
+                    key: _formKey,
+                    child: CustomTextfield(
+                      hintText: 'Enter your email',
+                      borderRadius: 10.0,
+                      controller: emailController,
+                      validator: InputValidator.validateEmail,
+                      style:
+                          TextFontStyle.textStyle16w400c999999StyleGTWalsheim,
+                    ),
                   ),
                   UIHelper.verticalSpace(201.0),
                   customButton(
                     name: 'Send',
                     borderRadius: 12.r,
                     onCallBack: () {
-                      NavigationService.navigateTo(Routes.forgetVerifyScreen);
+                      if (_formKey.currentState!.validate()) {
+                        postForgetPasswordRxObj
+                            .postForgetPassword(email: emailController.text)
+                            .then((value) {
+                          appData.write(kUserEmail, emailController.text);
+                          NavigationService.navigateTo(Routes.forgetVerifyScreen);
+                        });
+                      }
                     },
                     context: context,
                     textStyle: TextFontStyle
                         .headline18w500c222222StyleGTWalsheim
-                        .copyWith(color: AppColors.c000000),
+                        .copyWith(
+                      color: AppColors.c000000,
+                    ),
                   ),
                 ],
               ),
