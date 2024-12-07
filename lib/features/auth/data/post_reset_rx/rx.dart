@@ -1,7 +1,5 @@
 import 'dart:developer';
 import 'package:christiandimene/helpers/loading_helper.dart';
-import 'package:christiandimene/loading_screen.dart';
-import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../../helpers/di.dart';
 import '../../../../networks/rx_base.dart';
@@ -38,7 +36,6 @@ final class ResetPasswordRx extends RxResponseInt {
   handleSuccessWithReturn(data) async {
     await appData.erase();
     if (data["code"] == 200) {
-   
     } else {}
 
     if (data["success"] == false) {

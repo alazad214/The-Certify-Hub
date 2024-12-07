@@ -256,6 +256,9 @@ class $AssetsImagesGen {
   AssetGenImage get placeholderImage =>
       const AssetGenImage('assets/images/placeholder_image.jpeg');
 
+  /// File path: assets/images/profile.jpg
+  AssetGenImage get profile => const AssetGenImage('assets/images/profile.jpg');
+
   /// File path: assets/images/profile_image.png
   AssetGenImage get profileImage =>
       const AssetGenImage('assets/images/profile_image.png');
@@ -288,6 +291,7 @@ class $AssetsImagesGen {
         onboading3,
         pdf,
         placeholderImage,
+        profile,
         profileImage,
         quiz,
         videoPlayer,

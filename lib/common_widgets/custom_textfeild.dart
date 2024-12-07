@@ -95,15 +95,6 @@ class CustomTextfield extends StatelessWidget {
       obscuringCharacter: "*",
       decoration: InputDecoration(
         suffixIcon: suffixIcon,
-        /*  suffixIcon: GestureDetector(
-          onTap: togglePassVisibility,
-          child: Padding(
-            padding: EdgeInsets.only(right:24.w),
-            child: Icon(
-              isPassVisible ? Icons.visibility : Icons.visibility_off, size: 19.sp,
-            ),
-          ),
-        ), */
         prefixIcon: prefixIcon,
         fillColor: fillColor ?? AppColors.cE8E8E8,
         filled: true,
