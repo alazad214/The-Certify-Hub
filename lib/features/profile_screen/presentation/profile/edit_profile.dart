@@ -1,7 +1,11 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/common_widgets/custom_button.dart';
+import 'package:christiandimene/features/profile_screen/model/get_profile_response.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
+import 'package:christiandimene/networks/api_acess.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,15 +18,19 @@ import '../../../../gen/colors.gen.dart';
 import '../../../../helpers/ui_helpers.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({super.key});
+  User data;
+  EditProfileScreen({required this.data, super.key});
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  File? _profileImage; // Variable to hold the selected image
-  String _selectedGender = 'Male'; // Default selected gender
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
+  File? _profileImage;
+  // String _selectedGender = 'Male';
 
   Future<void> _showImagePickerOptions() async {
     showModalBottomSheet(
@@ -67,6 +75,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log(widget.data.phoneNumber.toString());
+
+    if (kDebugMode) {
+      emailController.text = widget.data.email!;
+      phoneController.text = widget.data.phoneNumber!;
+      nameController.text = widget.data.name!;
+    }
     return Scaffold(
       appBar: CustomAppbar(
         title: 'Edit Profile',
@@ -93,7 +108,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 CustomTextfield(
                   hintText: 'Name',
                   borderRadius: 12.r,
-                  controller: null,
+                  controller: nameController,
                   fillColor: AppColors.cFFFFFF,
                   hintTextSyle: TextFontStyle
                       .textStyle16w400c999999StyleGTWalsheim
@@ -103,7 +118,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 CustomTextfield(
                   hintText: 'Email',
                   borderRadius: 12.r,
-                  controller: null,
+                  controller: emailController,
+                  isRead: true,
                   fillColor: AppColors.cFFFFFF,
                   hintTextSyle: TextFontStyle
                       .textStyle16w400c999999StyleGTWalsheim
@@ -113,61 +129,75 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 CustomTextfield(
                   hintText: '+123 123 123 123',
                   borderRadius: 12.r,
-                  controller: null,
+                  isRead: true,
+                  controller: phoneController,
+                  inputType: TextInputType.number,
                   fillColor: AppColors.cFFFFFF,
                   hintTextSyle: TextFontStyle
                       .textStyle16w400c999999StyleGTWalsheim
                       .copyWith(color: AppColors.c000000.withOpacity(0.6)),
                 ),
                 UIHelper.verticalSpace(16.h),
-                // Gender Dropdown
-                Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 7.0),
-                  decoration: BoxDecoration(
-                    color: AppColors.cFFFFFF,
-                    borderRadius: BorderRadius.circular(12.r),
-                    // border:
-                    //     Border.all(color: AppColors.c000000.withOpacity(0.2)),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: _selectedGender,
-                      icon: Padding(
-                        padding: EdgeInsets.all(8.0.sp),
-                        child: SvgPicture.asset(
-                          Assets.icons.arrowDown,
-                          height: 12.h,
-                          width: 12.w,
-                        ),
-                      ),
-                      isExpanded: true,
-                      borderRadius: BorderRadius.circular(12.r),
-                      items: <String>['Male', 'Female'].map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(
-                            value,
-                            style: TextFontStyle
-                                .textStyle16w400c999999StyleGTWalsheim
-                                .copyWith(
-                                    color: AppColors.c000000.withOpacity(0.6)),
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedGender = newValue!;
-                        });
-                      },
-                    ),
-                  ),
-                ),
+                // // Gender Dropdown
+                // Container(
+                //   padding:
+                //       EdgeInsets.symmetric(horizontal: 16.0, vertical: 7.0),
+                //   decoration: BoxDecoration(
+                //     color: AppColors.cFFFFFF,
+                //     borderRadius: BorderRadius.circular(12.r),
+                //     // border:
+                //     //     Border.all(color: AppColors.c000000.withOpacity(0.2)),
+                //   ),
+                //   child: DropdownButtonHideUnderline(
+                //     child: DropdownButton<String>(
+                //       value: _selectedGender,
+                //       icon: Padding(
+                //         padding: EdgeInsets.all(8.0.sp),
+                //         child: SvgPicture.asset(
+                //           Assets.icons.arrowDown,
+                //           height: 12.h,
+                //           width: 12.w,
+                //         ),
+                //       ),
+                //       isExpanded: true,
+                //       borderRadius: BorderRadius.circular(12.r),
+                //       items: <String>['Male', 'Female'].map((String value) {
+                //         return DropdownMenuItem<String>(
+                //           value: value,
+                //           child: Text(
+                //             value,
+                //             style: TextFontStyle
+                //                 .textStyle16w400c999999StyleGTWalsheim
+                //                 .copyWith(
+                //                     color: AppColors.c000000.withOpacity(0.6)),
+                //           ),
+                //         );
+                //       }).toList(),
+                //       onChanged: (String? newValue) {
+                //         setState(() {
+                //           _selectedGender = newValue!;
+                //         });
+                //       },
+                //     ),
+                //   ),
+                // ),
 
                 UIHelper.verticalSpace(100.h),
                 customButton(
                   name: 'Update',
-                  onCallBack: () {},
+                  height: 50.h,
+                  onCallBack: () {
+                    postProfileEditRxObj
+                        .profileData(
+                            name: nameController.text,
+                            email: emailController.text,
+                            phone: phoneController.text.toString(),
+                            avatar: _profileImage)
+                        .then((value) {
+                      getProfileDataRxObj.getprofileData();
+                      setState(() {});
+                    });
+                  },
                   context: context,
                   color: AppColors.cFDB338,
                   textStyle: TextFontStyle.headline18w400cFFFFFFStyleGTWalsheim

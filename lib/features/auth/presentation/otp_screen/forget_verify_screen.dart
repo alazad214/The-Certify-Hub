@@ -1,7 +1,12 @@
+import 'dart:developer';
+
 import 'package:christiandimene/common_widgets/custom_button.dart';
+import 'package:christiandimene/constants/app_constants.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
+import 'package:christiandimene/helpers/di.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
+import 'package:christiandimene/networks/api_acess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -22,7 +27,7 @@ class _OtpVerificationState extends State<ForgetVerifyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            backgroundColor: AppColors.white,
+      backgroundColor: AppColors.white,
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 55.h),
@@ -131,7 +136,22 @@ class _OtpVerificationState extends State<ForgetVerifyScreen> {
                     name: 'Verify',
                     borderRadius: 12.r,
                     onCallBack: () {
-                      NavigationService.navigateTo(Routes.createNewPassword);
+                      if (_otpTEController.text.isEmpty) {
+                        log('Please Enter OTP');
+                      } else {
+                        verifyOTPRXObj
+                            .verifyOTP(
+                          email: appData.read(kUserEmail),
+                          code: _otpTEController.text,
+                        )
+                            .then((value) {
+                          NavigationService.navigateTo(
+                              Routes.createNewPassword);
+                        });
+
+                        appData.write(kforgetOtp, _otpTEController.text);
+                        _otpTEController.clear();
+                      }
                     },
                     context: context,
                     textStyle: TextFontStyle

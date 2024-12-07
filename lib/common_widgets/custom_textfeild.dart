@@ -12,7 +12,7 @@ class CustomTextfield extends StatelessWidget {
   final TextInputType? inputType;
   final double? fieldHeight;
   final int? maxline;
-  final String? Function(String?)? validator;
+  final validator;
   final bool? validation;
   final Widget? suffixIcon;
   final Widget? prefixIcon;
@@ -48,7 +48,7 @@ class CustomTextfield extends StatelessWidget {
     this.fieldHeight,
     this.maxline,
     this.validator,
-    this.validation = false,
+    this.validation,
     this.suffixIcon,
     this.prefixIcon,
     this.isObsecure = false,
@@ -84,9 +84,7 @@ class CustomTextfield extends StatelessWidget {
       obscureText: isObsecure ?? false,
       onTap: ontap,
       textInputAction: textInputAction,
-      autovalidateMode: validation!
-          ? AutovalidateMode.always
-          : AutovalidateMode.onUserInteraction,
+
       validator: validator,
       maxLines: maxline ?? 1,
       controller: controller,
@@ -97,15 +95,6 @@ class CustomTextfield extends StatelessWidget {
       obscuringCharacter: "*",
       decoration: InputDecoration(
         suffixIcon: suffixIcon,
-        /*  suffixIcon: GestureDetector(
-          onTap: togglePassVisibility,
-          child: Padding(
-            padding: EdgeInsets.only(right:24.w),
-            child: Icon(
-              isPassVisible ? Icons.visibility : Icons.visibility_off, size: 19.sp,
-            ),
-          ),
-        ), */
         prefixIcon: prefixIcon,
         fillColor: fillColor ?? AppColors.cE8E8E8,
         filled: true,

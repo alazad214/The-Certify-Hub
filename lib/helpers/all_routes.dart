@@ -108,11 +108,17 @@ final class RouteGenerator {
             : CupertinoPageRoute(builder: (context) => LoginScreen());
 
       case Routes.certificationScreen:
+        final arg = settings.arguments as Map?;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-                widget: CertificationMainScreen(), settings: settings)
+                widget: CertificationMainScreen(
+                  data: arg!['data'],
+                ),
+                settings: settings)
             : CupertinoPageRoute(
-                builder: (context) => CertificationMainScreen());
+                builder: (context) => CertificationMainScreen(
+                      data: arg!['data'],
+                    ));
 
       case Routes.certificationSectionScreen:
         return Platform.isAndroid
@@ -140,10 +146,17 @@ final class RouteGenerator {
             : CupertinoPageRoute(builder: (context) => OtpVerification());
 
       case Routes.editProfile:
+        final arg = settings.arguments as Map?;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-                widget: EditProfileScreen(), settings: settings)
-            : CupertinoPageRoute(builder: (context) => EditProfileScreen());
+                widget: EditProfileScreen(
+                  data: arg!['data'],
+                ),
+                settings: settings)
+            : CupertinoPageRoute(
+                builder: (context) => EditProfileScreen(
+                      data: arg!['data'],
+                    ));
 
       case Routes.forgetPassword:
         return Platform.isAndroid
@@ -219,8 +232,6 @@ final class RouteGenerator {
             ? _FadedTransitionRoute(
                 widget: ForgetVerifyScreen(), settings: settings)
             : CupertinoPageRoute(builder: (context) => ForgetVerifyScreen());
-
-  
 
       default:
         return null;

@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
+import 'package:christiandimene/features/home/model/course_response.dart';
 import 'package:christiandimene/features/widgets/custom_ask_me_card.dart';
 import 'package:christiandimene/gen/assets.gen.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
@@ -11,7 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CertificationMainScreen extends StatefulWidget {
-  const CertificationMainScreen({super.key});
+  Course data;
+
+  CertificationMainScreen({required this.data, super.key});
 
   @override
   State<CertificationMainScreen> createState() =>
@@ -29,6 +34,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log(widget.data.courseTitle);
     return Scaffold(
       appBar: CustomAppbar(
         title: 'Certification Details',

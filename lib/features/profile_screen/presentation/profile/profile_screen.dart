@@ -1,8 +1,13 @@
+import 'package:christiandimene/constants/app_constants.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
+import 'package:christiandimene/features/profile_screen/model/get_profile_response.dart';
 import 'package:christiandimene/features/profile_screen/widget/logout_button_dialog.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
+import 'package:christiandimene/helpers/di.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
+import 'package:christiandimene/networks/api_acess.dart';
+import 'package:christiandimene/networks/dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -17,6 +22,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  String url = "https://christiandimene.reigeeky.com/uploads/";
+  User? profileData;
+  @override
+  void initState() {
+    getProfileDataRxObj.getprofileData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,24 +46,114 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     style: TextFontStyle.headline18w500c222222StyleGTWalsheim,
                   ),
                 ),
-                ProfileSection(),
-                UIHelper.verticalSpace(16.h),
-                Text(
-                  'Daniel Hamilton',
-                  style: TextFontStyle.headline20w700c222222StyleGTWalsheim,
-                ),
-                Text(
-                  'danielhamilton@gmail.com',
-                  style: TextFontStyle.textStyle14w500c6B6B6BtyleGTWalsheim,
+
+                StreamBuilder(
+                  stream: getProfileDataRxObj.getProfileCreateData,
+                  builder: (context, snapshot) {
+                    profileData = snapshot.data?.data?.user;
+                    if (snapshot.hasData) {
+                      return Column(
+                        children: [
+                          //PROFILE IMAGE...
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  // Background Circle..
+                                  Container(
+                                    height: 137.0.h,
+                                    width: 137.0.w,
+                                    clipBehavior: Clip.antiAlias,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.amber,
+                                    ),
+                                    child:
+                                        // profileData?.avatar != null
+                                        //     ? Image.network(
+                                        //         "$url${profileData!.avatar}",
+                                        //         fit: BoxFit.cover,
+                                        //       )
+                                        Image.asset(
+                                      Assets.images.profile.path,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+
+                                  // Container(
+                                  //   height: 110.0.h,
+                                  //   width: 110.0.w,
+                                  //   decoration: BoxDecoration(
+                                  //     shape: BoxShape.circle,
+                                  //   ),
+                                  //   child: profileData?.avatar != null
+                                  //       ? Image.network(
+                                  //           "${/profileData?.avatar}",
+                                  //           fit: BoxFit.cover,
+                                  //         )
+                                  //       : Image.asset(
+                                  //           Assets.images.profileImage.path),
+                                  // ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          UIHelper.verticalSpace(16.h),
+
+                          //USER NAME...
+                          Text(
+                            profileData?.name ?? ' ',
+                            style: TextFontStyle
+                                .headline20w700c222222StyleGTWalsheim,
+                          ),
+                          UIHelper.verticalSpace(8.h),
+
+                          // ///USER Phone...
+                          // profileData!.phoneNumber != null
+                          //     ? Text(
+                          //         profileData?.phoneNumber ?? ' ',
+                          //         style: TextFontStyle
+                          //             .textStyle14w500c6B6B6BtyleGTWalsheim,
+                          //       )
+                          //     : SizedBox(),
+                          // profileData!.phoneNumber != null
+                          //     ? UIHelper.verticalSpace(8.h)
+                          //     : SizedBox(),
+
+                          ///USER EMAIL...
+                          profileData!.phoneNumber != null
+                              ? Text(
+                                  profileData?.email ?? ' ',
+                                  style: TextFontStyle
+                                      .textStyle14w500c6B6B6BtyleGTWalsheim,
+                                )
+                              : SizedBox.shrink(),
+                        ],
+                      );
+                    }
+                    return Text(
+                      'Something wrong',
+                      textAlign: TextAlign.center,
+                      style: TextFontStyle.textStyle12w400c9AB2A8StyleGTWalsheim
+                          .copyWith(
+                        color: AppColors.white,
+                      ),
+                    );
+                  },
                 ),
                 UIHelper.verticalSpace(40.h),
                 profileItem(
                   title: 'Edit Profile',
                   svg: SvgPicture.asset(Assets.icons.profile),
                   onPressed: () {
-                    NavigationService.navigateTo(Routes.editProfile);
+                    NavigationService.navigateToWithArgs(
+                        Routes.editProfile, {'data': profileData});
                   },
                 ),
+
                 Divider(
                   color: AppColors.cBBCBC4,
                   thickness: 0.5,
@@ -106,8 +209,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return GestureDetector(
       onTap: () {
         logOutButtonDialog(context, () {
-          NavigationService.navigateToReplacement(Routes.anotherOnboading);
+          postLogoutRxObj.logogoutF().then((value) {
+            NavigationService.navigateToReplacement(Routes.onboading);
+          });
         });
+        appData.write(kKeyIsLoggedIn, false);
+        appData.remove(kKeyAccessToken);
+
+        DioSingleton.instance.update('');
+        appData.erase();
       },
       child: Container(
         height: 62.h,
@@ -180,49 +290,6 @@ class profileItem extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class ProfileSection extends StatelessWidget {
-  const ProfileSection({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              // Background Circle
-              Container(
-                height: 137.0.h,
-                width: 137.0.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.cBBCBC4,
-                ),
-              ),
-              Container(
-                height: 110.0.h,
-                width: 110.0.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: AssetImage(Assets.images.profileImage.path),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }

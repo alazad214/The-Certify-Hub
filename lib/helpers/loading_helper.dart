@@ -10,7 +10,6 @@ extension Loader on Future {
   Future<dynamic> waitingForFuture() async {
     showDialog(
       context: NavigationService.context,
-      barrierColor: AppColors.black,
       builder: (context) => loadingIndicatorCircle(context: context),
     );
 

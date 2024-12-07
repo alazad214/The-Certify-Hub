@@ -1,10 +1,12 @@
 import 'package:christiandimene/common_widgets/custom_textfeild.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
+import 'package:christiandimene/features/home/model/course_response.dart';
 import 'package:christiandimene/gen/assets.gen.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/all_routes.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
+import 'package:christiandimene/networks/api_acess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -17,6 +19,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Course? data;
+
+  @override
+  void initState() {
+    getCourseRxObj.getCourseData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,54 +63,84 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildHomeCustomCard() {
-    return GridView.builder(
-      shrinkWrap: true,
-      primary: false,
-      itemCount: 6,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 8.w,
-        crossAxisSpacing: 8.w,
-        childAspectRatio: 0.9,
-      ),
-      itemBuilder: (context, index) {
-        return InkWell(
-          onTap: () {
-            NavigationService.navigateTo(Routes.certificationScreen);
-          },
-          child: Container(
-            padding: EdgeInsets.all(8.sp),
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: 115.h,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.r),
-                    image: DecorationImage(
-                      image: AssetImage(Assets.images.homeCardImage.path),
-                      fit: BoxFit.cover,
+    return StreamBuilder(
+      stream: getCourseRxObj.getCourse,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          } else if (snapshot.hasData) {
+            CourseResponse courseData = snapshot.data;
+
+            if (courseData.data == null || courseData.data!.isEmpty) {
+              return Center(child: Text('No courses available'));
+            } else {
+              return GridView.builder(
+                shrinkWrap: true,
+                primary: false,
+                itemCount: courseData.data!.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 8.w,
+                  crossAxisSpacing: 8.w,
+                  childAspectRatio: 0.9,
+                ),
+                itemBuilder: (context, index) {
+                  data = courseData.data![index];
+                  return InkWell(
+                    onTap: () {
+                      NavigationService.navigateToWithArgs(
+                          Routes.certificationScreen, {'data': data});
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8.sp),
+                      decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 115.h,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.r),
+                              image: DecorationImage(
+                                image: AssetImage(
+                                    Assets.images.homeCardImage.path),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          UIHelper.verticalSpace(8.h),
+                          Text(
+                            "${data!.courseTitle}",
+                            style: TextFontStyle
+                                .textStyle16w500c222222StyleGTWalsheim,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ),
-                UIHelper.verticalSpace(8.h),
-                Expanded(
-                  child: Text(
-                    'Weekend lessons for children',
-                    style: TextFontStyle.textStyle16w500c222222StyleGTWalsheim,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                  ),
-                ),
-              ],
+                  );
+                },
+              );
+            }
+          } else {
+            return const SizedBox.shrink();
+          }
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          return Center(
+            child: Text(
+              'Welcome to MyCo',
+              style: TextFontStyle.headline18w400cFFFFFFStyleGTWalsheim,
             ),
-          ),
-        );
+          );
+        }
       },
     );
   }
