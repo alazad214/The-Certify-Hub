@@ -22,14 +22,15 @@ final class PostProfileEditRx extends RxResponseInt {
     File? avatar,
   }) async {
     try {
-      FormData formData = FormData.fromMap({
-        "email": email,
-        "name": name,
-        "phone_number": phone,
-        "avatar": avatar != null
-            ? await MultipartFile.fromFile(avatar.path, filename: "")
-            : null,
-      });
+      FormData formData = FormData.fromMap(
+        {
+          "name": name,
+          "phone_number": phone,
+          "avatar": avatar != null
+              ? await MultipartFile.fromFile(avatar.path, filename: "")
+              : null,
+        },
+      );
 
       Map data = await api.profile(formData: formData).waitingForFuture();
       return await handleSuccessWithReturn(data);

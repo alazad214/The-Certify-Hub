@@ -56,10 +56,10 @@ final class PostRegisterRx extends RxResponseInt {
   @override
   handleErrorWithReturn(error) {
     String message = 'Something went wrong';
+
     log(error.toString());
     if (error is DioException) {
       message = error.response?.data["message"] ?? "Something went wrong";
-
       if (error.type == DioExceptionType.connectionError) {
         message = "Check Your Network Connection";
       }

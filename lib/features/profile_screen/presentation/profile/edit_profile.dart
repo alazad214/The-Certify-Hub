@@ -129,7 +129,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 CustomTextfield(
                   hintText: '+123 123 123 123',
                   borderRadius: 12.r,
-                  isRead: true,
                   controller: phoneController,
                   inputType: TextInputType.number,
                   fillColor: AppColors.cFFFFFF,
@@ -189,10 +188,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   onCallBack: () {
                     postProfileEditRxObj
                         .profileData(
-                            name: nameController.text,
-                            email: emailController.text,
-                            phone: phoneController.text.toString(),
-                            avatar: _profileImage)
+                      name: nameController.text,
+                      phone: phoneController.text.toString(),
+                      avatar: _profileImage,
+                    )
                         .then((value) {
                       getProfileDataRxObj.getprofileData();
                       setState(() {});
