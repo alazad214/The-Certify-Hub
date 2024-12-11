@@ -1,20 +1,20 @@
-import 'dart:developer';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/home/model/course_response.dart';
 import 'package:christiandimene/features/widgets/custom_ask_me_card.dart';
-import 'package:christiandimene/gen/assets.gen.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/all_routes.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
+import 'package:christiandimene/networks/api_acess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../model/course_details_response.dart';
 
 class CertificationMainScreen extends StatefulWidget {
-  Course data;
+  Course? data;
 
   CertificationMainScreen({required this.data, super.key});
 
@@ -24,17 +24,19 @@ class CertificationMainScreen extends StatefulWidget {
 }
 
 class _CertificationMainScreenState extends State<CertificationMainScreen> {
+  String url = "https://christiandimene.reigeeky.com/";
+  CourseModule? course;
   String? _selectedType;
 
   @override
   void initState() {
     super.initState();
     _selectedType = 'course';
+    getCourseDetailsRxObj.getCourseDetailsdata(widget.data!.id);
   }
 
   @override
   Widget build(BuildContext context) {
-    log(widget.data.courseTitle);
     return Scaffold(
       appBar: CustomAppbar(
         title: 'Certification Details',
@@ -248,70 +250,182 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
   ///build course item....
 
   Widget _buildCourseItem() {
-    return ListView.builder(
-        itemCount: 8,
-        shrinkWrap: true,
-        primary: false,
-        itemBuilder: (_, index) {
-          return InkWell(
-            onTap: () {
-              NavigationService.navigateTo(Routes.certificationSectionScreen);
-            },
-            child: Container(
-                alignment: Alignment.center,
-                height: 84.h,
-                margin: EdgeInsets.symmetric(vertical: 8.h),
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
+    return StreamBuilder(
+        stream: getCourseDetailsRxObj.getCourseDetails,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.hasError) {
+              return Center(child: Text("Error: ${snapshot.error}"));
+            } else if (snapshot.hasData) {
+              CourseDetailsResponse courseData = snapshot.data;
+
+              if (courseData.data == null ||
+                  courseData.data!.courseModules.isEmpty) {
+                return Center(child: Text('No courses available'));
+              } else {
+                return ListView.builder(
+                    itemCount: courseData.data!.courseModules.length,
+                    shrinkWrap: true,
+                    primary: false,
+                    itemBuilder: (_, index) {
+                      course = courseData.data!.courseModules[index];
+                      return InkWell(
+                        onTap: () {
+                          NavigationService.navigateTo(
+                              Routes.certificationSectionScreen);
+                        },
+                        child: Container(
+                            alignment: Alignment.center,
+                            height: 84.h,
+                            margin: EdgeInsets.symmetric(vertical: 8.h),
+                            padding: EdgeInsets.symmetric(horizontal: 10.w),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16.r),
+                                color: AppColors.white),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 52.h,
+                                  width: 52.w,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.cFAFBFC,
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        spreadRadius: 2.sp,
+                                        blurRadius: 8.sp,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Text(
+                                    course!.lessonCount.toString(),
+                                    style: TextFontStyle
+                                        .headline24w400c222222StyleGTWalsheim
+                                        .copyWith(
+                                      color: AppColors.c245741,
+                                    ),
+                                  ),
+                                ),
+                                UIHelper.horizontalSpace(8.w),
+                                Flexible(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        overflow: TextOverflow.ellipsis,
+                                        course!.courseModuleName,
+                                        style: TextFontStyle
+                                            .headline18w500c222222StyleGTWalsheim,
+                                      ),
+                                      UIHelper.verticalSpace(8.h),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            '79 Lessons',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextFontStyle
+                                                .textStyle12w400c9AB2A8StyleGTWalsheim
+                                                .copyWith(
+                                              color: AppColors.c8C8C8C,
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 2.w,
+                                            height: 12.h,
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 5.w),
+                                            color: AppColors.c8C8C8C,
+                                          ),
+                                          Text(
+                                            '3 Pdf',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextFontStyle
+                                                .textStyle14w400c9AB2A8StyleGTWalsheim
+                                                .copyWith(
+                                                    color: AppColors.c8C8C8C),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            )),
+                      );
+                    });
+              }
+            } else {
+              return const SizedBox.shrink();
+            }
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        });
+  }
+
+  ///build header card....
+  Widget _buildHeaderCard() {
+    return StreamBuilder(
+        stream: getCourseDetailsRxObj.dataFetcher,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.hasError) {
+              return Center(child: Text("Error: ${snapshot.error}"));
+            } else if (snapshot.hasData) {
+              CourseDetailsData? data = snapshot.data!.data;
+              return Container(
+                height: 132.h,
+                padding: EdgeInsets.all(8.sp),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16.r),
-                    color: AppColors.white),
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      height: 52.h,
-                      width: 52.w,
-                      alignment: Alignment.center,
+                      width: 130.w,
+                      height: 120.h,
+                      clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
-                        color: AppColors.cFAFBFC,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            spreadRadius: 2.sp,
-                            blurRadius: 8.sp,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Text(
-                        '01',
-                        style: TextFontStyle
-                            .headline24w400c222222StyleGTWalsheim
-                            .copyWith(color: AppColors.c245741),
+                          borderRadius: BorderRadius.circular(8.r)),
+                      child: CachedNetworkImage(
+                        imageUrl: url + data!.courseFeatureImage,
+                        placeholder: (context, url) =>
+                            Center(child: CircularProgressIndicator()),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    UIHelper.horizontalSpace(8.w),
+                    UIHelper.horizontalSpace(12.w),
                     Flexible(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
+                            data.courseTitle,
                             overflow: TextOverflow.ellipsis,
-                            'Managing Your Time WiselyManaging Your Time Wisel',
+                            maxLines: 2,
                             style: TextFontStyle
-                                .headline18w500c222222StyleGTWalsheim,
+                                .headline20w500c222222StyleGTWalsheim,
                           ),
-                          UIHelper.verticalSpace(8.h),
                           Row(
                             children: [
-                              Text(
-                                '79 Lessons',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextFontStyle
-                                    .textStyle12w400c9AB2A8StyleGTWalsheim
-                                    .copyWith(
-                                  color: AppColors.c8C8C8C,
+                              Expanded(
+                                child: Text(
+                                  '79 Lessons',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextFontStyle
+                                      .textStyle14w400c9AB2A8StyleGTWalsheim
+                                      .copyWith(color: AppColors.c8C8C8C),
                                 ),
                               ),
                               Container(
@@ -320,89 +434,37 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                 margin: EdgeInsets.symmetric(horizontal: 5.w),
                                 color: AppColors.c8C8C8C,
                               ),
-                              Text(
-                                '3 Pdf',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextFontStyle
-                                    .textStyle14w400c9AB2A8StyleGTWalsheim
-                                    .copyWith(color: AppColors.c8C8C8C),
+                              Expanded(
+                                child: Text(
+                                  '8,289 Students',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextFontStyle
+                                      .textStyle14w400c9AB2A8StyleGTWalsheim
+                                      .copyWith(color: AppColors.c8C8C8C),
+                                ),
                               ),
                             ],
-                          ),
+                          )
                         ],
                       ),
                     )
                   ],
-                )),
-          );
+                ),
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
         });
   }
-
-  ///build header card....
-  Widget _buildHeaderCard() {
-    return Container(
-      height: 132.h,
-      padding: EdgeInsets.all(8.sp),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(8.r),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 130.w,
-            height: 120.h,
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(8.r)),
-            child: Image.asset(
-              Assets.images.homeCardImage.path,
-              fit: BoxFit.cover,
-            ),
-          ),
-          UIHelper.horizontalSpace(12.w),
-          Flexible(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  'Weekend lessons for children',
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: TextFontStyle.headline20w500c222222StyleGTWalsheim,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        '79 Lessons',
-                        overflow: TextOverflow.ellipsis,
-                        style: TextFontStyle
-                            .textStyle14w400c9AB2A8StyleGTWalsheim
-                            .copyWith(color: AppColors.c8C8C8C),
-                      ),
-                    ),
-                    Container(
-                      width: 2.w,
-                      height: 12.h,
-                      margin: EdgeInsets.symmetric(horizontal: 5.w),
-                      color: AppColors.c8C8C8C,
-                    ),
-                    Expanded(
-                      child: Text(
-                        '8,289 Students',
-                        overflow: TextOverflow.ellipsis,
-                        style: TextFontStyle
-                            .textStyle14w400c9AB2A8StyleGTWalsheim
-                            .copyWith(color: AppColors.c8C8C8C),
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
 }
+
+
+
+/*
+ 
+  */

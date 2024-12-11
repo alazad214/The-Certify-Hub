@@ -113,7 +113,7 @@ class User {
         name: json["name"] ?? '',
         email: json["email"] ?? '',
         phoneNumber: json["phone_number"] ?? '',
-        avatar: json["avatar"] ?? '',
+        avatar: json["user_avatar"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -121,6 +121,6 @@ class User {
         "name": name,
         "email": email,
         "phone_number": phoneNumber,
-        "avatar": avatar,
+        "user_avatar": avatar,
       };
 }

@@ -64,16 +64,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 children: [
                                   // Background Circle..
                                   Container(
-                                    height: 120.0.h,
-                                    width: 120.0.w,
+                                    height: 110.0.h,
+                                    width: 110.0.w,
                                     clipBehavior: Clip.antiAlias,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: Colors.amber,
                                     ),
-                                    child: profileData?.avatar != null
+                                    child: profileData?.avatar != ""
                                         ? Image.network(
-                                            "$url${profileData!.avatar}",
+                                            url + profileData!.avatar!,
                                             fit: BoxFit.cover,
                                           )
                                         : Image.asset(

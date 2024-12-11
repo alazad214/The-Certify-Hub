@@ -3,7 +3,7 @@ import 'dart:convert';
 class CourseDetailsResponse {
   bool? success;
   String? message;
-  Data? data;
+  CourseDetailsData? data;
   int? code;
 
   CourseDetailsResponse({
@@ -22,7 +22,7 @@ class CourseDetailsResponse {
       CourseDetailsResponse(
         success: json["success"],
         message: json["message"],
-        data: Data.fromJson(json["data"]),
+        data: CourseDetailsData.fromJson(json["data"]),
         code: json["code"],
       );
 
@@ -34,7 +34,7 @@ class CourseDetailsResponse {
       };
 }
 
-class Data {
+class CourseDetailsData {
   int id;
   String courseTitle;
   String courseSlug;
@@ -49,7 +49,7 @@ class Data {
   dynamic deletedAt;
   List<CourseModule> courseModules;
 
-  Data({
+  CourseDetailsData({
     required this.id,
     required this.courseTitle,
     required this.courseSlug,
@@ -65,11 +65,11 @@ class Data {
     required this.courseModules,
   });
 
-  factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
+  factory CourseDetailsData.fromRawJson(String str) => CourseDetailsData.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory CourseDetailsData.fromJson(Map<String, dynamic> json) => CourseDetailsData(
         id: json["id"],
         courseTitle: json["course_title"],
         courseSlug: json["course_slug"],
@@ -112,6 +112,7 @@ class CourseModule {
   DateTime createdAt;
   DateTime updatedAt;
   dynamic deletedAt;
+  int lessonCount;
 
   CourseModule({
     required this.id,
@@ -121,6 +122,7 @@ class CourseModule {
     required this.createdAt,
     required this.updatedAt,
     required this.deletedAt,
+    required this.lessonCount,
   });
 
   factory CourseModule.fromRawJson(String str) =>
@@ -136,6 +138,7 @@ class CourseModule {
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
         deletedAt: json["deleted_at"],
+        lessonCount: json["lesson_count"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -146,5 +149,6 @@ class CourseModule {
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
         "deleted_at": deletedAt,
+        "lesson_count": lessonCount,
       };
 }

@@ -27,7 +27,8 @@ final class PostProfileEditRx extends RxResponseInt {
           "name": name,
           "phone_number": phone,
           "avatar": avatar != null
-              ? await MultipartFile.fromFile(avatar.path, filename: "")
+              ? await MultipartFile.fromFile(avatar.path,
+                  filename: "avatar.jpg")
               : null,
         },
       );

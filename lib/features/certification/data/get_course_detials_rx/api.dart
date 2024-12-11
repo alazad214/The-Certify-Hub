@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:ffi';
 import 'package:christiandimene/features/certification/model/course_details_response.dart';
 import 'package:dio/dio.dart';
 import '../../../../../../networks/dio/dio.dart';
@@ -12,7 +11,7 @@ final class GetCourseDetailsApi {
   GetCourseDetailsApi._internal();
   static GetCourseDetailsApi get instance => _singleton;
 
-  Future<CourseDetailsResponse> getCourseDetails(Int id) async {
+  Future<CourseDetailsResponse> getCourseDetails(int id) async {
     try {
       Response response = await getHttp(Endpoints.courseDetails(id));
 

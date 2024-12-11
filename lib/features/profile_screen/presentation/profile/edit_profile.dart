@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../../../common_widgets/custom_textfeild.dart';
 import '../../../../constants/text_font_style.dart';
 import '../../../../gen/assets.gen.dart';
@@ -136,8 +135,123 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       .textStyle16w400c999999StyleGTWalsheim
                       .copyWith(color: AppColors.c000000.withOpacity(0.6)),
                 ),
+                UIHelper.verticalSpace(100.h),
+                customButton(
+                  name: 'Update',
+                  height: 50.h,
+                  onCallBack: () {
+                    postProfileEditRxObj
+                        .profileData(
+                      name: nameController.text,
+                      phone: phoneController.text.toString(),
+                      avatar: _profileImage,
+                    )
+                        .then((value) {
+                      getProfileDataRxObj.getprofileData();
+                      setState(() {});
+                    });
+                  },
+                  context: context,
+                  color: AppColors.cFDB338,
+                  textStyle: TextFontStyle.headline18w400cFFFFFFStyleGTWalsheim
+                      .copyWith(color: AppColors.cFFFFFF),
+                  borderRadius: 12.r,
+                ),
                 UIHelper.verticalSpace(16.h),
-                // // Gender Dropdown
+
+                // ///DELETE ACCOUNT...
+                // customButton(
+                //   name: 'Delete Account?',
+                //   height: 50.h,
+                //   onCallBack: () {
+                //     deleteButtonDialog(context, () {});
+                //   },
+                //   context: context,
+                //   color: AppColors.c245741,
+                //   borderColor: AppColors.c245741,
+                //   textStyle: TextFontStyle.headline18w400cFFFFFFStyleGTWalsheim
+                //       .copyWith(color: AppColors.cFFFFFF),
+                //   borderRadius: 12.r,
+                // ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ProfileSection extends StatelessWidget {
+  final File? profileImage;
+  final VoidCallback onEditPressed;
+
+  const ProfileSection({
+    super.key,
+    required this.profileImage,
+    required this.onEditPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                height: 110.0.h,
+                width: 110.0.w,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.cBBCBC4,
+                  image: DecorationImage(
+                    image: profileImage != null
+                        ? FileImage(profileImage!)
+                        : AssetImage(Assets.images.profileAvatar.path),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+
+              // Edit Icon
+              Positioned(
+                right: 15.0,
+                bottom: 10.0,
+                child: GestureDetector(
+                  onTap: onEditPressed,
+                  child: Container(
+                    height: 32.0.h,
+                    width: 32.0.w,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0.sp),
+                      child: SvgPicture.asset(
+                        Assets.icons.edit,
+                        height: 8.h,
+                        width: 8.w,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+
+      // // Gender Dropdown
                 // Container(
                 //   padding:
                 //       EdgeInsets.symmetric(horizontal: 16.0, vertical: 7.0),
@@ -180,110 +294,3 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 //     ),
                 //   ),
                 // ),
-
-                UIHelper.verticalSpace(100.h),
-                customButton(
-                  name: 'Update',
-                  height: 50.h,
-                  onCallBack: () {
-                    postProfileEditRxObj
-                        .profileData(
-                      name: nameController.text,
-                      phone: phoneController.text.toString(),
-                      avatar: _profileImage,
-                    )
-                        .then((value) {
-                      getProfileDataRxObj.getprofileData();
-                      setState(() {});
-                    });
-                  },
-                  context: context,
-                  color: AppColors.cFDB338,
-                  textStyle: TextFontStyle.headline18w400cFFFFFFStyleGTWalsheim
-                      .copyWith(color: AppColors.cFFFFFF),
-                  borderRadius: 12.r,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ProfileSection extends StatelessWidget {
-  final File? profileImage;
-  final VoidCallback onEditPressed;
-
-  const ProfileSection({
-    super.key,
-    required this.profileImage,
-    required this.onEditPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              // Background Circle
-              Container(
-                height: 137.0.h,
-                width: 137.0.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.cBBCBC4,
-                ),
-              ),
-              // Profile Image
-              Container(
-                height: 110.0.h,
-                width: 110.0.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: profileImage != null
-                        ? FileImage(profileImage!) // Display picked image
-                        : AssetImage(Assets.images.profileImage.path)
-                            as ImageProvider, // Default image
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              // Edit Icon
-              Positioned(
-                right: 15.0, // Adjust position as needed
-                bottom: 10.0, // Position near the bottom-right corner
-                child: GestureDetector(
-                  onTap: onEditPressed,
-                  child: Container(
-                    height: 32.0.h, // Size of edit icon background
-                    width: 32.0.w,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white, // Background color for the edit icon
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0.sp),
-                      child: SvgPicture.asset(
-                        Assets.icons.edit,
-                        height: 8.h,
-                        width: 8.w,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}

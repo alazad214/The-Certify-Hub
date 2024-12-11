@@ -1,7 +1,5 @@
 // ignore_for_file: constant_identifier_names
 
-import 'dart:ffi';
-
 const String url = "https://christiandimene.reigeeky.com/api";
 
 final class NetworkConstants {
@@ -33,5 +31,5 @@ final class Endpoints {
   static String profile() => "/me";
   static String course() => "/course";
   static String profileEdit() => "/user-update";
-  static String courseDetails(Int? id) => "/courses/$id";
+  static String courseDetails(int id) => "/courses/$id";
 }
