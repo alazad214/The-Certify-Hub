@@ -22,7 +22,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  String url = "https://christiandimene.reigeeky.com/uploads/";
+  String url = "https://christiandimene.reigeeky.com/";
   User? profileData;
   @override
   void initState() {
@@ -64,23 +64,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 children: [
                                   // Background Circle..
                                   Container(
-                                    height: 137.0.h,
-                                    width: 137.0.w,
+                                    height: 110.0.h,
+                                    width: 110.0.w,
                                     clipBehavior: Clip.antiAlias,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: Colors.amber,
                                     ),
-                                    child:
-                                        // profileData?.avatar != null
-                                        //     ? Image.network(
-                                        //         "$url${profileData!.avatar}",
-                                        //         fit: BoxFit.cover,
-                                        //       )
-                                        Image.asset(
-                                      Assets.images.profile.path,
-                                      fit: BoxFit.cover,
-                                    ),
+                                    child: profileData?.avatar != ""
+                                        ? Image.network(
+                                            url + profileData!.avatar!,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Image.asset(
+                                            Assets.images.profile.path,
+                                            fit: BoxFit.cover,
+                                          ),
                                   ),
 
                                   // Container(
@@ -111,17 +110,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           UIHelper.verticalSpace(8.h),
 
-                          // ///USER Phone...
+                          // // USER Phone...
                           // profileData!.phoneNumber != null
                           //     ? Text(
                           //         profileData?.phoneNumber ?? ' ',
                           //         style: TextFontStyle
                           //             .textStyle14w500c6B6B6BtyleGTWalsheim,
                           //       )
-                          //     : SizedBox(),
-                          // profileData!.phoneNumber != null
-                          //     ? UIHelper.verticalSpace(8.h)
-                          //     : SizedBox(),
+                          //     :SizedBox(
+                          //         height: 0.1.h,
+                          //       ),
+                          // if (profileData!.phoneNumber != null)
+                          //   UIHelper.verticalSpace(8.h),
 
                           ///USER EMAIL...
                           profileData!.phoneNumber != null
@@ -134,13 +134,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       );
                     }
-                    return Text(
-                      'Something wrong',
-                      textAlign: TextAlign.center,
-                      style: TextFontStyle.textStyle12w400c9AB2A8StyleGTWalsheim
-                          .copyWith(
-                        color: AppColors.white,
-                      ),
+                    return Center(
+                      child: CircularProgressIndicator(),
                     );
                   },
                 ),
@@ -210,7 +205,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       onTap: () {
         logOutButtonDialog(context, () {
           postLogoutRxObj.logogoutF().then((value) {
-            NavigationService.navigateToReplacement(Routes.onboading);
+            NavigationService.navigateToReplacement(Routes.anotherOnboading);
           });
         });
         appData.write(kKeyIsLoggedIn, false);

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:christiandimene/common_widgets/custom_textfeild.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/home/model/course_response.dart';
@@ -20,6 +21,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Course? data;
+  String url = "https://christiandimene.reigeeky.com/";
 
   @override
   void initState() {
@@ -101,19 +103,26 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          ///COURSE IMAGE...
                           Container(
                             height: 115.h,
                             width: double.infinity,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8.r),
-                              image: DecorationImage(
-                                image: AssetImage(
-                                    Assets.images.homeCardImage.path),
-                                fit: BoxFit.cover,
-                              ),
+                            ),
+                            child: CachedNetworkImage(
+                              imageUrl: url + data!.courseFeatureImage,
+                              placeholder: (context, url) =>
+                                  Center(child: CircularProgressIndicator()),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
+                              fit: BoxFit.cover,
                             ),
                           ),
+
                           UIHelper.verticalSpace(8.h),
+
+                          ///COURSE TITLE...
                           Text(
                             "${data!.courseTitle}",
                             style: TextFontStyle
@@ -134,12 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
         } else if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else {
-          return Center(
-            child: Text(
-              'Welcome to MyCo',
-              style: TextFontStyle.headline18w400cFFFFFFStyleGTWalsheim,
-            ),
-          );
+          return Center(child: CircularProgressIndicator());
         }
       },
     );

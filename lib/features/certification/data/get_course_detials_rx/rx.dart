@@ -1,6 +1,6 @@
 //azad added ...
 import 'dart:developer';
-import 'dart:ffi';
+
 import 'package:christiandimene/features/certification/data/get_course_detials_rx/api.dart';
 import 'package:christiandimene/features/certification/model/course_details_response.dart';
 import 'package:dio/dio.dart';
@@ -18,7 +18,7 @@ final class GetCourseDetailsRx extends RxResponseInt<CourseDetailsResponse> {
 
   String message = "";
 
-  Future<void> getCourseDetailsdata(Int id) async {
+  Future<void> getCourseDetailsdata(int id) async {
     try {
       CourseDetailsResponse data = await api.getCourseDetails(id);
       return handleSuccessWithReturn(data);

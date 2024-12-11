@@ -41,7 +41,6 @@ GetCourseRx getCourseRxObj = GetCourseRx(
 PostProfileEditRx postProfileEditRxObj =
     PostProfileEditRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
 
-
-    
 GetCourseDetailsRx getCourseDetailsRxObj = GetCourseDetailsRx(
-    empty: CourseDetailsResponse(), dataFetcher: BehaviorSubject<CourseDetailsResponse>());
+    empty: CourseDetailsResponse(),
+    dataFetcher: BehaviorSubject<CourseDetailsResponse>());
