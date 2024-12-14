@@ -25,6 +25,8 @@ import 'package:christiandimene/features/test_exam/presentation/test_exam_result
 
 import 'package:flutter/cupertino.dart';
 
+import '../features/certification/presentation/pdf_Viewer_Screen.dart';
+
 final class Routes {
   static final Routes _routes = Routes._internal();
   Routes._internal();
@@ -49,6 +51,8 @@ final class Routes {
   static const String certificationScreen = '/certification_main_screen';
   static const String certificationSectionScreen =
       '/certification_section_screen';
+  static const String pdfViewerScreen =
+      '/pdf_Viewer_Screen';
   static const String mockTestSectionScreen = '/mockTest_section_screen';
   static const String videoPlayerScreen = '/video_player_screen';
 
@@ -120,11 +124,31 @@ final class RouteGenerator {
                       data: arg!['data'],
                     ));
 
+      // case Routes.pdfViewerScreen:
+      //   final arg = settings.arguments as Map?;
+      //   return Platform.isAndroid
+      //       ? _FadedTransitionRoute(
+      //           widget: PdfViewerScreen(
+      //             data: arg!['data'],
+      //           ),
+      //           settings: settings)
+      //       : CupertinoPageRoute(
+      //           builder: (context) => PdfViewerScreen(
+      //                 data: arg!['data'],
+      //  ));
+
       case Routes.certificationSectionScreen:
+        final arg = settings.arguments as Map?;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-                widget: CourseSectionScreen(), settings: settings)
-            : CupertinoPageRoute(builder: (context) => CourseSectionScreen());
+                widget: CourseSectionScreen(
+                  data: arg!['data'],
+                ),
+                settings: settings)
+            : CupertinoPageRoute(
+                builder: (context) => CourseSectionScreen(
+                      data: arg!['data'],
+                    ));
 
       case Routes.mockTestSectionScreen:
         return Platform.isAndroid
@@ -133,11 +157,17 @@ final class RouteGenerator {
             : CupertinoPageRoute(builder: (context) => MockTestSectionScreen());
 
       case Routes.videoPlayerScreen:
+        final arg = settings.arguments as Map?;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-                widget: CertificationVideoPlayerScreen(), settings: settings)
+                widget: CertificationVideoPlayerScreen(
+                  data: arg!['data'],
+                ),
+                settings: settings)
             : CupertinoPageRoute(
-                builder: (context) => CertificationVideoPlayerScreen());
+                builder: (context) => CertificationVideoPlayerScreen(
+                      data: arg!['data'],
+                    ));
 
       case Routes.otpVerification:
         return Platform.isAndroid

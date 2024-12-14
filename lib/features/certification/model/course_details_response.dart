@@ -65,11 +65,13 @@ class CourseDetailsData {
     required this.courseModules,
   });
 
-  factory CourseDetailsData.fromRawJson(String str) => CourseDetailsData.fromJson(json.decode(str));
+  factory CourseDetailsData.fromRawJson(String str) =>
+      CourseDetailsData.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory CourseDetailsData.fromJson(Map<String, dynamic> json) => CourseDetailsData(
+  factory CourseDetailsData.fromJson(Map<String, dynamic> json) =>
+      CourseDetailsData(
         id: json["id"],
         courseTitle: json["course_title"],
         courseSlug: json["course_slug"],
