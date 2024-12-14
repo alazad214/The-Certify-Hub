@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/common_widgets/custom_button.dart';
@@ -25,13 +27,13 @@ class CertificationMainScreen extends StatefulWidget {
 
 class _CertificationMainScreenState extends State<CertificationMainScreen> {
   String url = "https://christiandimene.reigeeky.com/";
-  CourseModule? course;
+
   String? _selectedType;
 
   @override
   void initState() {
     super.initState();
-    _selectedType = 'course';
+    _selectedType = 'data';
     getCourseDetailsRxObj.getCourseDetailsdata(widget.data!.id);
   }
 
@@ -41,7 +43,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
       appBar: CustomAppbar(
         title: 'Certification Details',
         onCallBack: () {
-          NavigationService.navigateToReplacement(Routes.bottomNavBarScreen);
+          NavigationService.goBack;
         },
       ),
       body: SingleChildScrollView(
@@ -56,13 +58,13 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
             CustomAskMeCard(),
             UIHelper.verticalSpace(25.h),
 
-            ///toggle course and mock tests button....
+            ///toggle data and mock tests button....
             _buildCourseAndTestButton(),
 
             UIHelper.verticalSpace(16.h),
 
-            ///build course item....
-            if (_selectedType == 'course') _buildCourseItem(),
+            ///build data item....
+            if (_selectedType == 'data') _buildCourseItem(),
 
             ///build mock tests item....
             if (_selectedType == 'test') _buildMockTestItem(),
@@ -93,7 +95,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
     );
   }
 
-  ///toggle course and mock tests button....
+  ///toggle data and mock tests button....
   Widget _buildCourseAndTestButton() {
     return Row(
       children: [
@@ -101,19 +103,19 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
           child: InkWell(
             onTap: () {
               setState(() {
-                _selectedType = 'course';
+                _selectedType = 'data';
               });
             },
             child: Container(
               height: 48.h,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  color: _selectedType == 'course'
+                  color: _selectedType == 'data'
                       ? AppColors.c245741
                       : AppColors.white,
                   borderRadius: BorderRadius.circular(8.r),
                   border: Border.all(
-                    color: _selectedType == 'course'
+                    color: _selectedType == 'data'
                         ? AppColors.c245741
                         : AppColors.c8C8C8C,
                   )),
@@ -122,7 +124,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                 overflow: TextOverflow.ellipsis,
                 style:
                     TextFontStyle.headline18w500c222222StyleGTWalsheim.copyWith(
-                  color: _selectedType == 'course'
+                  color: _selectedType == 'data'
                       ? AppColors.cFFFFFF
                       : AppColors.c8C8C8C,
                 ),
@@ -247,7 +249,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
         });
   }
 
-  ///build course item....
+  ///build data item....
 
   Widget _buildCourseItem() {
     return StreamBuilder(
@@ -268,11 +270,16 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                     shrinkWrap: true,
                     primary: false,
                     itemBuilder: (_, index) {
-                      course = courseData.data!.courseModules[index];
+                      final CourseModule? data;
+                      data = courseData.data!.courseModules[index];
+                      log(data.id.toString());
+                      log("========================certification main screen pass id============================");
+
                       return InkWell(
                         onTap: () {
-                          NavigationService.navigateTo(
-                              Routes.certificationSectionScreen);
+                          NavigationService.navigateToWithArgs(
+                              Routes.certificationSectionScreen,
+                              {'data': data});
                         },
                         child: Container(
                             alignment: Alignment.center,
@@ -301,7 +308,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                     ],
                                   ),
                                   child: Text(
-                                    course!.lessonCount.toString(),
+                                    data.lessonCount.toString(),
                                     style: TextFontStyle
                                         .headline24w400c222222StyleGTWalsheim
                                         .copyWith(
@@ -318,7 +325,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                     children: [
                                       Text(
                                         overflow: TextOverflow.ellipsis,
-                                        course!.courseModuleName,
+                                        data.courseModuleName,
                                         style: TextFontStyle
                                             .headline18w500c222222StyleGTWalsheim,
                                       ),

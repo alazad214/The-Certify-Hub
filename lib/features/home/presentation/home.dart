@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:christiandimene/common_widgets/custom_textfeild.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
@@ -20,7 +21,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Course? data;
   String url = "https://christiandimene.reigeeky.com/";
 
   @override
@@ -70,7 +70,9 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
+            return Center(
+              child: Text('Something Wrong'),
+            );
           } else if (snapshot.hasData) {
             CourseResponse courseData = snapshot.data;
 
@@ -88,9 +90,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   childAspectRatio: 0.9,
                 ),
                 itemBuilder: (context, index) {
+                  final Course? data;
                   data = courseData.data![index];
+
+                  log(data.id.toString());
                   return InkWell(
                     onTap: () {
+                      log(data!.id.toString());
                       NavigationService.navigateToWithArgs(
                           Routes.certificationScreen, {'data': data});
                     },
@@ -111,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               borderRadius: BorderRadius.circular(8.r),
                             ),
                             child: CachedNetworkImage(
-                              imageUrl: url + data!.courseFeatureImage,
+                              imageUrl: url + data.courseFeatureImage,
                               placeholder: (context, url) =>
                                   Center(child: CircularProgressIndicator()),
                               errorWidget: (context, url, error) =>
@@ -124,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                           ///COURSE TITLE...
                           Text(
-                            "${data!.courseTitle}",
+                            "${data.courseTitle}",
                             style: TextFontStyle
                                 .textStyle16w500c222222StyleGTWalsheim,
                             overflow: TextOverflow.ellipsis,

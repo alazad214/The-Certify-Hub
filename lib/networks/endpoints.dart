@@ -32,4 +32,6 @@ final class Endpoints {
   static String course() => "/course";
   static String profileEdit() => "/user-update";
   static String courseDetails(int id) => "/courses/$id";
+  static String lessonsVideo(int id) => "/course-modules/$id";
+  static String pdf(int id) => "/courses/$id/files";
 }

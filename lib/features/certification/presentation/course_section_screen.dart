@@ -1,5 +1,10 @@
+import 'dart:developer';
+
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
+import 'package:christiandimene/features/certification/model/course_details_response.dart';
+import 'package:christiandimene/features/certification/model/pdf_model_response.dart';
+import 'package:christiandimene/features/certification/presentation/pdf_Viewer_Screen.dart';
 import 'package:christiandimene/features/certification/widgets/custom_appbar2.dart';
 import 'package:christiandimene/features/widgets/custom_ask_me_card.dart';
 import 'package:christiandimene/gen/assets.gen.dart';
@@ -7,12 +12,18 @@ import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/all_routes.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
+import 'package:christiandimene/networks/api_acess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/utils.dart';
+
+import '../model/lesson_model_response.dart';
 
 class CourseSectionScreen extends StatefulWidget {
-  const CourseSectionScreen({super.key});
+  CourseModule? data;
+  CourseSectionScreen({this.data, super.key});
 
   @override
   State<CourseSectionScreen> createState() => _CertificationMainScreenState();
@@ -25,10 +36,14 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
   void initState() {
     super.initState();
     _selectedType = 'lesson';
+    getLessonsRxObj.getLessonsData(widget.data!.id);
+    getPdfRxObj.getPdfFile(widget.data!.id);
   }
 
   @override
   Widget build(BuildContext context) {
+    log("========================id============================");
+    log(widget.data!.id.toString());
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -42,8 +57,9 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                 subtitle:
                     _selectedType == 'lesson' ? '0/5 lesson(s) completed' : '',
                 ontap: () {
-                  NavigationService.navigateToReplacement(
-                      Routes.certificationScreen);
+                  // NavigationService.navigateToReplacement(
+                  //     Routes.certificationScreen);
+                  NavigationService.goBack;
                 },
               ),
 
@@ -89,158 +105,224 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
     );
   }
 
-  ListView _buildPDFItem() {
-    return ListView.builder(
-        itemCount: 10,
-        shrinkWrap: true,
-        primary: false,
-        itemBuilder: (_, index) {
-          return Container(
-            height: 84.h,
-            padding: EdgeInsets.all(8.sp),
-            margin: EdgeInsets.symmetric(vertical: 8.h),
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: Row(
-              children: [
-                Image.asset(
-                  Assets.images.pdf.path,
-                  fit: BoxFit.cover,
-                ),
-                UIHelper.horizontalSpace(12.w),
-                Flexible(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Weekend lessons for children',
-                        overflow: TextOverflow.ellipsis,
-                        style: TextFontStyle
-                            .textStyle16w400c999999StyleGTWalsheim
-                            .copyWith(color: AppColors.c222222),
-                      ),
-                      Row(
-                        children: [
-                          Flexible(
-                            child: Text(
-                              'PDFs',
-                              overflow: TextOverflow.ellipsis,
-                              style: TextFontStyle
-                                  .textStyle14w400c9AB2A8StyleGTWalsheim
-                                  .copyWith(color: AppColors.c8C8C8C),
-                            ),
+  Widget _buildPDFItem() {
+    return StreamBuilder(
+        stream: getPdfRxObj.getPdfData,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.hasError) {
+              return Center(child: Text("Error: ${snapshot.error}"));
+            } else if (snapshot.hasData) {
+              PdfModelResponse? pdfData = snapshot.data;
+
+              if (pdfData!.data == null || pdfData.data!.isEmpty) {
+                return Center(child: Text('No pdf available'));
+              } else {
+                return ListView.builder(
+                    itemCount: pdfData.data!.length,
+                    shrinkWrap: true,
+                    primary: false,
+                    itemBuilder: (_, index) {
+                      PdfData? pdf;
+                      pdf = pdfData.data![index];
+
+                      log("====================pdf===================");
+                      log(pdf.filePath);
+
+                      return InkWell(
+                        onTap: () {
+                          // NavigationService.navigateToWithArgs(
+                          //     Routes.pdfViewerScreen, {'data': pdf});
+                          Get.to(() => PdfViewerScreen());
+                        },
+                        child: Container(
+                          height: 84.h,
+                          padding: EdgeInsets.all(8.sp),
+                          margin: EdgeInsets.symmetric(vertical: 8.h),
+                          decoration: BoxDecoration(
+                            color: AppColors.white,
+                            borderRadius: BorderRadius.circular(8.r),
                           ),
-                          Container(
-                            width: 2.w,
-                            height: 12.h,
-                            margin: EdgeInsets.symmetric(horizontal: 8.w),
-                            color: AppColors.c8C8C8C,
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                Assets.images.pdf.path,
+                                fit: BoxFit.cover,
+                              ),
+                              UIHelper.horizontalSpace(12.w),
+                              Flexible(
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Weekend lessons for children',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextFontStyle
+                                          .textStyle16w400c999999StyleGTWalsheim
+                                          .copyWith(color: AppColors.c222222),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            'PDFs',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextFontStyle
+                                                .textStyle14w400c9AB2A8StyleGTWalsheim
+                                                .copyWith(
+                                                    color: AppColors.c8C8C8C),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                          Flexible(
-                            child: Text(
-                              '2 pages',
-                              overflow: TextOverflow.ellipsis,
-                              style: TextFontStyle
-                                  .textStyle14w400c9AB2A8StyleGTWalsheim
-                                  .copyWith(color: AppColors.c8C8C8C),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
+                        ),
+                      );
+                    });
+              }
+            } else {
+              return const SizedBox.shrink();
+            }
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
         });
   }
 
   Widget _buildLessonItem() {
-    return ListView.builder(
-        itemCount: 10,
-        shrinkWrap: true,
-        primary: false,
-        itemBuilder: (_, index) {
-          return InkWell(
-            onTap: () {
-              NavigationService.navigateTo(Routes.videoPlayerScreen);
-            },
-            child: Container(
-              height: 93.h,
-              padding: EdgeInsets.all(8.sp),
-              margin: EdgeInsets.symmetric(vertical: 8.h),
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 103.w,
-                    height: 120.h,
-                    clipBehavior: Clip.antiAlias,
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(8.r)),
-                    child: Image.asset(
-                      Assets.images.homeCardImage.path,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  UIHelper.horizontalSpace(12.w),
-                  Flexible(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          'Weekend lessons for children',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextFontStyle
-                              .headline20w500c222222StyleGTWalsheim,
-                        ),
-                        Row(
-                          children: [
-                            Flexible(
-                              child: Text(
-                                '79 Lessons',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextFontStyle
-                                    .textStyle14w400c9AB2A8StyleGTWalsheim
-                                    .copyWith(color: AppColors.c8C8C8C),
+    return StreamBuilder(
+        stream: getLessonsRxObj.dataFetcher,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.hasError) {
+              return Center(child: Text("Error: ${snapshot.error}"));
+            } else if (snapshot.hasData) {
+              LessonsModelResponse? lessonData = snapshot.data;
+              ;
+
+              if (lessonData!.data == null ||
+                  lessonData.data!.courseContents.isEmpty) {
+                return Center(child: Text('No Lessons available'));
+              } else {
+                return ListView.builder(
+                    itemCount: lessonData.data!.courseContents.length,
+                    shrinkWrap: true,
+                    primary: false,
+                    itemBuilder: (_, index) {
+                      CourseContent? data;
+                      data = lessonData.data!.courseContents[index];
+
+                      log('=====================video =======================');
+                      log(data.videoFile);
+
+                      return InkWell(
+                        onTap: () {
+                          NavigationService.navigateToWithArgs(
+                              Routes.videoPlayerScreen, {'data': data});
+                        },
+                        child: Container(
+                          height: 93.h,
+                          padding: EdgeInsets.all(8.sp),
+                          margin: EdgeInsets.symmetric(vertical: 8.h),
+                          decoration: BoxDecoration(
+                            color: AppColors.white,
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 103.w,
+                                height: 120.h,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.r)),
+                                child: Image.asset(
+                                  Assets.images.homeCardImage.path,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ),
-                            Container(
-                              width: 2.w,
-                              height: 12.h,
-                              margin: EdgeInsets.symmetric(horizontal: 8.w),
-                              color: AppColors.c8C8C8C,
-                            ),
-                            Flexible(
-                              child: Text(
-                                '8,289 Students',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextFontStyle
-                                    .textStyle14w400c9AB2A8StyleGTWalsheim
-                                    .copyWith(color: AppColors.c8C8C8C),
+                              UIHelper.horizontalSpace(12.w),
+                              Flexible(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            data.contentTitle,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                            style: TextFontStyle
+                                                .headline20w500c222222StyleGTWalsheim,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            'Video',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextFontStyle
+                                                .textStyle14w400c9AB2A8StyleGTWalsheim
+                                                .copyWith(
+                                              color: AppColors.c8C8C8C,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          width: 1.w,
+                                          height: 12.h,
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 8.w),
+                                          color: AppColors.c8C8C8C,
+                                        ),
+                                        Flexible(
+                                          child: Text(
+                                            data.contentLength,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextFontStyle
+                                                .textStyle14w400c9AB2A8StyleGTWalsheim
+                                                .copyWith(
+                                                    color: AppColors.c8C8C8C),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                              SvgPicture.asset(
+                                Assets.icons.playButtonContainer,
+                                height: 30.h,
+                                width: 30.w,
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                  SvgPicture.asset(
-                    Assets.icons.playButtonContainer,
-                    height: 30.h,
-                    width: 30.w,
-                  ),
-                ],
-              ),
-            ),
-          );
+                      );
+                    });
+              }
+            } else {
+              return const SizedBox.shrink();
+            }
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
         });
   }
 
@@ -319,3 +401,21 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
     );
   }
 }
+
+                                  // Container(
+                                      //   width: 2.w,
+                                      //   height: 12.h,
+                                      //   margin: EdgeInsets.symmetric(
+                                      //       horizontal: 8.w),
+                                      //   color: AppColors.c8C8C8C,
+                                      // ),
+                                      // Flexible(
+                                      //   child: Text(
+                                      //     '2 pages',
+                                      //     overflow: TextOverflow.ellipsis,
+                                      //     style: TextFontStyle
+                                      //         .textStyle14w400c9AB2A8StyleGTWalsheim
+                                      //         .copyWith(
+                                      //             color: AppColors.c8C8C8C),
+                                      //   ),
+                                      // ),
