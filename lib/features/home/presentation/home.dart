@@ -9,6 +9,7 @@ import 'package:christiandimene/helpers/all_routes.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:christiandimene/networks/api_acess.dart';
+import 'package:christiandimene/networks/endpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -21,8 +22,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String url = "https://christiandimene.reigeeky.com/";
-
   @override
   void initState() {
     getCourseRxObj.getCourseData();
@@ -55,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 )),
             UIHelper.verticalSpace(26.h),
 
-            ///build custom card.....
+            ///build custom card...
             _buildHomeCustomCard(),
             UIHelper.verticalSpace(26.h),
           ],
@@ -117,7 +116,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               borderRadius: BorderRadius.circular(8.r),
                             ),
                             child: CachedNetworkImage(
-                              imageUrl: url + data.courseFeatureImage,
+                              imageUrl:
+                                  baseUrl + data.courseFeatureImage.toString(),
                               placeholder: (context, url) =>
                                   Center(child: CircularProgressIndicator()),
                               errorWidget: (context, url, error) =>

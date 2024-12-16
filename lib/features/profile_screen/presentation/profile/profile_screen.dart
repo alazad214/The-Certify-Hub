@@ -1,6 +1,9 @@
 import 'package:christiandimene/constants/app_constants.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/profile_screen/model/get_profile_response.dart';
+import 'package:christiandimene/features/profile_screen/presentation/about_us.dart';
+import 'package:christiandimene/features/profile_screen/presentation/privacy_policy.dart';
+import 'package:christiandimene/features/profile_screen/presentation/terms_and_conditions.dart';
 import 'package:christiandimene/features/profile_screen/widget/logout_button_dialog.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/di.dart';
@@ -11,6 +14,7 @@ import 'package:christiandimene/networks/dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../helpers/all_routes.dart';
 
@@ -167,7 +171,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 profileItem(
                   title: 'Privacy Policy',
                   svg: SvgPicture.asset(Assets.icons.shieldTick),
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(() => PrivacyPolicyScreen());
+                  },
                 ),
                 Divider(
                   color: AppColors.cBBCBC4,
@@ -176,7 +182,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 profileItem(
                   title: 'Terms & Conditions',
                   svg: SvgPicture.asset(Assets.icons.check),
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(() => TermsAndConditionsScreen());
+                  },
                 ),
                 Divider(
                   color: AppColors.cBBCBC4,
@@ -185,7 +193,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 profileItem(
                   title: 'About Us',
                   svg: SvgPicture.asset(Assets.icons.help),
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(() => AboutUsScreen());
+                  },
                 ),
                 UIHelper.verticalSpace(24.h),
 
