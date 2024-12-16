@@ -51,8 +51,7 @@ final class Routes {
   static const String certificationScreen = '/certification_main_screen';
   static const String certificationSectionScreen =
       '/certification_section_screen';
-  static const String pdfViewerScreen =
-      '/pdf_Viewer_Screen';
+  static const String pdfViewerScreen = '/pdf_Viewer_Screen';
   static const String mockTestSectionScreen = '/mockTest_section_screen';
   static const String videoPlayerScreen = '/video_player_screen';
 
@@ -124,18 +123,18 @@ final class RouteGenerator {
                       data: arg!['data'],
                     ));
 
-      // case Routes.pdfViewerScreen:
-      //   final arg = settings.arguments as Map?;
-      //   return Platform.isAndroid
-      //       ? _FadedTransitionRoute(
-      //           widget: PdfViewerScreen(
-      //             data: arg!['data'],
-      //           ),
-      //           settings: settings)
-      //       : CupertinoPageRoute(
-      //           builder: (context) => PdfViewerScreen(
-      //                 data: arg!['data'],
-      //  ));
+      case Routes.pdfViewerScreen:
+        final arg = settings.arguments as Map?;
+        return Platform.isAndroid
+            ? _FadedTransitionRoute(
+                widget: PdfViewerScreen(
+                  data: arg!['data'],
+                ),
+                settings: settings)
+            : CupertinoPageRoute(
+                builder: (context) => PdfViewerScreen(
+                      data: arg!['data'],
+                    ));
 
       case Routes.certificationSectionScreen:
         final arg = settings.arguments as Map?;

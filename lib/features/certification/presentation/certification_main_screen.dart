@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
+import 'package:christiandimene/features/certification/model/mock_test_response.dart';
 import 'package:christiandimene/features/home/model/course_response.dart';
 import 'package:christiandimene/features/widgets/custom_ask_me_card.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
@@ -11,6 +12,7 @@ import 'package:christiandimene/helpers/all_routes.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:christiandimene/networks/api_acess.dart';
+import 'package:christiandimene/networks/endpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../model/course_details_response.dart';
@@ -26,8 +28,6 @@ class CertificationMainScreen extends StatefulWidget {
 }
 
 class _CertificationMainScreenState extends State<CertificationMainScreen> {
-  String url = "https://christiandimene.reigeeky.com/";
-
   String? _selectedType;
 
   @override
@@ -35,6 +35,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
     super.initState();
     _selectedType = 'data';
     getCourseDetailsRxObj.getCourseDetailsdata(widget.data!.id);
+    getMockTestRxObj.getMockTest(widget.data!.id);
   }
 
   @override
@@ -170,82 +171,109 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
     );
   }
 
-  ///build mock tests item....
+  ///BUILD MOCK TEST ITEM....
   Widget _buildMockTestItem() {
-    return ListView.builder(
-        itemCount: 10,
-        shrinkWrap: true,
-        primary: false,
-        itemBuilder: (_, index) {
-          return InkWell(
-            onTap: () {
-              NavigationService.navigateTo(Routes.mockTestSectionScreen);
-            },
-            child: Container(
-                alignment: Alignment.center,
-                height: 84.h,
-                margin: EdgeInsets.symmetric(vertical: 8.h),
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16.r),
-                    color: AppColors.white),
-                child: Row(
-                  children: [
-                    Container(
-                      height: 52.h,
-                      width: 52.w,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: AppColors.cFAFBFC,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            spreadRadius: 2.sp,
-                            blurRadius: 8.sp,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Text(
-                        '01',
-                        style: TextFontStyle
-                            .headline24w400c222222StyleGTWalsheim
-                            .copyWith(color: AppColors.c245741),
-                      ),
-                    ),
-                    UIHelper.horizontalSpace(8.w),
-                    Flexible(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            overflow: TextOverflow.ellipsis,
-                            'Managing Your Time WiselyManaging Your Time Wisel',
-                            style: TextFontStyle
-                                .headline18w500c222222StyleGTWalsheim,
-                          ),
-                          UIHelper.verticalSpace(8.h),
-                          Row(
-                            children: [
-                              Text(
-                                '79 tests',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextFontStyle
-                                    .textStyle12w400c9AB2A8StyleGTWalsheim
-                                    .copyWith(
-                                  color: AppColors.c8C8C8C,
+    return StreamBuilder(
+        stream: getMockTestRxObj.getMockTestData,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.hasError) {
+              return Center(child: Text("Error: ${snapshot.error}"));
+            } else if (snapshot.hasData) {
+              MockTestResponse mockTest = snapshot.data;
+
+              if (mockTest.data == null || mockTest.data!.quizzes!.isEmpty) {
+                return Center(child: Text('No mock test available'));
+              } else {
+                return ListView.builder(
+                    itemCount: mockTest.data!.quizzes!.length,
+                    shrinkWrap: true,
+                    primary: false,
+                    itemBuilder: (_, index) {
+                      // ignore: unused_local_variable
+                      Quiz? quiz;
+                      quiz = mockTest.data!.quizzes![index];
+                      return InkWell(
+                        onTap: () {
+                          NavigationService.navigateTo(
+                              Routes.mockTestSectionScreen);
+                        },
+                        child: Container(
+                            alignment: Alignment.center,
+                            height: 84.h,
+                            margin: EdgeInsets.symmetric(vertical: 8.h),
+                            padding: EdgeInsets.symmetric(horizontal: 10.w),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16.r),
+                                color: AppColors.white),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 52.h,
+                                  width: 52.w,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.cFAFBFC,
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        spreadRadius: 2.sp,
+                                        blurRadius: 8.sp,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Text(
+                                    '01',
+                                    style: TextFontStyle
+                                        .headline24w400c222222StyleGTWalsheim
+                                        .copyWith(color: AppColors.c245741),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                )),
-          );
+                                UIHelper.horizontalSpace(8.w),
+                                Flexible(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        overflow: TextOverflow.ellipsis,
+                                        'Managing Your Time WiselyManaging Your Time Wisel',
+                                        style: TextFontStyle
+                                            .headline18w500c222222StyleGTWalsheim,
+                                      ),
+                                      UIHelper.verticalSpace(8.h),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            '79 tests',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextFontStyle
+                                                .textStyle12w400c9AB2A8StyleGTWalsheim
+                                                .copyWith(
+                                              color: AppColors.c8C8C8C,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            )),
+                      );
+                    });
+              }
+            } else {
+              return const SizedBox.shrink();
+            }
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
         });
   }
 
@@ -273,7 +301,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                       final CourseModule? data;
                       data = courseData.data!.courseModules[index];
                       log(data.id.toString());
-                      log("========================certification main screen pass id============================");
+                      log("========================Certification main screen pass id============================");
 
                       return InkWell(
                         onTap: () {
@@ -287,8 +315,9 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                             margin: EdgeInsets.symmetric(vertical: 8.h),
                             padding: EdgeInsets.symmetric(horizontal: 10.w),
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16.r),
-                                color: AppColors.white),
+                              borderRadius: BorderRadius.circular(16.r),
+                              color: AppColors.white,
+                            ),
                             child: Row(
                               children: [
                                 Container(
@@ -404,7 +433,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8.r)),
                       child: CachedNetworkImage(
-                        imageUrl: url + data!.courseFeatureImage,
+                        imageUrl: baseUrl + data!.courseFeatureImage,
                         placeholder: (context, url) =>
                             Center(child: CircularProgressIndicator()),
                         errorWidget: (context, url, error) => Icon(Icons.error),

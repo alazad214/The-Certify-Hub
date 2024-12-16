@@ -3,8 +3,10 @@ import 'package:christiandimene/features/auth/data/post_login_rx/rx.dart';
 import 'package:christiandimene/features/auth/data/post_reset_rx/rx.dart';
 import 'package:christiandimene/features/auth/data/post_signup_rx/rx.dart';
 import 'package:christiandimene/features/certification/data/get_course_detials_rx/rx.dart';
+import 'package:christiandimene/features/certification/data/get_mock_test_rx/rx.dart';
 import 'package:christiandimene/features/certification/model/course_details_response.dart';
 import 'package:christiandimene/features/certification/model/lesson_model_response.dart';
+import 'package:christiandimene/features/certification/model/mock_test_response.dart';
 import 'package:christiandimene/features/certification/model/pdf_model_response.dart';
 import 'package:christiandimene/features/home/data/rx.dart';
 import 'package:christiandimene/features/home/model/course_response.dart';
@@ -56,3 +58,7 @@ GetLessonsRx getLessonsRxObj = GetLessonsRx(
 GetPdfRx getPdfRxObj = GetPdfRx(
     empty: PdfModelResponse(),
     dataFetcher: BehaviorSubject<PdfModelResponse>());
+
+GetMockTestRx getMockTestRxObj = GetMockTestRx(
+    empty: MockTestResponse(),
+    dataFetcher: BehaviorSubject<MockTestResponse>());

@@ -1,10 +1,8 @@
 import 'dart:developer';
-
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/model/course_details_response.dart';
 import 'package:christiandimene/features/certification/model/pdf_model_response.dart';
-import 'package:christiandimene/features/certification/presentation/pdf_Viewer_Screen.dart';
 import 'package:christiandimene/features/certification/widgets/custom_appbar2.dart';
 import 'package:christiandimene/features/widgets/custom_ask_me_card.dart';
 import 'package:christiandimene/gen/assets.gen.dart';
@@ -16,9 +14,6 @@ import 'package:christiandimene/networks/api_acess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
-import 'package:get/utils.dart';
-
 import '../model/lesson_model_response.dart';
 
 class CourseSectionScreen extends StatefulWidget {
@@ -131,9 +126,8 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
 
                       return InkWell(
                         onTap: () {
-                          // NavigationService.navigateToWithArgs(
-                          //     Routes.pdfViewerScreen, {'data': pdf});
-                          Get.to(() => PdfViewerScreen());
+                          NavigationService.navigateToWithArgs(
+                              Routes.pdfViewerScreen, {'data': pdf});
                         },
                         child: Container(
                           height: 84.h,

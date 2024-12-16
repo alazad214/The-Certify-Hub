@@ -41,7 +41,7 @@ class CourseDetailsData {
   String duration;
   String summary;
   DateTime lastUpdate;
-  int coursePrice;
+  double coursePrice;
   String courseFeatureImage;
   String status;
   DateTime createdAt;

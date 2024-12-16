@@ -1,11 +1,16 @@
 import 'dart:io';
+import 'package:christiandimene/features/certification/model/pdf_model_response.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
+import 'package:christiandimene/networks/endpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
 class PdfViewerScreen extends StatefulWidget {
+  PdfData? data;
+
+  PdfViewerScreen({required this.data, super.key});
   @override
   _PdfViewerScreenState createState() => _PdfViewerScreenState();
 }
@@ -17,8 +22,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
   @override
   void initState() {
     super.initState();
-    downloadPdf(
-        'https://christiandimene.reigeeky.com/uploads/course_files/5gbejdsjjkbayzfnlilj-6038e4ae-9b52-4885-a93b-40273a20d98dpdf.pdf');
+    downloadPdf(baseUrl + widget.data!.filePath);
   }
 
   Future<void> downloadPdf(String url) async {

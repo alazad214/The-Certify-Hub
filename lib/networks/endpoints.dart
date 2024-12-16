@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
-const String url = "https://christiandimene.reigeeky.com/api";
+const String url = "https://christiandimene.softvencefsd.xyz/api";
+const String baseUrl = "https://christiandimene.softvencefsd.xyz/";
 
 final class NetworkConstants {
   NetworkConstants._();
@@ -34,4 +35,5 @@ final class Endpoints {
   static String courseDetails(int id) => "/courses/$id";
   static String lessonsVideo(int id) => "/course-modules/$id";
   static String pdf(int id) => "/courses/$id/files";
+  static String mockTest(int id) => "/get-quizzes/$id";
 }
