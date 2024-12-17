@@ -36,4 +36,10 @@ final class Endpoints {
   static String lessonsVideo(int id) => "/course-modules/$id";
   static String pdf(int id) => "/courses/$id/files";
   static String mockTest(int id) => "/get-quizzes/$id";
+
+
+
+  //MOCK TEST-->
+  
+  static String testQuiz(int id) => "/quizzes/$id";
 }

@@ -35,7 +35,7 @@ class MockTestResponse {
 }
 
 class Data {
-  List<Quiz>? quizzes;
+  List<QuizData>? quizzes;
 
   Data({
     this.quizzes,
@@ -48,7 +48,8 @@ class Data {
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         quizzes: json["quizzes"] == null
             ? []
-            : List<Quiz>.from(json["quizzes"]!.map((x) => Quiz.fromJson(x))),
+            : List<QuizData>.from(
+                json["quizzes"]!.map((x) => QuizData.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -58,28 +59,31 @@ class Data {
       };
 }
 
-class Quiz {
+class QuizData {
   int? id;
   String? title;
   int? totalTime;
   int? courseId;
+  int? totalQuestions;
 
-  Quiz({
-    this.id,
-    this.title,
-    this.totalTime,
-    this.courseId,
-  });
+  QuizData(
+      {this.id,
+      this.title,
+      this.totalTime,
+      this.courseId,
+      this.totalQuestions});
 
-  factory Quiz.fromRawJson(String str) => Quiz.fromJson(json.decode(str));
+  factory QuizData.fromRawJson(String str) =>
+      QuizData.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Quiz.fromJson(Map<String, dynamic> json) => Quiz(
+  factory QuizData.fromJson(Map<String, dynamic> json) => QuizData(
         id: json["id"],
         title: json["title"],
         totalTime: json["total_time"],
         courseId: json["course_id"],
+        totalQuestions: json["total_questions"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -87,5 +91,6 @@ class Quiz {
         "title": title,
         "total_time": totalTime,
         "course_id": courseId,
+        "total_questions": totalQuestions,
       };
 }

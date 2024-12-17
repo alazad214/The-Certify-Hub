@@ -5,7 +5,9 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../../networks/dio/dio.dart';
 import '../../../../../networks/rx_base.dart';
 import '../../../../constants/app_constants.dart';
+import '../../../../helpers/all_routes.dart';
 import '../../../../helpers/di.dart';
+import '../../../../helpers/navigation_service.dart';
 import 'api.dart';
 
 final class PostLoginRx extends RxResponseInt {
@@ -43,6 +45,7 @@ final class PostLoginRx extends RxResponseInt {
       await appData.write(kKeyAccessToken, accessToken);
       await appData.write(kKeyIsLoggedIn, true);
 
+      NavigationService.navigateToUntilReplacement(Routes.bottomNavBarScreen);
       // TOKEN UPDATE...
       DioSingleton.instance.update(accessToken!);
     }

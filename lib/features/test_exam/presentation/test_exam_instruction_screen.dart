@@ -1,19 +1,20 @@
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
+import 'package:christiandimene/features/certification/model/mock_test_response.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-
 import '../../../gen/assets.gen.dart';
 import '../../../gen/colors.gen.dart';
 import '../../../helpers/all_routes.dart';
 
 class TestExamInstructionScreen extends StatefulWidget {
-  const TestExamInstructionScreen({super.key});
+  QuizData? quiz;
+  TestExamInstructionScreen({this.quiz, super.key});
 
   @override
   State<TestExamInstructionScreen> createState() =>
@@ -24,18 +25,20 @@ class _PracticeExamInstructionScreenState
     extends State<TestExamInstructionScreen> {
   final List<String> instructionTitles = [
     'Passing Score : 70%',
-    'There is no time limit, so feel free to take your time with each question.',
+    'You have a time limit for the quiz.',
     'After each answer, you’ll immediately see whether you got it correct, along with a detailed explanation.',
     'You can skip questions or answer them in any order. Tap on any question to revisit it at any time.',
-    'Mark any question for review if you\'d like to come back to it later.',
+    'Mark any question for review if you’d like to come back to it later. However, be mindful of the time limit.',
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-        title: 'Test: Managing Your Time Wisely',
-        onCallBack: () {},
+        title: widget.quiz!.title.toString(),
+        onCallBack: () {
+          NavigationService.goBack;
+        },
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -79,8 +82,9 @@ class _PracticeExamInstructionScreenState
                     customButton(
                         name: 'Start Now',
                         onCallBack: () {
-                          NavigationService.navigateTo(
-                              Routes.testExamQuestionScreen);
+                          NavigationService.navigateToWithArgs(
+                              Routes.testExamQuestionScreen,
+                              {'data': widget.quiz});
                         },
                         context: context)
                   ],
@@ -127,7 +131,7 @@ class _PracticeExamInstructionScreenState
                                 .copyWith(color: AppColors.c000000),
                           ),
                           Text(
-                            '15'.tr,
+                            "${widget.quiz!.totalQuestions}",
                             overflow: TextOverflow.ellipsis,
                             style: TextFontStyle
                                 .textStyle16w500c222222StyleGTWalsheim,
@@ -165,7 +169,7 @@ class _PracticeExamInstructionScreenState
                                 .copyWith(color: AppColors.c000000),
                           ),
                           Text(
-                            '15'.tr,
+                            "${widget.quiz!.totalTime}",
                             overflow: TextOverflow.ellipsis,
                             style: TextFontStyle
                                 .textStyle16w500c222222StyleGTWalsheim

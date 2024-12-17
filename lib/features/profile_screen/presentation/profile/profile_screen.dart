@@ -11,6 +11,7 @@ import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:christiandimene/networks/api_acess.dart';
 import 'package:christiandimene/networks/dio/dio.dart';
+import 'package:christiandimene/networks/endpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -26,7 +27,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  String url = "https://christiandimene.reigeeky.com/";
   User? profileData;
   @override
   void initState() {
@@ -77,11 +77,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                     child: profileData?.avatar != ""
                                         ? Image.network(
-                                            url + profileData!.avatar!,
+                                            baseUrl + profileData!.avatar!,
                                             fit: BoxFit.cover,
                                           )
                                         : Image.asset(
-                                            Assets.images.profile.path,
+                                            Assets.images.profileAvatar.path,
                                             fit: BoxFit.cover,
                                           ),
                                   ),
@@ -143,6 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     );
                   },
                 ),
+
                 UIHelper.verticalSpace(40.h),
                 profileItem(
                   title: 'Edit Profile',

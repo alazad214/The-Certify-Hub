@@ -1,6 +1,5 @@
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
-import 'package:christiandimene/features/widgets/exam_finish_popup.dart';
 import 'package:christiandimene/features/widgets/practice_exam_finish.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
@@ -283,9 +282,6 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
                       ))
               ],
             ));
-     
-     
-     
       }),
     );
   }
@@ -331,16 +327,16 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
         GestureDetector(
           onTap: () {
             if (allQuestionsAnswered) {
-              examFinishPopup(
-                context,
-                () {
-                  NavigationService.navigateToReplacement(
-                      Routes.practiceExamResult);
-                },
-                '08:11',
-                '08',
-                '08',
-              );
+              // examFinishPopup(
+              //   context,
+              //   () {
+              //     NavigationService.navigateToReplacement(
+              //         Routes.practiceExamResult);
+              //   },
+              //   '08:11',
+              //   '08',
+              //   '08',
+              // );
             }
           },
           child: Container(
