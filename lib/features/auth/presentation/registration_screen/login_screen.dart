@@ -127,15 +127,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     onCallBack: () async {
                       if (_formKey.currentState!.validate()) {
                         if (_isChecked == true) {
-                          await postLoginRxObj
-                              .postLogin(
+                          await postLoginRxObj.postLogin(
                             email: emailController.text,
                             password: passwordController.text,
-                          )
-                              .then((value) {
-                            NavigationService.navigateToUntilReplacement(
-                                Routes.bottomNavBarScreen);
-                          });
+                          );
 
                           emailController.clear();
                           passwordController.clear();

@@ -89,6 +89,12 @@ class TextFontStyle {
     fontSize: 14.sp,
     fontWeight: FontWeight.w400,
   );
+  static final textStyle14w400c9AB2A8 = TextStyle(
+    fontFamily: 'GT Walsheim Trial',
+    color: AppColors.c9AB2A8,
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w400,
+  );
   static final textStyle12w400c9AB2A8StyleGTWalsheim = TextStyle(
     fontFamily: 'GT Walsheim Trial',
     color: AppColors.c999999,

@@ -47,6 +47,8 @@ final class PostRegisterRx extends RxResponseInt {
       await appData.write(kKeyIsLoggedIn, true);
       // TOKEN UPDATE...
       DioSingleton.instance.update(accessToken!);
+    } else if (statusCode == 422) {
+      log("The email has already been taken.");
     }
 
     dataFetcher.sink.add(data);

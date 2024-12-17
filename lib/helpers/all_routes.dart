@@ -237,18 +237,25 @@ final class RouteGenerator {
             : CupertinoPageRoute(builder: (context) => BottomNavBarScreen());
 
       case Routes.testExamInstructionScreen:
+        final arg = settings.arguments as Map?;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-                widget: TestExamInstructionScreen(), settings: settings)
+                widget: TestExamInstructionScreen(
+                  quiz: arg!['data'],
+                ),
+                settings: settings)
             : CupertinoPageRoute(
-                builder: (context) => TestExamInstructionScreen());
+                builder: (context) => TestExamInstructionScreen(
+                      quiz: arg!['data'],
+                    ));
 
       case Routes.testExamQuestionScreen:
+              final arg = settings.arguments as Map?;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-                widget: TestExamQuestionScreen(), settings: settings)
+                widget: TestExamQuiz(     quiz: arg!['data'],), settings: settings)
             : CupertinoPageRoute(
-                builder: (context) => TestExamQuestionScreen());
+                builder: (context) => TestExamQuiz(     quiz: arg!['data'],));
 
       case Routes.testExamResult:
         return Platform.isAndroid

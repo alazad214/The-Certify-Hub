@@ -15,6 +15,7 @@ import 'package:christiandimene/networks/api_acess.dart';
 import 'package:christiandimene/networks/endpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../widgets/mock_test_popup.dart';
 import '../model/course_details_response.dart';
 
 class CertificationMainScreen extends StatefulWidget {
@@ -191,12 +192,22 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                     primary: false,
                     itemBuilder: (_, index) {
                       // ignore: unused_local_variable
-                      Quiz? quiz;
+                      QuizData? quiz;
                       quiz = mockTest.data!.quizzes![index];
                       return InkWell(
                         onTap: () {
-                          NavigationService.navigateTo(
-                              Routes.mockTestSectionScreen);
+                          mockTestPopup(
+                            context,
+                            () {
+                              // NavigationService.navigateTo(
+                              //     Routes.practiceExamInstruction);
+                            },
+                            () {
+                              NavigationService.navigateToWithArgs(
+                                  Routes.testExamInstructionScreen,
+                                  {'data': quiz});
+                            },
+                          );
                         },
                         child: Container(
                             alignment: Alignment.center,
@@ -240,7 +251,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                     children: [
                                       Text(
                                         overflow: TextOverflow.ellipsis,
-                                        'Managing Your Time WiselyManaging Your Time Wisel',
+                                        "${quiz.title}",
                                         style: TextFontStyle
                                             .headline18w500c222222StyleGTWalsheim,
                                       ),
@@ -248,7 +259,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                       Row(
                                         children: [
                                           Text(
-                                            '79 tests',
+                                            "${quiz.totalTime} Min",
                                             overflow: TextOverflow.ellipsis,
                                             style: TextFontStyle
                                                 .textStyle12w400c9AB2A8StyleGTWalsheim
@@ -455,9 +466,9 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                           ),
                           Row(
                             children: [
-                              Expanded(
+                              Flexible(
                                 child: Text(
-                                  '79 Lessons',
+                                  data.duration,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextFontStyle
                                       .textStyle14w400c9AB2A8StyleGTWalsheim
@@ -472,7 +483,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                               ),
                               Expanded(
                                 child: Text(
-                                  '8,289 Students',
+                                  "${data.coursePrice} \$",
                                   overflow: TextOverflow.ellipsis,
                                   style: TextFontStyle
                                       .textStyle14w400c9AB2A8StyleGTWalsheim

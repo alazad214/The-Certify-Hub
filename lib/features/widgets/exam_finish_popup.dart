@@ -9,18 +9,20 @@ import 'package:flutter_svg/svg.dart';
 
 void examFinishPopup(
   BuildContext context,
+  String title,
   VoidCallback finishOntap,
   String timeLeft,
   String attempted,
   String unattempted,
+  bool barrierDismissible,
 ) {
   showDialog(
     context: context,
-    barrierDismissible: false,
+    barrierDismissible: barrierDismissible,
     builder: (BuildContext context) {
       return Dialog(
         elevation: 12,
-         shape: RoundedRectangleBorder(
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.r),
         ),
         child: Container(
@@ -35,33 +37,33 @@ void examFinishPopup(
               UIHelper.verticalSpace(24.h),
               Text(
                 textAlign: TextAlign.center,
-                'Are you sure you want to Finish this?',
+               title,
                 style: TextFontStyle.headline18w500c222222StyleGTWalsheim
                     .copyWith(fontWeight: FontWeight.w700),
               ),
               UIHelper.verticalSpace(40.h),
-              Row(
-                children: [
-                  SvgPicture.asset(
-                    Assets.icons.clock,
-                    height: 24.h,
-                    width: 24.w,
-                  ),
-                  UIHelper.horizontalSpace(8.w),
-                  Text(
-                    'Time left',
-                    style: TextFontStyle.textStyle16w400c999999StyleGTWalsheim
-                        .copyWith(color: AppColors.c222222),
-                  ),
-                  Spacer(),
-                  Text(
-                    timeLeft,
-                    style: TextFontStyle.textStyle16w400c999999StyleGTWalsheim
-                        .copyWith(color: AppColors.c222222),
-                  )
-                ],
-              ),
-              UIHelper.verticalSpace(12.h),
+              // Row(
+              //   children: [
+              //     SvgPicture.asset(
+              //       Assets.icons.clock,
+              //       height: 24.h,
+              //       width: 24.w,
+              //     ),
+              //     UIHelper.horizontalSpace(8.w),
+              //     Text(
+              //       'Time left',
+              //       style: TextFontStyle.textStyle16w400c999999StyleGTWalsheim
+              //           .copyWith(color: AppColors.c222222),
+              //     ),
+              //     Spacer(),
+              //     Text(
+              //       timeLeft,
+              //       style: TextFontStyle.textStyle16w400c999999StyleGTWalsheim
+              //           .copyWith(color: AppColors.c222222),
+              //     )
+              //   ],
+              // ),
+              // UIHelper.verticalSpace(12.h),
               Row(
                 children: [
                   SvgPicture.asset(
@@ -106,34 +108,14 @@ void examFinishPopup(
                 ],
               ),
               UIHelper.verticalSpace(40.h),
-              Row(
-                children: [
-                  Expanded(
-                    child: customButton(
-                        name: 'Cencel',
-                        onCallBack: () {
-                          Navigator.pop(context);
-                        },
-                        height: 46.h,
-                        context: context,
-                        borderColor: AppColors.c6B6B6B,
-                        color: Colors.transparent,
-                        textStyle: TextFontStyle
-                            .headline18w500c222222StyleGTWalsheim
-                            .copyWith(color: AppColors.c6B6B6B)),
-                  ),
-                  UIHelper.horizontalSpace(16.h),
-                  Expanded(
-                    child: customButton(
-                      name: 'Finish',
-                      height: 46.h,
-                      onCallBack: finishOntap,
-                      context: context,
-                    ),
-                  ),
-                ],
+              UIHelper.horizontalSpace(16.h),
+              customButton(
+                name: 'Result',
+                height: 46.h,
+                onCallBack: finishOntap,
+                context: context,
               ),
-              UIHelper.verticalSpace(32.h),
+              UIHelper.verticalSpace(16.h),
             ],
           ),
         ),

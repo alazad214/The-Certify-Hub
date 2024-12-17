@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../profile_screen/model/get_profile_response.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -22,9 +24,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  User? profileData;
   @override
   void initState() {
     getCourseRxObj.getCourseData();
+    getProfileDataRxObj.getprofileData();
     super.initState();
   }
 
@@ -155,46 +159,59 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Row _buildHomeHeader() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Flexible(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildHomeHeader() {
+    return StreamBuilder(
+      stream: getProfileDataRxObj.getProfileCreateData,
+      builder: (context, snapshot) {
+        profileData = snapshot.data?.data?.user;
+        if (snapshot.hasData) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Hey, Al Azad 👋',
-                style: TextFontStyle.headline24w400c222222StyleGTWalsheim,
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Hey, ${profileData!.name} 👋',
+                      overflow: TextOverflow.ellipsis,
+                      style: TextFontStyle.headline24w400c222222StyleGTWalsheim,
+                    ),
+                    UIHelper.verticalSpace(10.h),
+                    Text(
+                      'Pick a certification to get started!',
+                      overflow: TextOverflow.ellipsis,
+                      style: TextFontStyle.headline18w400cFFFFFFStyleGTWalsheim,
+                    ),
+                  ],
+                ),
               ),
-              UIHelper.verticalSpace(10.h),
-              Text(
-                'Pick a certification to get started!',
-                style: TextFontStyle.headline18w400cFFFFFFStyleGTWalsheim,
-              ),
+              InkWell(
+                onTap: () {
+                  NavigationService.navigateTo(Routes.notification);
+                },
+                child: Container(
+                  height: 44.h,
+                  width: 44.w,
+                  padding: EdgeInsets.all(7.sp),
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  child: SvgPicture.asset(
+                    Assets.icons.notification,
+                    height: 24.h,
+                    width: 24.w,
+                  ),
+                ),
+              )
             ],
-          ),
-        ),
-        InkWell(
-          onTap: () {
-            NavigationService.navigateTo(Routes.notification);
-          },
-          child: Container(
-            height: 44.h,
-            width: 44.w,
-            padding: EdgeInsets.all(7.sp),
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              shape: BoxShape.circle,
-            ),
-            child: SvgPicture.asset(
-              Assets.icons.notification,
-              height: 24.h,
-              width: 24.w,
-            ),
-          ),
-        )
-      ],
+          );
+        }
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 }
