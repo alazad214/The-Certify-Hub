@@ -2,6 +2,8 @@ import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/gen/assets.gen.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
+import 'package:christiandimene/helpers/all_routes.dart';
+import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,14 +36,14 @@ void examFinishPopup(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              UIHelper.verticalSpace(24.h),
+              UIHelper.verticalSpace(8.h),
               Text(
                 textAlign: TextAlign.center,
-               title,
+                title,
                 style: TextFontStyle.headline18w500c222222StyleGTWalsheim
                     .copyWith(fontWeight: FontWeight.w700),
               ),
-              UIHelper.verticalSpace(40.h),
+              UIHelper.verticalSpace(16.h),
               // Row(
               //   children: [
               //     SvgPicture.asset(
@@ -107,15 +109,36 @@ void examFinishPopup(
                   )
                 ],
               ),
-              UIHelper.verticalSpace(40.h),
-              UIHelper.horizontalSpace(16.h),
-              customButton(
-                name: 'Result',
-                height: 46.h,
-                onCallBack: finishOntap,
-                context: context,
-              ),
               UIHelper.verticalSpace(16.h),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: customButton(
+                      name: 'Restart',
+                      height: 46.h,
+                      color: AppColors.white,
+                      borderColor: AppColors.black,
+                      onCallBack: () {
+                        NavigationService.navigateToUntilReplacement(
+                            Routes.bottomNavBarScreen);
+                      },
+                      context: context,
+                    ),
+                  ),
+                  UIHelper.horizontalSpace(10.w),
+                  Expanded(
+                    child: customButton(
+                      name: 'Result',
+                      height: 46.h,
+                      onCallBack: finishOntap,
+                      context: context,
+                    ),
+                  )
+                ],
+              ),
+
+              UIHelper.verticalSpace(10.h),
             ],
           ),
         ),

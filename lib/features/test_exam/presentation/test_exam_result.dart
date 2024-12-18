@@ -1,4 +1,5 @@
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
+import 'package:christiandimene/features/certification/model/mock_test_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,6 +13,8 @@ import '../../../helpers/navigation_service.dart';
 import '../../../helpers/ui_helpers.dart';
 
 class TestExamResult extends StatefulWidget {
+  QuizData? quiz;
+  TestExamResult({this.quiz, super.key});
   @override
   State<TestExamResult> createState() => _TestExamResultState();
 }
@@ -41,8 +44,10 @@ class _TestExamResultState extends State<TestExamResult> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-        title: 'Test: Managing Your Time Wisely',
-        onCallBack: () {},
+        title: widget.quiz!.title!,
+        onCallBack: () {
+          NavigationService.goBack;
+        },
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -82,10 +87,8 @@ class _TestExamResultState extends State<TestExamResult> {
                 UIHelper.verticalSpace(30.h),
                 ListView.builder(
                   shrinkWrap: true,
-                  physics:
-                      NeverScrollableScrollPhysics(), // Disable internal scrolling
-                  padding: EdgeInsets.only(
-                      bottom: 100.h), // Disable internal scrolling
+                  physics: NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.only(bottom: 100.h),
                   itemCount: questions.length,
                   itemBuilder: (context, index) {
                     final questionData = questions[index];
@@ -150,7 +153,8 @@ class _TestExamResultState extends State<TestExamResult> {
             height: 48.h,
             name: 'Restart Quiz',
             onCallBack: () {
-              NavigationService.navigateTo(Routes.mockTestSectionScreen);
+              NavigationService.navigateToUntilReplacement(
+                  Routes.bottomNavBarScreen);
             },
             context: context,
           ),
@@ -230,13 +234,13 @@ class _TestExamResultState extends State<TestExamResult> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Time Taken'.tr,
+                        'Total Quiz'.tr,
                         style: TextFontStyle
                             .textStyle12w400c9AB2A8StyleGTWalsheim
                             .copyWith(color: AppColors.c000000),
                       ),
                       Text(
-                        '15 Mins'.tr,
+                        "${widget.quiz!.totalQuestions}",
                         style: TextFontStyle
                             .textStyle16w500c222222StyleGTWalsheim
                             .copyWith(color: AppColors.c000000),

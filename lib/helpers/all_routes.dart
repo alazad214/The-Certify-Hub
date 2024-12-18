@@ -250,24 +250,40 @@ final class RouteGenerator {
                     ));
 
       case Routes.testExamQuestionScreen:
-              final arg = settings.arguments as Map?;
+        final arg = settings.arguments as Map?;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-                widget: TestExamQuiz(     quiz: arg!['data'],), settings: settings)
+                widget: TestExamQuiz(
+                  quiz: arg!['data'],
+                ),
+                settings: settings)
             : CupertinoPageRoute(
-                builder: (context) => TestExamQuiz(     quiz: arg!['data'],));
+                builder: (context) => TestExamQuiz(
+                  quiz: arg!['data'],
+                ),
+              );
 
       case Routes.testExamResult:
+        final arg = settings.arguments as Map?;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-                widget: TestExamResult(), settings: settings)
-            : CupertinoPageRoute(builder: (context) => TestExamResult());
+                widget: TestExamResult(
+                  quiz: arg!['data'],
+                ),
+                settings: settings)
+            : CupertinoPageRoute(
+                builder: (context) => TestExamResult(
+                  quiz: arg!['data'],
+                ),
+              );
 
       case Routes.forgetVerifyScreen:
         return Platform.isAndroid
             ? _FadedTransitionRoute(
                 widget: ForgetVerifyScreen(), settings: settings)
-            : CupertinoPageRoute(builder: (context) => ForgetVerifyScreen());
+            : CupertinoPageRoute(
+                builder: (context) => ForgetVerifyScreen(),
+              );
 
       default:
         return null;

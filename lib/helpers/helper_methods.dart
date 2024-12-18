@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, unused_local_variable, avoid_print
 
 import 'dart:async';
-
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -278,6 +277,54 @@ void showMaterialDialog(
                   minWidth: .3.sw,
                   borderRadius: 30.r,
                   color: AppColors.allPrimaryColor,
+                  textStyle: GoogleFonts.montserrat(
+                      fontSize: 17.sp,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700),
+                  context: context),
+            ],
+          ));
+}
+
+void showExitDialog(
+  BuildContext context,
+) {
+  showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: Text(
+              "Do you want to exit the app?",
+              textAlign: TextAlign.center,
+              style: TextFontStyle.headline18w400cFFFFFFStyleGTWalsheim,
+            ),
+            actions: <Widget>[
+              customButton(
+                  name: "No",
+                  onCallBack: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  height: 30.sp,
+                  minWidth: .3.sw,
+                  borderRadius: 30.r,
+                  color: AppColors.cFBC42E,
+                  textStyle: GoogleFonts.montserrat(
+                      fontSize: 17.sp,
+                      color: AppColors.cFFFFFF,
+                      fontWeight: FontWeight.w700),
+                  context: context),
+              customButton(
+                  name: "Yes",
+                  onCallBack: () {
+                    if (Platform.isAndroid) {
+                      SystemNavigator.pop();
+                    } else if (Platform.isIOS) {
+                      exit(0);
+                    }
+                  },
+                  height: 30.sp,
+                  minWidth: .3.sw,
+                  borderRadius: 30.r,
+                  color: AppColors.cFBC42E,
                   textStyle: GoogleFonts.montserrat(
                       fontSize: 17.sp,
                       color: Colors.white,

@@ -1,10 +1,10 @@
 //azad added ...
 import 'dart:developer';
-import 'package:christiandimene/features/test_exam/data/api.dart';
+import 'package:christiandimene/features/test_exam/data/get_text_quiz/api.dart';
 import 'package:christiandimene/features/test_exam/model/test_quiz_response.dart';
 import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
-import '../../../../../networks/rx_base.dart';
+import '../../../../../../networks/rx_base.dart';
 
 final class GetTestQuizRx extends RxResponseInt<TestQuizResponse> {
   final api = TestQuizApi.instance;
