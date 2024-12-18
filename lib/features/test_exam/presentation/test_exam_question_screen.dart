@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
+import 'package:christiandimene/common_widgets/popup_item_widget.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/model/mock_test_response.dart';
 import 'package:christiandimene/features/widgets/exam_finish_popup.dart';
@@ -12,6 +13,8 @@ import 'package:christiandimene/networks/api_acess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/utils.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../helpers/all_routes.dart';
@@ -372,7 +375,9 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                 };
 
                 if (result.isEmpty) {
-                  log('=======Contribute minimum 1 quiz ========');
+                  Get.snackbar(
+                      'Something a wrong', 'Contribute a minimum 1 quiz',
+                      backgroundColor: AppColors.cFDB338);
                 } else {
                   postCalculateQuizRxObj
                       .calculateResult(answers: answer)
@@ -489,7 +494,8 @@ class _TestExamQuizState extends State<TestExamQuiz> {
         };
 
         if (result.isEmpty) {
-          log('=======Contribute minimum 1 quiz ========');
+          Get.snackbar('Something a wrong', 'Contribute a minimum 1 quiz',
+              backgroundColor: AppColors.cFDB338);
         } else {
           postCalculateQuizRxObj.calculateResult(answers: answer).then((value) {
             NavigationService.navigateToWithArgs(
