@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
-import '../../../../../../networks/dio/dio.dart';
-import '../../../../../../networks/endpoints.dart';
-import '../../../../../../networks/exception_handler/data_source.dart';
-import '../model/test_quiz_response.dart';
+import '../../../../../../../networks/dio/dio.dart';
+import '../../../../../../../networks/endpoints.dart';
+import '../../../../../../../networks/exception_handler/data_source.dart';
+import '../../model/test_quiz_response.dart';
 
 final class TestQuizApi {
   static final TestQuizApi _singleton = TestQuizApi._internal();

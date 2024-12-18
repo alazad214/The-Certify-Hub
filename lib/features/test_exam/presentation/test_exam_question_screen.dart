@@ -12,6 +12,7 @@ import 'package:christiandimene/networks/api_acess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_storage/get_storage.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../helpers/all_routes.dart';
 import '../model/test_quiz_response.dart';
@@ -31,63 +32,14 @@ class _TestExamQuizState extends State<TestExamQuiz> {
   Timer? timer;
   int selectedQuestionIndex = 0;
 
+  final box = GetStorage();
   Map<int, int> selectedOptions = {};
   Map<int, bool> completedQuestionsStatus = {};
   Set<int> flagged = {};
-
   Set<int> attemped = {};
   late int unttempted;
 
-  void startTime() {
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (remainingSeconds > 0) {
-        setState(() {
-          remainingSeconds--;
-        });
-      } else {
-        endQuiz();
-      }
-    });
-  }
-
-  void endQuiz() {
-    timer?.cancel();
-
-    examFinishPopup(
-      context,
-      'Time is up, see your results now?',
-      () {
-        NavigationService.navigateToReplacement(Routes.testExamResult);
-      },
-      '08:11',
-      attemped.length.toString(),
-      '08',
-      false,
-    );
-  }
-
-  String formatTime(int seconds) {
-    final minutes = seconds ~/ 60;
-    final secs = seconds % 60;
-    return '${minutes.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}';
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    duration = widget.quiz?.totalTime ?? 0;
-
-    remainingSeconds = duration * 60;
-    startTime();
-    getTestQuizRxObj.testQuiz(widget.quiz!.id!.toInt());
-  }
-
-  @override
-  void dispose() {
-    timer?.cancel();
-    getTestQuizRxObj.testQuiz(widget.quiz!.id!.toInt());
-    super.dispose();
-  }
+  Map<String, int> result = {};
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +126,7 @@ class _TestExamQuizState extends State<TestExamQuiz> {
 
   Widget buildQuestion() {
     final options = quizData!.quiz!.questions![selectedQuestionIndex].options!
-        .map((e) => e.text)
+        .map((e) => e)
         .toList();
 
     final selectedOption = selectedOptions[selectedQuestionIndex] ?? -1;
@@ -188,10 +140,26 @@ class _TestExamQuizState extends State<TestExamQuiz> {
         return InkWell(
           onTap: () {
             if (selectedOption == -1) {
+              // log('========question id========');
+              // log(quizData!.quiz!.id.toString());
+              // log('========quiz id========');
+              // log(widget.quiz!.id.toString());
+              // log('========option id========');
+
               attemped.add(selectedQuestionIndex);
               setState(() {
                 selectedOptions[selectedQuestionIndex] = index;
+                log('selectedOptions[selectedQuestionIndex] ${selectedOptions[selectedQuestionIndex].toString()}');
+                log('selectedQuestionIndex $selectedQuestionIndex');
+                log('quize id : ${quizData!.quiz!.questions![selectedQuestionIndex].id}');
+                log('tester answer id : ${options[index].id}');
+                log('tester answer id : ${options[index].text}');
+                result.addAll({
+                  quizData!.quiz!.questions![selectedQuestionIndex].id
+                      .toString(): options[index].id!
+                });
               });
+              log(result.toString());
             }
           },
           child: Container(
@@ -226,7 +194,7 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                 UIHelper.horizontalSpace(6.h),
                 Expanded(
                   child: Text(
-                    options[index]!,
+                    options[index].text!,
                     style: TextFontStyle.textStyle14w400c9AB2A8.copyWith(
                       color: isSelected
                           ? AppColors.c6B6B6B
@@ -243,6 +211,16 @@ class _TestExamQuizState extends State<TestExamQuiz> {
         );
       },
     );
+  }
+
+  void storeQuizData() {
+    final quizId = widget.quiz!.id;
+    final answersMap = Map<int, int>.from(selectedOptions);
+    final data = {
+      'quiz_id': quizId! + 1,
+      'answers': answersMap,
+    };
+    box.write('quiz_data_${quizId}', data);
   }
 
   Widget buildQuizItem() {
@@ -273,6 +251,7 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                 setState(() {
                   selectedQuestionIndex;
                   selectedQuestionIndex = index;
+                  log('quize selected item index : $selectedQuestionIndex');
                 });
               },
               child: Stack(
@@ -387,8 +366,21 @@ class _TestExamQuizState extends State<TestExamQuiz> {
               context,
               'Are you sure finish this quiz.',
               () {
-                NavigationService.navigateToUntilReplacement(
-                    Routes.testExamResult);
+                Map<String, dynamic> answer = {
+                  "quiz_id": widget.quiz!.id!,
+                  "answers": result
+                };
+
+                if (result.isEmpty) {
+                  log('=======Contribute minimum 1 quiz ========');
+                } else {
+                  postCalculateQuizRxObj
+                      .calculateResult(answers: answer)
+                      .then((value) {
+                    NavigationService.navigateToWithArgs(
+                        Routes.testExamResult, {'data': widget.quiz});
+                  });
+                }
               },
               '08:11',
               attemped.length.toString(),
@@ -470,5 +462,68 @@ class _TestExamQuizState extends State<TestExamQuiz> {
         ),
       ),
     );
+  }
+
+  void startTime() {
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (remainingSeconds > 0) {
+        setState(() {
+          remainingSeconds--;
+        });
+      } else {
+        endQuiz();
+      }
+    });
+  }
+
+  void endQuiz() {
+    timer?.cancel();
+
+    examFinishPopup(
+      context,
+      'Time is up, see your results now?',
+      () {
+        Map<String, dynamic> answer = {
+          "quiz_id": widget.quiz!.id!,
+          "answers": result
+        };
+
+        if (result.isEmpty) {
+          log('=======Contribute minimum 1 quiz ========');
+        } else {
+          postCalculateQuizRxObj.calculateResult(answers: answer).then((value) {
+            NavigationService.navigateToWithArgs(
+                Routes.testExamResult, {'data': widget.quiz});
+          });
+        }
+      },
+      '08:11',
+      attemped.length.toString(),
+      '08',
+      false,
+    );
+  }
+
+  String formatTime(int seconds) {
+    final minutes = seconds ~/ 60;
+    final secs = seconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}';
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    duration = widget.quiz?.totalTime ?? 0;
+
+    remainingSeconds = duration * 60;
+    startTime();
+    getTestQuizRxObj.testQuiz(widget.quiz!.id!.toInt());
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    getTestQuizRxObj.testQuiz(widget.quiz!.id!.toInt());
+    super.dispose();
   }
 }

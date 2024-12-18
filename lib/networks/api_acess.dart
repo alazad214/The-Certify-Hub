@@ -13,7 +13,8 @@ import 'package:christiandimene/features/home/model/course_response.dart';
 import 'package:christiandimene/features/profile_screen/data/get_profile_rx/rx.dart';
 import 'package:christiandimene/features/profile_screen/data/post_logout_rx/rx.dart';
 import 'package:christiandimene/features/profile_screen/model/get_profile_response.dart';
-import 'package:christiandimene/features/test_exam/data/rx.dart';
+import 'package:christiandimene/features/test_exam/data/get_text_quiz/rx.dart';
+import 'package:christiandimene/features/test_exam/data/post_calculate_result/rx.dart';
 import 'package:christiandimene/features/test_exam/model/test_quiz_response.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -68,3 +69,6 @@ GetMockTestRx getMockTestRxObj = GetMockTestRx(
 GetTestQuizRx getTestQuizRxObj = GetTestQuizRx(
     empty: TestQuizResponse(),
     dataFetcher: BehaviorSubject<TestQuizResponse>());
+
+PostCalculateQuizRx postCalculateQuizRxObj =
+    PostCalculateQuizRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
