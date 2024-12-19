@@ -1,3 +1,190 @@
+import 'dart:convert';
+
+import 'package:christiandimene/features/certification/model/lesson_model_response.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:get_storage/get_storage.dart';
+
+class CertificationVideoPlayerScreen extends StatefulWidget {
+  final CourseContent? data;
+  CertificationVideoPlayerScreen({this.data, Key? key}) : super(key: key);
+
+  @override
+  State<CertificationVideoPlayerScreen> createState() =>
+      _CertificationVideoPlayerScreenState();
+}
+
+class _CertificationVideoPlayerScreenState
+    extends State<CertificationVideoPlayerScreen> {
+  late WebViewController _controller;
+  bool _isControllerReady = false;
+  bool _popupShown = false;
+
+  // Initialize GetStorage instance
+  final GetStorage _box = GetStorage();
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeWebView();
+    _checkIfPopupShown();
+  }
+
+  // Initialize WebView and set up events
+  Future<void> _initializeWebView() async {
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(NavigationDelegate(
+        onPageStarted: (url) {
+          debugPrint('Page started loading: $url');
+        },
+        onPageFinished: (url) {
+          debugPrint('Page finished loading: $url');
+        },
+      ))
+      ..addJavaScriptChannel(
+        'VimeoChannel',
+        onMessageReceived: (message) {
+          if (message.message == "ended") {
+            debugPrint('Video ended');
+            _onVideoEnded();
+          }
+        },
+      );
+
+    _loadVimeoVideo(widget.data!.videoFile);
+    setState(() {
+      _isControllerReady = true;
+    });
+  }
+
+  // Load the Vimeo video
+  void _loadVimeoVideo(String videoId) {
+    final html = '''
+      <html>
+        <head>
+          <style>
+            body { margin: 0; background-color: black; }
+            iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+          </style>
+          <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
+          <script src="https://player.vimeo.com/api/player.js"></script>
+        </head>
+        <body>
+          <iframe 
+            id="vimeo-player"
+            src="$videoId" 
+            allowfullscreen>
+          </iframe>
+          <script>
+            var iframe = document.getElementById('vimeo-player');
+            var player = new Vimeo.Player(iframe);
+
+            player.on('ended', function() {
+              console.log('Video ended');
+              VimeoChannel.postMessage("ended");
+            });
+          </script>
+        </body>
+      </html>
+    ''';
+
+    final String contentBase64 = base64Encode(utf8.encode(html));
+    _controller.loadRequest(Uri.parse('data:text/html;base64,$contentBase64'));
+  }
+
+  // Check if the popup has been shown before for the current video using GetStorage
+  void _checkIfPopupShown() {
+    // Use the video ID or a unique identifier as the key
+    String videoId = widget.data!.videoFile;
+    _popupShown = _box.read(videoId) ?? false;
+    setState(() {});
+  }
+
+  // When the video ends, show the popup if it's the first time
+  void _onVideoEnded() {
+    if (!_popupShown) {
+      _showPopup();
+    }
+  }
+
+  // Show the popup and update GetStorage for the specific video
+  void _showPopup() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Video Ended"),
+          content: Text("You have finished watching the video."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                // Save that the popup was shown for this specific video
+                String videoId = widget.data!.videoFile;
+                _box.write(videoId, true);
+                setState(() {
+                  _popupShown = true;
+                });
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Lock orientation for full-screen mode (optional)
+  void _lockOrientation() {
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+  }
+
+  // Unlock orientation when not in full-screen mode
+  void _unlockOrientation() {
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  }
+
+  @override
+  void dispose() {
+    _unlockOrientation();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.data!.contentTitle),
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 18.w),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _isControllerReady
+                  ? Container(
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.r)),
+                      height: 200,
+                      child: WebViewWidget(controller: _controller))
+                  : CircularProgressIndicator(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
 // import 'package:chewie/chewie.dart';
 // import 'package:christiandimene/common_widgets/custom_button.dart';
 // import 'package:christiandimene/constants/text_font_style.dart';
@@ -276,170 +463,3 @@
 //         });
 //   }
 // }
-
-import 'dart:convert';
-import 'dart:developer';
-import 'package:christiandimene/features/certification/model/lesson_model_response.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import '../../../common_widgets/custom_appbar.dart';
-import '../../../helpers/navigation_service.dart';
-
-class CertificationVideoPlayerScreen extends StatefulWidget {
-  CourseContent? data;
-  CertificationVideoPlayerScreen({this.data, Key? key}) : super(key: key);
-
-  @override
-  State<CertificationVideoPlayerScreen> createState() =>
-      _CertificationVideoPlayerScreenState();
-}
-
-class _CertificationVideoPlayerScreenState
-    extends State<CertificationVideoPlayerScreen> {
-  late WebViewController _controller;
-  bool _isControllerReady = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeWebView();
-  }
-
-  Future<void> _initializeWebView() async {
-    _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(NavigationDelegate(
-        onPageStarted: (url) {
-          debugPrint('Page started loading: $url');
-        },
-        onPageFinished: (url) {
-          debugPrint('Page finished loading: $url');
-        },
-      ))
-      ..addJavaScriptChannel(
-        'VimeoChannel',
-        onMessageReceived: (message) {
-          if (message.message == 'enter_full_screen') {
-            _lockOrientation();
-          } else if (message.message == 'exit_full_screen') {
-            _unlockOrientation();
-          } else if (message.message == "ended") {
-            debugPrint('Video ended');
-          }
-        },
-      );
-
-    _loadVimeoVideo(widget.data!.videoFile);
-    setState(() {
-      _isControllerReady = true;
-    });
-  }
-
-  void _loadVimeoVideo(String videoId) {
-    final html = '''
-      <html>
-        <head>
-          <style>
-            body { margin: 0; background-color: black; }
-            iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-          </style>
-          <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
-          <script src="https://player.vimeo.com/api/player.js"></script>
-        </head>
-        <body>
-          <iframe 
-            id="vimeo-player"
-            src="$videoId" 
-            allowfullscreen>
-          </iframe>
-          <script>
-            var iframe = document.getElementById('vimeo-player');
-            var player = new Vimeo.Player(iframe);
-
-            player.on('play', function() {
-              console.log('Video is playing');
-            });
-
-            player.on('pause', function() {
-              console.log('Video is paused');
-            });
-
-            player.on('ended', function() {
-              console.log('Video ended');
-              VimeoChannel.postMessage("ended");
-            });
-
-            player.on('fullscreenchange', function() {
-              if (document.fullscreenElement) {
-                VimeoChannel.postMessage("enter_full_screen");
-              } else {
-                VimeoChannel.postMessage("exit_full_screen");
-              }
-            });
-          </script>
-        </body>
-      </html>
-    ''';
-
-    final String contentBase64 = base64Encode(utf8.encode(html));
-    _controller.loadRequest(Uri.parse('data:text/html;base64,$contentBase64'));
-  }
-
-  void _lockOrientation() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
-  }
-
-  void _unlockOrientation() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-  }
-
-  @override
-  void dispose() {
-    _unlockOrientation();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    log('=====================video =======================');
-
-    log(widget.data!.videoFile);
-    return Scaffold(
-      appBar: CustomAppbar(
-        title: widget.data!.contentTitle,
-        onCallBack: () {
-          NavigationService.goBack;
-        },
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 18.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _isControllerReady
-                  ? Container(
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.r)),
-                      height: 200,
-                      child: WebViewWidget(controller: _controller))
-                  : const CircularProgressIndicator(),
-              // Spacer(),
-              // CustomAskMeCard(),
-              // UIHelper.verticalSpace(15.h)
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}

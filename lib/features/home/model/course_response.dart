@@ -42,9 +42,10 @@ class Course {
   String duration;
   String summary;
   DateTime lastUpdate;
-  double coursePrice;
+  num coursePrice;
   String courseFeatureImage;
   String status;
+  num totalLessons;
   DateTime createdAt;
   DateTime updatedAt;
   dynamic deletedAt;
@@ -59,6 +60,7 @@ class Course {
     required this.coursePrice,
     required this.courseFeatureImage,
     required this.status,
+    required this.totalLessons,
     required this.createdAt,
     required this.updatedAt,
     required this.deletedAt,
@@ -78,6 +80,7 @@ class Course {
         coursePrice: json["course_price"],
         courseFeatureImage: json["course_feature_image"],
         status: json["status"],
+        totalLessons: json["total_lessons"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
         deletedAt: json["deleted_at"],
@@ -93,6 +96,7 @@ class Course {
         "course_price": coursePrice,
         "course_feature_image": courseFeatureImage,
         "status": status,
+        "total_lessons": totalLessons,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
         "deleted_at": deletedAt,

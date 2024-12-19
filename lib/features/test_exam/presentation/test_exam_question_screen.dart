@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
-import 'package:christiandimene/common_widgets/popup_item_widget.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/model/mock_test_response.dart';
 import 'package:christiandimene/features/widgets/exam_finish_popup.dart';
@@ -14,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/utils.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../helpers/all_routes.dart';
@@ -183,7 +181,7 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: isSelected ? AppColors.c6B6B6B : AppColors.c6B6B6B,
+                      color: isSelected ? AppColors.black : AppColors.c6B6B6B,
                     ),
                   ),
                   child: Center(
@@ -200,9 +198,9 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                     options[index].text!,
                     style: TextFontStyle.textStyle14w400c9AB2A8.copyWith(
                       color: isSelected
-                          ? AppColors.c6B6B6B
+                          ? AppColors.black
                           : (selectedOption != -1
-                              ? AppColors.c6B6B6B
+                              ? AppColors.black
                               : AppColors.c6B6B6B),
                     ),
                   ),
@@ -214,16 +212,6 @@ class _TestExamQuizState extends State<TestExamQuiz> {
         );
       },
     );
-  }
-
-  void storeQuizData() {
-    final quizId = widget.quiz!.id;
-    final answersMap = Map<int, int>.from(selectedOptions);
-    final data = {
-      'quiz_id': quizId! + 1,
-      'answers': answersMap,
-    };
-    box.write('quiz_data_${quizId}', data);
   }
 
   Widget buildQuizItem() {
@@ -254,7 +242,6 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                 setState(() {
                   selectedQuestionIndex;
                   selectedQuestionIndex = index;
-                  log('quize selected item index : $selectedQuestionIndex');
                 });
               },
               child: Stack(
@@ -331,8 +318,8 @@ class _TestExamQuizState extends State<TestExamQuiz> {
   }
 
   Widget navigationButtons() {
-    bool allAnswered =
-        selectedOptions.length == quizData!.quiz!.questions!.length;
+    // bool allAnswered =
+    //     selectedOptions.length == quizData!.quiz!.questions!.length;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -382,8 +369,10 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                   postCalculateQuizRxObj
                       .calculateResult(answers: answer)
                       .then((value) {
+                    log("result data is : $value");
+                    log("result data is : ${value["result"]["id"]}");
                     NavigationService.navigateToWithArgs(
-                        Routes.testExamResult, {'data': widget.quiz});
+                        Routes.testExamResult, {'data': value});
                   });
                 }
               },
@@ -405,7 +394,7 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                 "Finish",
                 style:
                     TextFontStyle.headline18w500c222222StyleGTWalsheim.copyWith(
-                  color: allAnswered ? AppColors.cFDB338 : AppColors.black,
+                  color: AppColors.black,
                 ),
               ),
             ),

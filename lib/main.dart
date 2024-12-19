@@ -1,6 +1,7 @@
 import 'package:christiandimene/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:auto_animated/auto_animated.dart';
@@ -17,7 +18,10 @@ void main() async {
   //await _requestPermissions();
   await GetStorage.init();
   diSetup();
-  // initiInternetChecker();
+
+
+  Stripe.publishableKey =
+      'pk_test_51PTloFP9ejtTnTKdqb1kVhfVIcx2C6kTniRY8ieR3IeHNl4e7QUlEUstlIHAk2ijom9EUEpjWysJR8E5fKLjEZYD00WrsGUNkW';
 
   DioSingleton.instance.create();
 

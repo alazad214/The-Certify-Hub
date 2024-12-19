@@ -4,6 +4,7 @@ import 'package:christiandimene/features/auth/data/post_reset_rx/rx.dart';
 import 'package:christiandimene/features/auth/data/post_signup_rx/rx.dart';
 import 'package:christiandimene/features/certification/data/get_course_detials_rx/rx.dart';
 import 'package:christiandimene/features/certification/data/get_mock_test_rx/rx.dart';
+import 'package:christiandimene/features/certification/data/post_payment_rx/rx.dart';
 import 'package:christiandimene/features/certification/model/course_details_response.dart';
 import 'package:christiandimene/features/certification/model/lesson_model_response.dart';
 import 'package:christiandimene/features/certification/model/mock_test_response.dart';
@@ -72,3 +73,6 @@ GetTestQuizRx getTestQuizRxObj = GetTestQuizRx(
 
 PostCalculateQuizRx postCalculateQuizRxObj =
     PostCalculateQuizRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
+
+PaymentRx paymentRxObj =
+    PaymentRx(empty: {}, dataFetcher: BehaviorSubject<Map>());

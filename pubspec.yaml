@@ -65,6 +65,7 @@ dependencies:
   path_provider: ^2.1.5
   permission_handler: ^11.3.1
   fluttertoast: ^8.2.10
+  flutter_stripe: ^11.3.0
   
 
 

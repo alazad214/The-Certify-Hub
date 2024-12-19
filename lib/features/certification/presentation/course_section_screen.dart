@@ -1,9 +1,9 @@
 import 'dart:developer';
+import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/model/course_details_response.dart';
 import 'package:christiandimene/features/certification/model/pdf_model_response.dart';
-import 'package:christiandimene/features/certification/widgets/custom_appbar2.dart';
 import 'package:christiandimene/features/widgets/custom_ask_me_card.dart';
 import 'package:christiandimene/gen/assets.gen.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
@@ -40,42 +40,46 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
     log("========================id============================");
     log(widget.data!.id.toString());
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 24.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              UIHelper.verticalSpace(21.h),
-              CustomAppbar2(
-                title: 'Managing Your Time Wisely',
-                subtitle:
-                    _selectedType == 'lesson' ? '0/5 lesson(s) completed' : '',
-                ontap: () {
-                  // NavigationService.navigateToReplacement(
-                  //     Routes.certificationScreen);
-                  NavigationService.goBack;
-                },
-              ),
+      appBar: CustomAppbar(
+        title: widget.data!.courseModuleName,
+        onCallBack: () {
+          NavigationService.goBack;
+        },
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // UIHelper.verticalSpace(21.h),
+            // CustomAppbar2(
+            //   title: 'Managing Your Time Wisely',
+            //   subtitle:
+            //       _selectedType == 'lesson' ? '0/5 lesson(s) completed' : '',
+            //   ontap: () {
+            //     // NavigationService.navigateToReplacement(
+            //     //     Routes.certificationScreen);
+            //     NavigationService.goBack;
+            //   },
+            // ),
 
-              if (_selectedType == 'lesson') UIHelper.verticalSpace(21.h),
-              if (_selectedType == 'lesson') CustomAskMeCard(),
+            if (_selectedType == 'lesson') UIHelper.verticalSpace(21.h),
+            if (_selectedType == 'lesson') CustomAskMeCard(),
 
-              UIHelper.verticalSpace(25.h),
+            UIHelper.verticalSpace(25.h),
 
-              ///toggle button....
-              _buildCourseAndTestButton(),
+            ///toggle button....
+            _buildCourseAndTestButton(),
 
-              UIHelper.verticalSpace(16.h),
+            UIHelper.verticalSpace(16.h),
 
-              ///build lesson item....
-              if (_selectedType == 'lesson') _buildLessonItem(),
+            ///build lesson item....
+            if (_selectedType == 'lesson') _buildLessonItem(),
 
-              ///build pdf item....
-              if (_selectedType == 'pdf') _buildPDFItem(),
-              UIHelper.verticalSpace(120.h),
-            ],
-          ),
+            ///build pdf item....
+            if (_selectedType == 'pdf') _buildPDFItem(),
+            UIHelper.verticalSpace(120.h),
+          ],
         ),
       ),
       bottomSheet: Container(

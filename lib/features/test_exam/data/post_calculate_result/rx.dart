@@ -10,7 +10,7 @@ final class PostCalculateQuizRx extends RxResponseInt {
 
   ValueStream get getFileData => dataFetcher.stream;
 
-  Future<bool> calculateResult({
+  Future<Map> calculateResult({
     // required int quizId,
     required Map<String, dynamic> answers,
   }) async {
@@ -21,7 +21,8 @@ final class PostCalculateQuizRx extends RxResponseInt {
       // };
 
       Map data = await api.calculateQuiz(body: answers).waitingForFuture();
-      return await handleSuccessWithReturn(data);
+      await handleSuccessWithReturn(data);
+      return data;
     } catch (error) {
       return await handleErrorWithReturn(error);
     }
