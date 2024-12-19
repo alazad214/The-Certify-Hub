@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/common_widgets/custom_button.dart';
@@ -15,6 +14,8 @@ import 'package:christiandimene/networks/api_acess.dart';
 import 'package:christiandimene/networks/endpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+
 import '../../widgets/mock_test_popup.dart';
 import '../model/course_details_response.dart';
 
@@ -43,7 +44,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-        title: 'Certification Details',
+        title: widget.data!.courseTitle,
         onCallBack: () {
           NavigationService.goBack;
         },
@@ -60,15 +61,15 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
             CustomAskMeCard(),
             UIHelper.verticalSpace(25.h),
 
-            ///toggle data and mock tests button....
+            ///toggle data and mock tests button...
             _buildCourseAndTestButton(),
 
             UIHelper.verticalSpace(16.h),
 
-            ///build data item....
+            ///build data item...
             if (_selectedType == 'data') _buildCourseItem(),
 
-            ///build mock tests item....
+            ///build mock tests item...
             if (_selectedType == 'test') _buildMockTestItem(),
 
             UIHelper.verticalSpace(100.h),
@@ -82,14 +83,31 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '50.00 ${'\$'}',
+              '${widget.data!.coursePrice} ${'\$'}',
               style: TextFontStyle.headline24w700c245741StyleGTWalsheim,
             ),
             customButton(
                 minWidth: 170.w,
                 height: 48.h,
                 name: 'Buy Now',
-                onCallBack: () {},
+                onCallBack: () async {
+                  try {
+                    // Payment APi
+                    var paymentResponse = await paymentRxObj
+                        .paymentData(courseId: {"course_id": widget.data!.id});
+
+                    // final data = json.decode(paymentResponse);
+
+                    log('payment client secret key is : ${paymentResponse["client_secret"]}');
+
+                    await stripePaymentSheet(
+                        orderId: widget.data!.id,
+                        paymentIntentClientSecret:
+                            paymentResponse["client_secret"]);
+                  } catch (e) {
+                    log(e.toString());
+                  }
+                },
                 context: context)
           ],
         ),
@@ -97,7 +115,39 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
     );
   }
 
-  ///toggle data and mock tests button....
+  Future<void> stripePaymentSheet(
+      {required String paymentIntentClientSecret,
+      required dynamic orderId}) async {
+    // Open Payment Sheet
+    await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+      paymentIntentClientSecret: paymentIntentClientSecret,
+      merchantDisplayName: 'Service Booking',
+    ));
+
+    // Make Payment By Stripe
+    await Stripe.instance.presentPaymentSheet().then((value) async {
+      if (value == null) {
+        //Show Payment Sucess Status
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text('Payment Success'.toUpperCase(),
+                  style: TextStyle(fontSize: 18.sp, color: Colors.green))),
+        );
+
+        // NavigationService.navigateTo(Routes.navigationScreen);
+      }
+    }).catchError((e) {
+      log(e.toString());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text('Payment Failed',
+                style: TextStyle(fontSize: 18.sp, color: Colors.red))),
+      );
+    });
+  }
+
+  ///COURSE AND MOCK TEST...
   Widget _buildCourseAndTestButton() {
     return Row(
       children: [
@@ -191,17 +241,13 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                     shrinkWrap: true,
                     primary: false,
                     itemBuilder: (_, index) {
-                      // ignore: unused_local_variable
                       QuizData? quiz;
                       quiz = mockTest.data!.quizzes![index];
                       return InkWell(
                         onTap: () {
                           mockTestPopup(
                             context,
-                            () {
-                              // NavigationService.navigateTo(
-                              //     Routes.practiceExamInstruction);
-                            },
+                            () {},
                             () {
                               NavigationService.navigateToWithArgs(
                                   Routes.testExamInstructionScreen,
@@ -236,7 +282,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                     ],
                                   ),
                                   child: Text(
-                                    '01',
+                                    "${index + 1}",
                                     style: TextFontStyle
                                         .headline24w400c222222StyleGTWalsheim
                                         .copyWith(color: AppColors.c245741),
@@ -288,8 +334,6 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
         });
   }
 
-  ///build data item....
-
   Widget _buildCourseItem() {
     return StreamBuilder(
         stream: getCourseDetailsRxObj.getCourseDetails,
@@ -311,9 +355,6 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                     itemBuilder: (_, index) {
                       final CourseModule? data;
                       data = courseData.data!.courseModules[index];
-                      log(data.id.toString());
-                      log("========================Certification main screen pass id============================");
-
                       return InkWell(
                         onTap: () {
                           NavigationService.navigateToWithArgs(
@@ -348,7 +389,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                     ],
                                   ),
                                   child: Text(
-                                    data.lessonCount.toString(),
+                                    "${index + 1}",
                                     style: TextFontStyle
                                         .headline24w400c222222StyleGTWalsheim
                                         .copyWith(
@@ -373,7 +414,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                       Row(
                                         children: [
                                           Text(
-                                            '79 Lessons',
+                                            "Lessons: ${data.lessonCount}",
                                             overflow: TextOverflow.ellipsis,
                                             style: TextFontStyle
                                                 .textStyle12w400c9AB2A8StyleGTWalsheim
@@ -381,21 +422,21 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                               color: AppColors.c8C8C8C,
                                             ),
                                           ),
-                                          Container(
-                                            width: 2.w,
-                                            height: 12.h,
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 5.w),
-                                            color: AppColors.c8C8C8C,
-                                          ),
-                                          Text(
-                                            '3 Pdf',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextFontStyle
-                                                .textStyle14w400c9AB2A8StyleGTWalsheim
-                                                .copyWith(
-                                                    color: AppColors.c8C8C8C),
-                                          ),
+                                          // Container(
+                                          //   width: 2.w,
+                                          //   height: 12.h,
+                                          //   margin: EdgeInsets.symmetric(
+                                          //       horizontal: 5.w),
+                                          //   color: AppColors.c8C8C8C,
+                                          // ),
+                                          // Text(
+                                          //   '3 Pdf',
+                                          //   overflow: TextOverflow.ellipsis,
+                                          //   style: TextFontStyle
+                                          //       .textStyle14w400c9AB2A8StyleGTWalsheim
+                                          //       .copyWith(
+                                          //           color: AppColors.c8C8C8C),
+                                          // ),
                                         ],
                                       ),
                                     ],
@@ -468,6 +509,15 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                             children: [
                               Flexible(
                                 child: Text(
+                                  "Duration: ",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextFontStyle
+                                      .textStyle16w400c999999StyleGTWalsheim
+                                      .copyWith(color: AppColors.c8C8C8C),
+                                ),
+                              ),
+                              Flexible(
+                                child: Text(
                                   data.duration,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextFontStyle
@@ -475,21 +525,21 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                       .copyWith(color: AppColors.c8C8C8C),
                                 ),
                               ),
-                              Container(
-                                width: 2.w,
-                                height: 12.h,
-                                margin: EdgeInsets.symmetric(horizontal: 5.w),
-                                color: AppColors.c8C8C8C,
-                              ),
-                              Expanded(
-                                child: Text(
-                                  "${data.coursePrice} \$",
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextFontStyle
-                                      .textStyle14w400c9AB2A8StyleGTWalsheim
-                                      .copyWith(color: AppColors.c8C8C8C),
-                                ),
-                              ),
+                              // Container(
+                              //   width: 2.w,
+                              //   height: 12.h,
+                              //   margin: EdgeInsets.symmetric(horizontal: 5.w),
+                              //   color: AppColors.c8C8C8C,
+                              // ),
+                              // Expanded(
+                              //   child: Text(
+                              //     "${widget.data!.totalLessons} ",
+                              //     overflow: TextOverflow.ellipsis,
+                              //     style: TextFontStyle
+                              //         .textStyle14w400c9AB2A8StyleGTWalsheim
+                              //         .copyWith(color: AppColors.c8C8C8C),
+                              //   ),
+                              // ),
                             ],
                           )
                         ],
@@ -509,8 +559,6 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
         });
   }
 }
-
-
 
 /*
  

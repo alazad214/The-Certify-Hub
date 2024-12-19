@@ -17,7 +17,7 @@ final class NetworkConstants {
 
 final class PaymentGateway {
   PaymentGateway._();
-  static String gateway(String orderId) => "";
+  static String gateway() => "/create-payment-intent";
 }
 
 final class Endpoints {
@@ -37,10 +37,8 @@ final class Endpoints {
   static String pdf(int id) => "/courses/$id/files";
   static String mockTest(int id) => "/get-quizzes/$id";
 
-
-
   //MOCK TEST-->
-  
+
   static String testQuiz(int id) => "/quizzes/$id";
   static String resultCalculate() => "/quizzes/calculate-result";
 }

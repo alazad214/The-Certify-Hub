@@ -72,11 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
       stream: getCourseRxObj.getCourse,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text('Something Wrong'),
-            );
-          } else if (snapshot.hasData) {
+          if (snapshot.hasData) {
             CourseResponse courseData = snapshot.data;
 
             if (courseData.data == null || courseData.data!.isEmpty) {

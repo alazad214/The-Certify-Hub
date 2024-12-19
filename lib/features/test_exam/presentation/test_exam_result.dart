@@ -1,5 +1,5 @@
+import 'dart:developer';
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
-import 'package:christiandimene/features/certification/model/mock_test_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,7 +13,7 @@ import '../../../helpers/navigation_service.dart';
 import '../../../helpers/ui_helpers.dart';
 
 class TestExamResult extends StatefulWidget {
-  QuizData? quiz;
+  Map? quiz;
   TestExamResult({this.quiz, super.key});
   @override
   State<TestExamResult> createState() => _TestExamResultState();
@@ -42,9 +42,11 @@ class _TestExamResultState extends State<TestExamResult> {
 
   @override
   Widget build(BuildContext context) {
+    log('message : ${widget.quiz}');
+    log('message : ${widget.quiz!["result"]["total_questions"]}');
     return Scaffold(
       appBar: CustomAppbar(
-        title: widget.quiz!.title!,
+        title: widget.quiz!["results"][0]["explanation"],
         onCallBack: () {
           NavigationService.goBack;
         },
@@ -227,7 +229,7 @@ class _TestExamResultState extends State<TestExamResult> {
             children: [
               Row(
                 children: [
-                  SvgPicture.asset(Assets.icons.clockColor),
+                  SvgPicture.asset(Assets.icons.question),
                   UIHelper.horizontalSpace(8),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -237,13 +239,17 @@ class _TestExamResultState extends State<TestExamResult> {
                         'Total Quiz'.tr,
                         style: TextFontStyle
                             .textStyle12w400c9AB2A8StyleGTWalsheim
-                            .copyWith(color: AppColors.c000000),
+                            .copyWith(
+                          color: AppColors.c000000,
+                        ),
                       ),
                       Text(
-                        "${widget.quiz!.totalQuestions}",
+                        "${widget.quiz!["reslut"]["total_questions"]}",
                         style: TextFontStyle
                             .textStyle16w500c222222StyleGTWalsheim
-                            .copyWith(color: AppColors.c000000),
+                            .copyWith(
+                          color: AppColors.c000000,
+                        ),
                       ),
                     ],
                   ),
@@ -270,7 +276,8 @@ class _TestExamResultState extends State<TestExamResult> {
                             .copyWith(color: AppColors.c000000),
                       ),
                       Text(
-                        '30%'.tr,
+                        widget.quiz?["result"]["percentage"].toString() ??
+                            '30%'.tr,
                         style: TextFontStyle
                             .textStyle16w500c222222StyleGTWalsheim
                             .copyWith(color: AppColors.c000000),
