@@ -31,17 +31,15 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
   void initState() {
     super.initState();
     _selectedType = 'lesson';
-    getLessonsRxObj.getLessonsData(widget.data!.id);
-    getPdfRxObj.getPdfFile(widget.data!.id);
+    getLessonsRxObj.getLessonsData(widget.data!.id!);
+    getPdfRxObj.getPdfFile(widget.data!.id!);
   }
 
   @override
   Widget build(BuildContext context) {
-    log("========================id============================");
-    log(widget.data!.id.toString());
     return Scaffold(
       appBar: CustomAppbar(
-        title: widget.data!.courseModuleName,
+        title: widget.data!.courseModuleName!,
         onCallBack: () {
           NavigationService.goBack;
         },

@@ -6,6 +6,10 @@ import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../../helpers/all_routes.dart';
+import '../../../helpers/navigation_service.dart';
+import '../../../networks/api_acess.dart';
+import '../../home/model/course_response.dart';
 
 class MyCourseScreen extends StatefulWidget {
   const MyCourseScreen({super.key});
@@ -20,6 +24,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
   @override
   void initState() {
     super.initState();
+    getCourseRxObj.getCourseData();
     _selectedType = 'Ongoing';
   }
 
@@ -71,10 +76,212 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
               _buildOngoingAndCompletedButton(),
 
               ///ONGOING COURSE...
-              if (_selectedType == 'Ongoing') _buildOngoingCourseCard(),
+              if (_selectedType == 'Ongoing')
+                StreamBuilder(
+                  stream: getCourseRxObj.getCourse,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.active) {
+                      if (snapshot.hasData) {
+                        CourseResponse courseData = snapshot.data;
+
+                        if (courseData.data == null ||
+                            courseData.data!.isEmpty) {
+                          return Center(child: Text('No courses available'));
+                        } else {
+                          return ListView.builder(
+                              shrinkWrap: true,
+                              primary: false,
+                              itemCount: courseData.data!.length,
+                              itemBuilder: (_, index) {
+                                final Course? data;
+                                data = courseData.data![index];
+                                return InkWell(
+                                  onTap: () {
+                                    NavigationService.navigateToWithArgs(
+                                        Routes.certificationScreen,
+                                        {'data': data});
+                                  },
+                                  child: Container(
+                                    height: 100.h,
+                                    padding: EdgeInsets.all(8.sp),
+                                    margin: EdgeInsets.only(top: 16.h),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.white,
+                                      borderRadius: BorderRadius.circular(8.r),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 130.w,
+                                          height: 120.h,
+                                          clipBehavior: Clip.antiAlias,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.r)),
+                                          child: Image.asset(
+                                            Assets.images.homeCardImage.path,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        UIHelper.horizontalSpace(12.w),
+                                        Flexible(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(
+                                                data.courseTitle,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 2,
+                                                style: TextFontStyle
+                                                    .headline20w500c222222StyleGTWalsheim,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                      "${(0.2 * 100).toInt()}%",
+                                                      style: TextFontStyle
+                                                          .textStyle14w500c6B6B6BtyleGTWalsheim),
+                                                  UIHelper.horizontalSpace(4.w),
+                                                  Expanded(
+                                                    child:
+                                                        LinearProgressIndicator(
+                                                      minHeight: 8.h,
+                                                      value: 0.2,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10.r),
+                                                      backgroundColor:
+                                                          Colors.grey[300],
+                                                      color: AppColors.c245741,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              });
+                        }
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  },
+                ),
 
               //ONGOING COURSE...
-              if (_selectedType == 'complete') _buildCompletedCourseCard(),
+              if (_selectedType == 'complete')
+                StreamBuilder(
+                  stream: getCourseRxObj.getCourse,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.active) {
+                      if (snapshot.hasData) {
+                        CourseResponse courseData = snapshot.data;
+
+                        if (courseData.data == null ||
+                            courseData.data!.isEmpty) {
+                          return Center(child: Text('No courses available'));
+                        } else {
+                          return ListView.builder(
+                              shrinkWrap: true,
+                              primary: false,
+                              itemCount: courseData.data!.length,
+                              itemBuilder: (_, index) {
+                                final Course? data;
+                                data = courseData.data![index];
+                                return InkWell(
+                                  onTap: () {
+                                    NavigationService.navigateToWithArgs(
+                                        Routes.certificationScreen,
+                                        {'data': data});
+                                  },
+                                  child: Container(
+                                    height: 100.h,
+                                    padding: EdgeInsets.all(8.sp),
+                                    margin: EdgeInsets.only(top: 16.h),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.white,
+                                      borderRadius: BorderRadius.circular(8.r),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 130.w,
+                                          height: 120.h,
+                                          clipBehavior: Clip.antiAlias,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.r)),
+                                          child: Image.asset(
+                                            Assets.images.homeCardImage.path,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        UIHelper.horizontalSpace(12.w),
+                                        Flexible(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(
+                                                data.courseTitle,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 2,
+                                                style: TextFontStyle
+                                                    .headline20w500c222222StyleGTWalsheim,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text("${(1 * 100).toInt()}%",
+                                                      style: TextFontStyle
+                                                          .textStyle14w500c6B6B6BtyleGTWalsheim),
+                                                  UIHelper.horizontalSpace(4.w),
+                                                  Expanded(
+                                                    child:
+                                                        LinearProgressIndicator(
+                                                      minHeight: 8.h,
+                                                      value: 1,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10.r),
+                                                      backgroundColor:
+                                                          Colors.grey[300],
+                                                      color: AppColors.c245741,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              });
+                        }
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  },
+                ),
+
               UIHelper.verticalSpace(26.h),
             ],
           ),
@@ -156,139 +363,5 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
         ),
       ],
     );
-  }
-
-  //ONGOING COURSE...
-  Widget _buildOngoingCourseCard() {
-    return ListView.builder(
-        shrinkWrap: true,
-        primary: false,
-        itemCount: onGoingCourses.length,
-        itemBuilder: (_, index) {
-          final course = onGoingCourses[index];
-          return Container(
-            height: 132.h,
-            padding: EdgeInsets.all(8.sp),
-            margin: EdgeInsets.only(top: 16.h),
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 130.w,
-                  height: 120.h,
-                  clipBehavior: Clip.antiAlias,
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(8.r)),
-                  child: Image.asset(
-                    Assets.images.homeCardImage.path,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                UIHelper.horizontalSpace(12.w),
-                Flexible(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        'Weekend lessons for children',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style:
-                            TextFontStyle.headline20w500c222222StyleGTWalsheim,
-                      ),
-                      Row(
-                        children: [
-                          Text("${(course['progress'] * 100).toInt()}%",
-                              style: TextFontStyle
-                                  .textStyle14w500c6B6B6BtyleGTWalsheim),
-                          UIHelper.horizontalSpace(4.w),
-                          Expanded(
-                            child: LinearProgressIndicator(
-                              minHeight: 8.h,
-                              value: course['progress'],
-                              borderRadius: BorderRadius.circular(10.r),
-                              backgroundColor: Colors.grey[300],
-                              color: AppColors.c245741,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          );
-        });
-  }
-
-  //COMPLETED COURSE...
-  Widget _buildCompletedCourseCard() {
-    return ListView.builder(
-        shrinkWrap: true,
-        primary: false,
-        itemCount: completeCourses.length,
-        itemBuilder: (_, index) {
-          final course = completeCourses[index];
-          return Container(
-            height: 132.h,
-            padding: EdgeInsets.all(8.sp),
-            margin: EdgeInsets.only(top: 16.h),
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 130.w,
-                  height: 120.h,
-                  clipBehavior: Clip.antiAlias,
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(8.r)),
-                  child: Image.asset(
-                    Assets.images.homeCardImage.path,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                UIHelper.horizontalSpace(12.w),
-                Flexible(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        'Weekend lessons for children',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style:
-                            TextFontStyle.headline20w500c222222StyleGTWalsheim,
-                      ),
-                      Row(
-                        children: [
-                          Text("${(course['progress'] * 100).toInt()}%",
-                              style: TextFontStyle
-                                  .textStyle14w500c6B6B6BtyleGTWalsheim),
-                          UIHelper.horizontalSpace(4.w),
-                          Expanded(
-                            child: LinearProgressIndicator(
-                              minHeight: 8.h,
-                              value: course['progress'],
-                              borderRadius: BorderRadius.circular(10.r),
-                              backgroundColor: Colors.grey[300],
-                              color: AppColors.c245741,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          );
-        });
   }
 }

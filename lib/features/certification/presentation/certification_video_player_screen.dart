@@ -1,11 +1,11 @@
 import 'dart:convert';
-
+import 'dart:developer';
 import 'package:christiandimene/features/certification/model/lesson_model_response.dart';
+import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:get_storage/get_storage.dart';
 
 class CertificationVideoPlayerScreen extends StatefulWidget {
   final CourseContent? data;
@@ -22,9 +22,6 @@ class _CertificationVideoPlayerScreenState
   bool _isControllerReady = false;
   bool _popupShown = false;
 
-  // Initialize GetStorage instance
-  final GetStorage _box = GetStorage();
-
   @override
   void initState() {
     super.initState();
@@ -32,7 +29,6 @@ class _CertificationVideoPlayerScreenState
     _checkIfPopupShown();
   }
 
-  // Initialize WebView and set up events
   Future<void> _initializeWebView() async {
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -48,8 +44,7 @@ class _CertificationVideoPlayerScreenState
         'VimeoChannel',
         onMessageReceived: (message) {
           if (message.message == "ended") {
-            debugPrint('Video ended');
-            _onVideoEnded();
+            log('=============video end============');
           }
         },
       );
@@ -60,7 +55,6 @@ class _CertificationVideoPlayerScreenState
     });
   }
 
-  // Load the Vimeo video
   void _loadVimeoVideo(String videoId) {
     final html = '''
       <html>
@@ -95,55 +89,15 @@ class _CertificationVideoPlayerScreenState
     _controller.loadRequest(Uri.parse('data:text/html;base64,$contentBase64'));
   }
 
-  // Check if the popup has been shown before for the current video using GetStorage
   void _checkIfPopupShown() {
-    // Use the video ID or a unique identifier as the key
-    String videoId = widget.data!.videoFile;
-    _popupShown = _box.read(videoId) ?? false;
     setState(() {});
   }
 
-  // When the video ends, show the popup if it's the first time
-  void _onVideoEnded() {
-    if (!_popupShown) {
-      _showPopup();
-    }
-  }
-
-  // Show the popup and update GetStorage for the specific video
-  void _showPopup() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Video Ended"),
-          content: Text("You have finished watching the video."),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                // Save that the popup was shown for this specific video
-                String videoId = widget.data!.videoFile;
-                _box.write(videoId, true);
-                setState(() {
-                  _popupShown = true;
-                });
-              },
-              child: Text("OK"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // Lock orientation for full-screen mode (optional)
   void _lockOrientation() {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
   }
 
-  // Unlock orientation when not in full-screen mode
   void _unlockOrientation() {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -160,6 +114,7 @@ class _CertificationVideoPlayerScreenState
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.data!.contentTitle),
+        backgroundColor: AppColors.allPrimaryColor,
       ),
       body: SafeArea(
         child: Padding(

@@ -57,6 +57,7 @@ final class GetCourseRx extends RxResponseInt<CourseResponse> {
         appData.write(kKeyIsLoggedIn, false);
         appData.write(kKeyIsExploring, false);
         appData.remove(kKeyAccessToken);
+        appData.read(userId).toString();
       }
       dataFetcher.sink.addError(error);
     } else {
