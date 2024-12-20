@@ -2,7 +2,6 @@ import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/common_widgets/custom_textfeild.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/constants/textfield_validation.dart';
-import 'package:christiandimene/gen/assets.gen.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
@@ -10,7 +9,6 @@ import 'package:christiandimene/networks/api_acess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import '../../../../helpers/all_routes.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -42,7 +40,7 @@ class _SignupScreenState extends State<SignupScreen> {
     });
   }
 
-  ///INITSTATE...
+  ///INITSTATE--->>
   @override
   void initState() {
     togglePassword();
@@ -155,29 +153,29 @@ class _SignupScreenState extends State<SignupScreen> {
                       color: AppColors.c000000,
                     ),
                   ),
-                  UIHelper.verticalSpace(41.5.h),
-                  Text(
-                    'Or continue with'.tr,
-                    style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim
-                        .copyWith(
-                      color: AppColors.c6B6B6B,
-                    ),
-                  ),
-                  UIHelper.verticalSpace(20.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(Assets.images.facebook.path,
-                          width: 56.w, height: 42.h),
-                      UIHelper.horizontalSpace(16.w),
-                      Image.asset(Assets.images.google.path,
-                          width: 56.w, height: 42.h),
-                      UIHelper.horizontalSpace(16.w),
-                      Image.asset(Assets.images.apple.path,
-                          width: 56.w, height: 42.h),
-                    ],
-                  ),
-                  UIHelper.verticalSpace(42.h),
+                  UIHelper.verticalSpace(32.h),
+                  // Text(
+                  //   'Or continue with'.tr,
+                  //   style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim
+                  //       .copyWith(
+                  //     color: AppColors.c6B6B6B,
+                  //   ),
+                  // ),
+                  // UIHelper.verticalSpace(20.h),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Image.asset(Assets.images.facebook.path,
+                  //         width: 56.w, height: 42.h),
+                  //     UIHelper.horizontalSpace(16.w),
+                  //     Image.asset(Assets.images.google.path,
+                  //         width: 56.w, height: 42.h),
+                  //     UIHelper.horizontalSpace(16.w),
+                  //     Image.asset(Assets.images.apple.path,
+                  //         width: 56.w, height: 42.h),
+                  //   ],
+                  // ),
+                  // UIHelper.verticalSpace(42.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -195,7 +193,9 @@ class _SignupScreenState extends State<SignupScreen> {
                           ' Log In here'.tr,
                           style: TextFontStyle
                               .textStyle14w400c9AB2A8StyleGTWalsheim
-                              .copyWith(color: AppColors.c245741),
+                              .copyWith(
+                                  color: AppColors.c245741,
+                                  fontWeight: FontWeight.bold),
                         ),
                       )
                     ],

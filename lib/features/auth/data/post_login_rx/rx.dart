@@ -37,18 +37,21 @@ final class PostLoginRx extends RxResponseInt {
 
   @override
   handleSuccessWithReturn(data) async {
-    int? statusCode = data['code'];
+    // int? statusCode = data['code'];
+
     String? accessToken = data['data']['token']['original']['access_token'];
 
-    // SAVE USER TOKEN, ID & EMAIL...
-    if (statusCode == 200) {
-      await appData.write(kKeyAccessToken, accessToken);
-      await appData.write(kKeyIsLoggedIn, true);
+    int? id = await data['data']['user']['id'];
 
-      NavigationService.navigateToUntilReplacement(Routes.bottomNavBarScreen);
-      // TOKEN UPDATE...
-      DioSingleton.instance.update(accessToken!);
-    }
+    appData.write(userId, id);
+    log(appData.read(userId).toString());
+
+    // SAVE USER TOKEN, ID & EMAIL...
+    appData.write(kKeyAccessToken, accessToken);
+    appData.write(kKeyIsLoggedIn, true);
+    NavigationService.navigateToUntilReplacement(Routes.bottomNavBarScreen);
+    // TOKEN UPDATE...
+    DioSingleton.instance.update(accessToken!);
     // Adding data to stream
     dataFetcher.sink.add(data);
     return true;

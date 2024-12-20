@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:christiandimene/constants/textfield_validation.dart';
 import 'package:christiandimene/helpers/all_routes.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
@@ -7,13 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/common_widgets/custom_textfeild.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
-import 'package:christiandimene/gen/assets.gen.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:get/get.dart';
-
 import '../../../../networks/api_acess.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -96,32 +91,57 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   UIHelper.verticalSpace(10.h),
+
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Checkbox(
-                        value: _isChecked,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _isChecked = value ?? false;
-                          });
-                        },
-                        checkColor: AppColors.white,
-                        activeColor: AppColors.c999999,
-                        side: BorderSide(
-                          color: AppColors.c999999,
-                          width: 1.0,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Checkbox(
+                            value: _isChecked,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                _isChecked = value ?? false;
+                              });
+                            },
+                            checkColor: AppColors.white,
+                            activeColor: AppColors.c999999,
+                            side: BorderSide(
+                              color: AppColors.c999999,
+                              width: 1.0,
+                            ),
+                          ),
+                          Text(
+                            'Remember me'.tr,
+                            style: TextFontStyle
+                                .textStyle12w400c9AB2A8StyleGTWalsheim
+                                .copyWith(
+                                    color: AppColors.c6B6B6B,
+                                    fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      Flexible(
+                        child: InkWell(
+                          onTap: () {
+                            NavigationService.navigateTo(Routes.forgetPassword);
+                          },
+                          child: Text(
+                            'Forget Password?'.tr,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextFontStyle
+                                .textStyle14w400c9AB2A8StyleGTWalsheim
+                                .copyWith(
+                                    color: AppColors.c245741,
+                                    fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                      Text(
-                        'Remember me'.tr,
-                        style: TextFontStyle
-                            .textStyle12w400c9AB2A8StyleGTWalsheim
-                            .copyWith(color: AppColors.c6B6B6B),
-                      ),
+                      )
                     ],
                   ),
-                  UIHelper.verticalSpace(40.h),
+
+                  UIHelper.verticalSpace(16.h),
                   customButton(
                     name: 'Log In',
                     onCallBack: () async {
@@ -135,7 +155,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           emailController.clear();
                           passwordController.clear();
                         } else {
-                          log('please check remember me');
+                          Get.snackbar("Something Wrong",
+                              "Don't forget to check \"Remember me\"",
+                              backgroundColor: AppColors.allPrimaryColor);
                         }
                       }
                     },
@@ -145,38 +167,30 @@ class _LoginScreenState extends State<LoginScreen> {
                         .headline18w500c222222StyleGTWalsheim
                         .copyWith(color: AppColors.c000000),
                   ),
-                  UIHelper.verticalSpace(16.h),
-                  GestureDetector(
-                    onTap: () {
-                      NavigationService.navigateTo(Routes.forgetPassword);
-                    },
-                    child: Text(
-                      'Forget Password?'.tr,
-                      style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim
-                          .copyWith(color: AppColors.c245741),
-                    ),
-                  ),
-                  UIHelper.verticalSpace(41.5.h),
-                  Text(
-                    'Or continue with'.tr,
-                    style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim
-                        .copyWith(color: AppColors.c6B6B6B),
-                  ),
-                  UIHelper.verticalSpace(20.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(Assets.images.facebook.path,
-                          width: 56.w, height: 42.h),
-                      UIHelper.horizontalSpace(16.w),
-                      Image.asset(Assets.images.google.path,
-                          width: 56.w, height: 42.h),
-                      UIHelper.horizontalSpace(16.w),
-                      Image.asset(Assets.images.apple.path,
-                          width: 56.w, height: 42.h),
-                    ],
-                  ),
-                  UIHelper.verticalSpace(42.h),
+                  UIHelper.verticalSpace(24.h),
+
+                  // UIHelper.verticalSpace(41.5.h),
+                  // Text(
+                  //   'Or continue with'.tr,
+                  //   style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim
+                  //       .copyWith(color: AppColors.c6B6B6B),
+                  // ),
+                  // UIHelper.verticalSpace(20.h),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Image.asset(Assets.images.facebook.path,
+                  //         width: 56.w, height: 42.h),
+                  //     UIHelper.horizontalSpace(16.w),
+                  //     Image.asset(Assets.images.google.path,
+                  //         width: 56.w, height: 42.h),
+                  //     UIHelper.horizontalSpace(16.w),
+                  //     Image.asset(Assets.images.apple.path,
+                  //         width: 56.w, height: 42.h),
+                  //   ],
+                  // ),
+
+                  // UIHelper.verticalSpace(42.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -194,7 +208,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           ' Sign Up'.tr,
                           style: TextFontStyle
                               .textStyle14w400c9AB2A8StyleGTWalsheim
-                              .copyWith(color: AppColors.c245741),
+                              .copyWith(
+                                  color: AppColors.c245741,
+                                  fontWeight: FontWeight.bold),
                         ),
                       )
                     ],

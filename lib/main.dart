@@ -19,9 +19,8 @@ void main() async {
   await GetStorage.init();
   diSetup();
 
-
   Stripe.publishableKey =
-      'pk_test_51PTloFP9ejtTnTKdqb1kVhfVIcx2C6kTniRY8ieR3IeHNl4e7QUlEUstlIHAk2ijom9EUEpjWysJR8E5fKLjEZYD00WrsGUNkW';
+      'pk_test_51PuhUnCNNZOwq4CUa7L48iSaSvJsJeL2nNZV5ApvJOoiguUi84pkNI95PUCVDVZ9a0CRF9et4FUl9SnnDhS9p7Cp00tDu86hgn';
 
   DioSingleton.instance.create();
 

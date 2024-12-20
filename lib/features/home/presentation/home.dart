@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:christiandimene/common_widgets/custom_textfeild.dart';
+import 'package:christiandimene/constants/app_constants.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/home/model/course_response.dart';
 import 'package:christiandimene/gen/assets.gen.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../helpers/di.dart';
 import '../../profile_screen/model/get_profile_response.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -34,6 +36,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log('==================USER ID Home============================');
+    log(appData.read(userId).toString());
+
     return Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
@@ -95,7 +100,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   log(data.id.toString());
                   return InkWell(
                     onTap: () {
-                      log(data!.id.toString());
                       NavigationService.navigateToWithArgs(
                           Routes.certificationScreen, {'data': data});
                     },

@@ -41,10 +41,16 @@ final class PostRegisterRx extends RxResponseInt {
     int? statusCode = data['code'];
     String? accessToken = data['data']['token'];
 
+    int id = data['data']['user']['id'];
+
+    appData.write(userId, id);
+    log(appData.read(userId).toString());
+
     // SAVE USER TOKEN, ID & EMAIL...
     if (statusCode == 200) {
       await appData.write(kKeyAccessToken, accessToken);
       await appData.write(kKeyIsLoggedIn, true);
+
       // TOKEN UPDATE...
       DioSingleton.instance.update(accessToken!);
     } else if (statusCode == 422) {

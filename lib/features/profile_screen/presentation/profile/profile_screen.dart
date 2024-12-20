@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:christiandimene/constants/app_constants.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/profile_screen/model/get_profile_response.dart';
@@ -55,6 +57,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   stream: getProfileDataRxObj.getProfileCreateData,
                   builder: (context, snapshot) {
                     profileData = snapshot.data?.data?.user;
+
+                    log('==================USER ID============================');
+
+                    // appData.write("UserId", profileData!.id.toString());
                     if (snapshot.hasData) {
                       return Column(
                         children: [
@@ -221,7 +227,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
         appData.write(kKeyIsLoggedIn, false);
         appData.remove(kKeyAccessToken);
-
+        appData.read(userId).toString();
         DioSingleton.instance.update('');
         appData.erase();
       },

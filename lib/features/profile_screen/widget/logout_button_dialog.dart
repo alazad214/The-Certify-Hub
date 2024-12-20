@@ -11,11 +11,11 @@ void logOutButtonDialog(
 ) {
   showDialog(
     context: context,
-    barrierDismissible: false,
+    barrierDismissible: true,
     builder: (BuildContext context) {
       return Dialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(8.r),
         ),
         elevation: 12,
         child: Container(
@@ -27,14 +27,13 @@ void logOutButtonDialog(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              UIHelper.verticalSpace(24.h),
               Text(
                 textAlign: TextAlign.center,
                 'Are you sure, do you want to logout?',
                 style: TextFontStyle.headline18w500c222222StyleGTWalsheim
                     .copyWith(fontWeight: FontWeight.w700),
               ),
-              UIHelper.verticalSpace(40.h),
+              UIHelper.verticalSpace(12.h),
               Row(
                 children: [
                   Expanded(
@@ -43,7 +42,7 @@ void logOutButtonDialog(
                         onCallBack: () {
                           Navigator.pop(context);
                         },
-                        height: 46.h,
+                        height: 40.h,
                         context: context,
                         borderColor: AppColors.c6B6B6B,
                         color: Colors.transparent,
@@ -55,14 +54,13 @@ void logOutButtonDialog(
                   Expanded(
                     child: customButton(
                       name: 'Logout',
-                      height: 46.h,
+                      height: 40.h,
                       onCallBack: logoutOntap,
                       context: context,
                     ),
                   ),
                 ],
               ),
-              UIHelper.verticalSpace(32.h),
             ],
           ),
         ),
