@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:rxdart/subjects.dart';
 
 abstract class RxResponseInt<T> {
@@ -21,6 +20,7 @@ abstract class RxResponseInt<T> {
 
   dynamic handleErrorWithReturn(dynamic error) {
     log(error.toString());
+    
     dataFetcher.sink.addError(error);
     throw error;
   }

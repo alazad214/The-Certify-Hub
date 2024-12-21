@@ -80,25 +80,6 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
           ],
         ),
       ),
-      bottomSheet: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24.w),
-        height: 95.h,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              '50.00 ${'\$'}',
-              style: TextFontStyle.headline24w700c245741StyleGTWalsheim,
-            ),
-            customButton(
-                minWidth: 170.w,
-                height: 48.h,
-                name: 'Buy Now',
-                onCallBack: () {},
-                context: context)
-          ],
-        ),
-      ),
     );
   }
 
@@ -122,9 +103,6 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                     itemBuilder: (_, index) {
                       PdfData? pdf;
                       pdf = pdfData.data![index];
-
-                      log("====================pdf===================");
-                      log(pdf.filePath);
 
                       return InkWell(
                         onTap: () {
