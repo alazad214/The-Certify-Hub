@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
-import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/model/course_details_response.dart';
 import 'package:christiandimene/features/certification/model/pdf_model_response.dart';
@@ -37,6 +36,8 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log('=====================course module id========================');
+    log(widget.data!.id!.toString());
     return Scaffold(
       appBar: CustomAppbar(
         title: widget.data!.courseModuleName!,
@@ -80,25 +81,6 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
           ],
         ),
       ),
-      bottomSheet: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24.w),
-        height: 95.h,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              '50.00 ${'\$'}',
-              style: TextFontStyle.headline24w700c245741StyleGTWalsheim,
-            ),
-            customButton(
-                minWidth: 170.w,
-                height: 48.h,
-                name: 'Buy Now',
-                onCallBack: () {},
-                context: context)
-          ],
-        ),
-      ),
     );
   }
 
@@ -122,9 +104,6 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                     itemBuilder: (_, index) {
                       PdfData? pdf;
                       pdf = pdfData.data![index];
-
-                      log("====================pdf===================");
-                      log(pdf.filePath);
 
                       return InkWell(
                         onTap: () {
@@ -215,9 +194,6 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                     itemBuilder: (_, index) {
                       CourseContent? data;
                       data = lessonData.data!.courseContents[index];
-
-                      log('=====================video =======================');
-                      log(data.videoFile);
 
                       return InkWell(
                         onTap: () {

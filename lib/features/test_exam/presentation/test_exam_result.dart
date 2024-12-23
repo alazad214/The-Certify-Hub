@@ -1,5 +1,6 @@
-import 'dart:developer';
-import 'package:christiandimene/common_widgets/custom_appbar.dart';
+import 'package:christiandimene/features/test_exam/model/test_result_response.dart';
+import 'package:christiandimene/gen/colors.gen.dart';
+import 'package:christiandimene/networks/api_acess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,78 +8,85 @@ import 'package:get/get.dart';
 import '../../../common_widgets/custom_button.dart';
 import '../../../constants/text_font_style.dart';
 import '../../../gen/assets.gen.dart';
-import '../../../gen/colors.gen.dart';
-import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
 import '../../../helpers/ui_helpers.dart';
+import '../../../helpers/all_routes.dart';
 
 class TestExamResult extends StatefulWidget {
-  Map? quiz;
+  final Map? quiz;
   TestExamResult({this.quiz, super.key});
   @override
   State<TestExamResult> createState() => _TestExamResultState();
 }
 
 class _TestExamResultState extends State<TestExamResult> {
-  final List<Map<String, dynamic>> questions = [
-    {
-      "question": "What is the primary function of an operating system?",
-      "options": [
-        "To provide a platform for applications to run",
-        "To manage hardware and software resources",
-        "To secure the computer from viruses",
-        "To increase processing speed"
-      ],
-      "correctIndex": 1,
-      "userSelectedIndex": 1,
-    },
-    {
-      "question": "Which language is primarily used for Android development?",
-      "options": ["Python", "Java", "Swift", "Kotlin"],
-      "correctIndex": 3,
-      "userSelectedIndex": 2,
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    getTestQuizResultRxObj.testQuizResult(widget.quiz!["result"]["id"]);
+  }
 
   @override
   Widget build(BuildContext context) {
-    log('message : ${widget.quiz}');
-    log('message : ${widget.quiz!["result"]["total_questions"]}');
     return Scaffold(
-      appBar: CustomAppbar(
-        title: widget.quiz!["results"][0]["explanation"],
-        onCallBack: () {
-          NavigationService.goBack;
-        },
+      appBar: AppBar(
+        title: Text('Quiz Result'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => NavigationService.goBack(),
+          ),
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(25.0),
             child: Column(
               children: [
-                Center(
-                  child: Image.asset(
-                    Assets.images.characterOops.path,
-                    height: 149.h,
-                    width: 138.w,
-                  ),
-                ),
-                Text(
-                  'You have not passed the quiz!'.tr,
-                  style: TextFontStyle.textStyle16w400c999999StyleGTWalsheim
-                      .copyWith(
-                    color: AppColors.c000000,
-                  ),
-                ),
-                Text(
-                  'Try Again'.tr,
-                  style: TextFontStyle.textStyle16w400c999999StyleGTWalsheim
-                      .copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.c000000),
-                ),
+                (widget.quiz!["result"]["percentage"] >= 70)
+                    ? Center(
+                        child: Image.asset(
+                          Assets.images.characterPass.path,
+                          height: 149.h,
+                          width: 138.w,
+                        ),
+                      )
+                    : Center(
+                        child: Image.asset(
+                          Assets.images.characterOops.path,
+                          height: 149.h,
+                          width: 138.w,
+                        ),
+                      ),
+                (widget.quiz!["result"]["percentage"] >= 70)
+                    ? Text(
+                        'You have passed the quiz!',
+                        style: TextFontStyle
+                            .textStyle16w400c999999StyleGTWalsheim
+                            .copyWith(
+                          color: AppColors.c000000,
+                        ),
+                      )
+                    : Text(
+                        'You have Not passed the quiz!',
+                        style: TextFontStyle
+                            .textStyle16w400c999999StyleGTWalsheim
+                            .copyWith(
+                          color: AppColors.c000000,
+                        ),
+                      ),
+                (widget.quiz!["result"]["percentage"] >= 70)
+                    ? SizedBox.shrink()
+                    : Text(
+                        'Try Again'.tr,
+                        style: TextFontStyle
+                            .textStyle16w400c999999StyleGTWalsheim
+                            .copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.c000000),
+                      ),
                 UIHelper.verticalSpace(16.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -87,70 +95,85 @@ class _TestExamResultState extends State<TestExamResult> {
                   ],
                 ),
                 UIHelper.verticalSpace(30.h),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.only(bottom: 100.h),
-                  itemCount: questions.length,
-                  itemBuilder: (context, index) {
-                    final questionData = questions[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.1),
-                              spreadRadius: 1,
-                              blurRadius: 5,
-                            ),
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Question ${index + 1}",
-                                style: TextFontStyle
-                                    .textStyle12w400c9AB2A8StyleGTWalsheim,
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                questionData["question"],
-                                style: TextFontStyle
-                                    .headline18w500c222222StyleGTWalsheim,
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(height: 16),
-                              _buildOptions(
-                                questionData["options"],
-                                questionData["correctIndex"],
-                                questionData["userSelectedIndex"],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15.w),
+                  child: StreamBuilder(
+                      stream: getTestQuizResultRxObj.dataFetcher,
+                      builder: (_, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.active) {
+                          List<QuestionResult>? result =
+                              snapshot.data!.questions;
+
+                          if (snapshot.hasError) {
+                            return Center(
+                                child: Text("Error: ${snapshot.error}"));
+                          } else if (snapshot.hasData) {
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: result!.length,
+                              itemBuilder: (context, index) {
+                                final questionData = result[index];
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text("Question ${index + 1}"),
+                                          SizedBox(height: 8),
+                                          Text(
+                                            questionData.questionText ?? "",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          SizedBox(height: 16),
+                                          _buildOptions(
+                                            questionData.options,
+                                            questionData.correctOption,
+                                            questionData.explanation,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        } else if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      }),
                 ),
+                UIHelper.verticalSpace(100.h),
               ],
             ),
           ),
         ),
       ),
       bottomSheet: Container(
-        width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.symmetric(horizontal: 24.w),
         height: 95.h,
         color: Colors.white,
         child: Center(
           child: customButton(
+            context: context,
             minWidth: double.infinity,
             height: 48.h,
             name: 'Restart Quiz',
@@ -158,7 +181,6 @@ class _TestExamResultState extends State<TestExamResult> {
               NavigationService.navigateToUntilReplacement(
                   Routes.bottomNavBarScreen);
             },
-            context: context,
           ),
         ),
       ),
@@ -166,49 +188,46 @@ class _TestExamResultState extends State<TestExamResult> {
   }
 
   Widget _buildOptions(
-      List<String> options, int correctIndex, int userSelectedIndex) {
+      List<Option>? options, String? correctOption, String? explanation) {
     return Column(
-      children: List.generate(options.length, (index) {
-        final isCorrect = index == correctIndex;
-        final isSelected = index == userSelectedIndex;
-
-        final outlineColor = isCorrect
-            ? Colors.green
-            : (isSelected && !isCorrect ? Colors.red : Colors.transparent);
+      children: List.generate(options?.length ?? 0, (index) {
+        final option = options![index];
+        final isCorrect = option.text == correctOption;
+        final outlineColor = option.isSelected == true
+            ? (isCorrect ? Colors.green : Colors.red)
+            : Colors.transparent;
 
         return Container(
-          margin: const EdgeInsets.symmetric(vertical: 8),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+          margin: EdgeInsets.symmetric(vertical: 8.h),
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
           decoration: BoxDecoration(
             color: Colors.grey[200],
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: outlineColor,
-              width: 2,
-            ),
+            border: Border.all(color: outlineColor, width: 2),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(
-                Icons.circle_outlined,
-              ),
+              Icon(Icons.circle_outlined),
               SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  options[index],
-                  style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim
-                      .copyWith(color: Colors.grey),
+                  option.text ?? "",
+                  style: TextStyle(color: Colors.grey),
                 ),
               ),
               SizedBox(width: 10),
               Icon(
                 isCorrect
                     ? Icons.check_circle
-                    : (isSelected ? Icons.cancel : Icons.circle_outlined),
+                    : (option.isSelected == true
+                        ? Icons.cancel
+                        : Icons.circle_outlined),
                 color: isCorrect
                     ? Colors.green
-                    : (isSelected ? Colors.red : Colors.transparent),
+                    : (option.isSelected == true
+                        ? Colors.red
+                        : Colors.transparent),
               ),
             ],
           ),
@@ -220,74 +239,45 @@ class _TestExamResultState extends State<TestExamResult> {
   Container _buildTimeAndWidget() {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.cFFFFFF,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 8.0.h),
-          child: Row(
-            children: [
-              Row(
-                children: [
-                  SvgPicture.asset(Assets.icons.question),
-                  UIHelper.horizontalSpace(8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Total Quiz'.tr,
-                        style: TextFontStyle
-                            .textStyle12w400c9AB2A8StyleGTWalsheim
-                            .copyWith(
-                          color: AppColors.c000000,
-                        ),
-                      ),
-                      Text(
-                        "${widget.quiz!["reslut"]["total_questions"]}",
-                        style: TextFontStyle
-                            .textStyle16w500c222222StyleGTWalsheim
-                            .copyWith(
-                          color: AppColors.c000000,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
-                height: 54.h,
-                width: 1.w,
-                color: AppColors.cB5B5B5,
-              ),
-              Row(
-                children: [
-                  SvgPicture.asset(Assets.icons.marks),
-                  UIHelper.horizontalSpace(8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Your Score'.tr,
-                        style: TextFontStyle
-                            .textStyle12w400c9AB2A8StyleGTWalsheim
-                            .copyWith(color: AppColors.c000000),
-                      ),
-                      Text(
-                        widget.quiz?["result"]["percentage"].toString() ??
-                            '30%'.tr,
-                        style: TextFontStyle
-                            .textStyle16w500c222222StyleGTWalsheim
-                            .copyWith(color: AppColors.c000000),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          )),
+        padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 8.0.h),
+        child: Row(
+          children: [
+            SvgPicture.asset(Assets.icons.question),
+            UIHelper.horizontalSpace(8),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Total Quiz'),
+                Text(widget.quiz!['result']['total_questions'].toString()),
+              ],
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+              height: 54.h,
+              width: 1.w,
+              color: Colors.grey,
+            ),
+            Row(
+              children: [
+                SvgPicture.asset(Assets.icons.marks),
+                UIHelper.horizontalSpace(8),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Your Score'),
+                    Text(
+                        "${widget.quiz?["result"]["percentage"].toString()} %"),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

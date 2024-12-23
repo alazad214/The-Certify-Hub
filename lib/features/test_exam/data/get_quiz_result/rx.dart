@@ -1,23 +1,22 @@
-//azad added ...
 import 'dart:developer';
-import 'package:christiandimene/features/test_exam/data/get_text_quiz/api.dart';
-import 'package:christiandimene/features/test_exam/model/test_quiz_response.dart';
+import 'package:christiandimene/features/test_exam/data/get_quiz_result/api.dart';
 import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../../../../networks/rx_base.dart';
+import '../../model/test_result_response.dart';
 
-final class GetTestQuizRx extends RxResponseInt<TestQuizResponse> {
-  final api = TestQuizApi.instance;
+final class GetTestQuizResultRx extends RxResponseInt<TestResultResponse> {
+  final api = TestQuizResultApi.instance;
 
   bool success = false;
 
-  GetTestQuizRx({required super.empty, required super.dataFetcher});
+  GetTestQuizResultRx({required super.empty, required super.dataFetcher});
 
   ValueStream get getData => dataFetcher.stream;
 
-  Future<void> testQuiz(int id) async {
+  Future<void> testQuizResult(int id) async {
     try {
-      TestQuizResponse data = await api.getTestQuiz(id);
+      TestResultResponse data = await api.getTestQuizResult(id);
       return handleSuccessWithReturn(data);
     } catch (error) {
       return handleErrorWithReturn(error);
@@ -25,9 +24,9 @@ final class GetTestQuizRx extends RxResponseInt<TestQuizResponse> {
   }
 
   @override
-  handleSuccessWithReturn(TestQuizResponse data) async {
+  handleSuccessWithReturn(TestResultResponse data) async {
     try {
-      TestQuizResponse respose = data;
+      TestResultResponse respose = data;
       log(' response: $respose');
       dataFetcher.sink.add(data);
     } catch (e) {

@@ -1,6 +1,5 @@
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
-import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
@@ -71,21 +70,21 @@ class AboutUsScreen extends StatelessWidget {
               style: TextFontStyle.textStyle16w500c222222StyleGTWalsheim,
             ),
             UIHelper.verticalSpace(16.h),
-            Text(
-              "5. Contact Us",
-              style: TextFontStyle.headline20w700c222222StyleGTWalsheim,
-            ),
-            UIHelper.verticalSpace(8.h),
-            Text(
-                "For more information or inquiries, feel free to contact us at:",
-                style: TextFontStyle.textStyle16w500c222222StyleGTWalsheim),
-            Text(
-              "Email: support@certifyhub.com\n"
-              "Phone: +1 123-456-7890\n"
-              "Address: 1234 Learning Ave, Education City, 56789",
-              style: TextFontStyle.textStyle16w500c222222StyleGTWalsheim
-                  .copyWith(color: AppColors.allPrimaryColor),
-            ),
+            // Text(
+            //   "5. Contact Us",
+            //   style: TextFontStyle.headline20w700c222222StyleGTWalsheim,
+            // ),
+            // UIHelper.verticalSpace(8.h),
+            // Text(
+            //     "For more information or inquiries, feel free to contact us at:",
+            //     style: TextFontStyle.textStyle16w500c222222StyleGTWalsheim),
+            // Text(
+            //   "Email: support@certifyhub.com\n"
+            //   "Phone: +1 123-456-7890\n"
+            //   "Address: 1234 Learning Ave, Education City, 56789",
+            //   style: TextFontStyle.textStyle16w500c222222StyleGTWalsheim
+            //       .copyWith(color: AppColors.allPrimaryColor),
+            // ),
             UIHelper.verticalSpace(32.h),
           ],
         ),

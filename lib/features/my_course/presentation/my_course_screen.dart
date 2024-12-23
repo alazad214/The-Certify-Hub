@@ -1,15 +1,17 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:christiandimene/common_widgets/custom_textfeild.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
+import 'package:christiandimene/features/my_course/model/purchase_course_response.dart';
 import 'package:christiandimene/gen/assets.gen.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
+import 'package:christiandimene/networks/endpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../helpers/all_routes.dart';
 import '../../../helpers/navigation_service.dart';
 import '../../../networks/api_acess.dart';
-import '../../home/model/course_response.dart';
 
 class MyCourseScreen extends StatefulWidget {
   const MyCourseScreen({super.key});
@@ -20,25 +22,14 @@ class MyCourseScreen extends StatefulWidget {
 
 class _MyCourseScreenState extends State<MyCourseScreen> {
   String? _selectedType;
+  PurchaseCourseData? data;
 
   @override
   void initState() {
     super.initState();
-    getCourseRxObj.getCourseData();
     _selectedType = 'Ongoing';
+    getPurchaseCourseRxObj.GetCourseData();
   }
-
-  final List<Map<String, dynamic>> onGoingCourses = [
-    {"progress": 0.2},
-    {"progress": 0.0},
-    {"progress": 0.0},
-  ];
-
-  final List<Map<String, dynamic>> completeCourses = [
-    {"progress": 1.0},
-    {"progress": 1.0},
-    {"progress": 1.0},
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -78,23 +69,26 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
               ///ONGOING COURSE...
               if (_selectedType == 'Ongoing')
                 StreamBuilder(
-                  stream: getCourseRxObj.getCourse,
+                  stream: getPurchaseCourseRxObj.getCourse,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.active) {
                       if (snapshot.hasData) {
-                        CourseResponse courseData = snapshot.data;
+                        PurchasedCourseResponse courseData = snapshot.data;
 
                         if (courseData.data == null ||
                             courseData.data!.isEmpty) {
                           return Center(child: Text('No courses available'));
                         } else {
+                          List<PurchaseCourseData> coursesToShow = courseData
+                              .data!
+                              .where((course) => course.progressRate! < 100)
+                              .toList();
                           return ListView.builder(
                               shrinkWrap: true,
                               primary: false,
-                              itemCount: courseData.data!.length,
+                              itemCount: coursesToShow.length,
                               itemBuilder: (_, index) {
-                                final Course? data;
-                                data = courseData.data![index];
+                                data = coursesToShow[index];
                                 return InkWell(
                                   onTap: () {
                                     NavigationService.navigateToWithArgs(
@@ -116,11 +110,20 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                           height: 120.h,
                                           clipBehavior: Clip.antiAlias,
                                           decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.r)),
-                                          child: Image.asset(
-                                            Assets.images.homeCardImage.path,
+                                            borderRadius:
+                                                BorderRadius.circular(8.r),
+                                          ),
+                                          child: CachedNetworkImage(
+                                            imageUrl: baseUrl +
+                                                data!.courseFeatureImage
+                                                    .toString(),
                                             fit: BoxFit.cover,
+                                            placeholder: (context, url) => Center(
+                                                child:
+                                                    CircularProgressIndicator()),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
                                           ),
                                         ),
                                         UIHelper.horizontalSpace(12.w),
@@ -128,9 +131,11 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                           child: Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                data.courseTitle,
+                                                data!.courseTitle.toString(),
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 2,
                                                 style: TextFontStyle
@@ -139,15 +144,18 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                               Row(
                                                 children: [
                                                   Text(
-                                                      "${(0.2 * 100).toInt()}%",
-                                                      style: TextFontStyle
-                                                          .textStyle14w500c6B6B6BtyleGTWalsheim),
+                                                    '${data!.progressRate.toString()}%',
+                                                    style: TextFontStyle
+                                                        .textStyle14w500c6B6B6BtyleGTWalsheim,
+                                                  ),
                                                   UIHelper.horizontalSpace(4.w),
                                                   Expanded(
                                                     child:
                                                         LinearProgressIndicator(
                                                       minHeight: 8.h,
-                                                      value: 0.2,
+                                                      value:
+                                                          data!.progressRate! /
+                                                              100.0,
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               10.r),
@@ -182,28 +190,31 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
               //ONGOING COURSE...
               if (_selectedType == 'complete')
                 StreamBuilder(
-                  stream: getCourseRxObj.getCourse,
+                  stream: getPurchaseCourseRxObj.getCourse,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.active) {
                       if (snapshot.hasData) {
-                        CourseResponse courseData = snapshot.data;
+                        PurchasedCourseResponse courseData = snapshot.data;
 
                         if (courseData.data == null ||
                             courseData.data!.isEmpty) {
                           return Center(child: Text('No courses available'));
                         } else {
+                          List<PurchaseCourseData> coursesToShow = courseData
+                              .data!
+                              .where((course) => course.progressRate! == 100)
+                              .toList();
                           return ListView.builder(
                               shrinkWrap: true,
                               primary: false,
-                              itemCount: courseData.data!.length,
+                              itemCount: coursesToShow.length,
                               itemBuilder: (_, index) {
-                                final Course? data;
-                                data = courseData.data![index];
+                                data = coursesToShow[index];
                                 return InkWell(
                                   onTap: () {
-                                    NavigationService.navigateToWithArgs(
-                                        Routes.certificationScreen,
-                                        {'data': data});
+                                    // NavigationService.navigateToWithArgs(
+                                    //     Routes.certificationScreen,
+                                    //     {'data': data});
                                   },
                                   child: Container(
                                     height: 100.h,
@@ -220,11 +231,20 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                           height: 120.h,
                                           clipBehavior: Clip.antiAlias,
                                           decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.r)),
-                                          child: Image.asset(
-                                            Assets.images.homeCardImage.path,
+                                            borderRadius:
+                                                BorderRadius.circular(8.r),
+                                          ),
+                                          child: CachedNetworkImage(
+                                            imageUrl: baseUrl +
+                                                data!.courseFeatureImage
+                                                    .toString(),
                                             fit: BoxFit.cover,
+                                            placeholder: (context, url) => Center(
+                                                child:
+                                                    CircularProgressIndicator()),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Icon(Icons.error),
                                           ),
                                         ),
                                         UIHelper.horizontalSpace(12.w),
@@ -232,9 +252,11 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                           child: Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                data.courseTitle,
+                                                data!.courseTitle.toString(),
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 2,
                                                 style: TextFontStyle
@@ -242,15 +264,19 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                               ),
                                               Row(
                                                 children: [
-                                                  Text("${(1 * 100).toInt()}%",
-                                                      style: TextFontStyle
-                                                          .textStyle14w500c6B6B6BtyleGTWalsheim),
+                                                  Text(
+                                                    '${data!.progressRate.toString()}%',
+                                                    style: TextFontStyle
+                                                        .textStyle14w500c6B6B6BtyleGTWalsheim,
+                                                  ),
                                                   UIHelper.horizontalSpace(4.w),
                                                   Expanded(
                                                     child:
                                                         LinearProgressIndicator(
                                                       minHeight: 8.h,
-                                                      value: 1,
+                                                      value:
+                                                          data!.progressRate! /
+                                                              100.0,
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               10.r),

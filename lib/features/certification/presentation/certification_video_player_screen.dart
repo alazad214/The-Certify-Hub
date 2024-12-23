@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:christiandimene/features/certification/model/lesson_model_response.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
+import 'package:christiandimene/networks/api_acess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -44,7 +44,11 @@ class _CertificationVideoPlayerScreenState
         'VimeoChannel',
         onMessageReceived: (message) {
           if (message.message == "ended") {
-            log('=============video end============');
+            postProgressRxObj.progressData(courseId: {
+              "course_id": 7,
+              "course_content_id": widget.data!.id.toString(),
+              "is_completed": true
+            });
           }
         },
       );

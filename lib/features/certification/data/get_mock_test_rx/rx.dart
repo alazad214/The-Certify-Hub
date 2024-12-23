@@ -44,7 +44,8 @@ final class GetMockTestRx extends RxResponseInt<MockTestResponse> {
       log('DioException: ${error.message}');
       log('Status Code: ${error.response?.statusCode}');
       if (error.response != null) {
-        message = error.response!.data["message"] ?? "An error occurred";
+        message =
+            error.response!.data["message"]?.toString() ?? "An error occurred";
       } else {
         message = error.message ?? "An unknown error occurred";
       }

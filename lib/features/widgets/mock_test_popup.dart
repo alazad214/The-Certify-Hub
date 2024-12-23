@@ -1,6 +1,7 @@
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/gen/assets.gen.dart';
+import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,7 +11,7 @@ void mockTestPopup(
     BuildContext context, VoidCallback practiceOntap, VoidCallback testOntap) {
   showDialog(
     context: context,
-    barrierDismissible: false,
+    barrierDismissible: true,
     builder: (BuildContext context) {
       return Dialog(
         elevation: 12,
@@ -37,29 +38,29 @@ void mockTestPopup(
                 ),
               ),
               UIHelper.verticalSpace(16.h),
-              Text(
-                "You are about to begin the quiz. Please ensure sufficient time and a quiet environment to complete the test. Do you wish to proceed and start the quiz now?",
-                textAlign: TextAlign.center,
-                style: TextFontStyle.headline18w500c222222StyleGTWalsheim,
-              ),
-              // UIHelper.verticalSpace(8.h),
               // Text(
-              //   "How would you like to proceed with this topic? Select 'Practice' to learn at your own pace or 'Test' to simulate real exam conditions.",
+              //   "You are about to begin the quiz. Please ensure sufficient time and a quiet environment to complete the test. Do you wish to proceed and start the quiz now?",
               //   textAlign: TextAlign.center,
-              //   style: TextFontStyle.textStyle12w400c9AB2A8StyleGTWalsheim,
+              //   style: TextFontStyle.headline18w500c222222StyleGTWalsheim,
               // ),
-              // UIHelper.verticalSpace(24.h),
-              // customButton(
-              //     name: 'Practice',
-              //     onCallBack: practiceOntap,
-              //     height: 48.h,
-              //     context: context,
-              //     color: Colors.transparent,
-              //     textStyle: TextFontStyle.headline18w500c222222StyleGTWalsheim
-              //         .copyWith(color: AppColors.c6B6B6B)),
+              // UIHelper.verticalSpace(8.h),
+              Text(
+                "How would you like to proceed with this topic? Select 'Practice' to learn at your own pace or 'Test' to simulate real exam conditions.",
+                textAlign: TextAlign.center,
+                style: TextFontStyle.textStyle12w400c9AB2A8StyleGTWalsheim,
+              ),
+              UIHelper.verticalSpace(24.h),
+              customButton(
+                  name: 'Practice',
+                  onCallBack: practiceOntap,
+                  height: 48.h,
+                  context: context,
+                  color: Colors.transparent,
+                  textStyle: TextFontStyle.headline18w500c222222StyleGTWalsheim
+                      .copyWith(color: AppColors.c6B6B6B)),
               UIHelper.verticalSpace(16.h),
               customButton(
-                name: 'Start',
+                name: 'Test',
                 height: 48.h,
                 onCallBack: testOntap,
                 context: context,

@@ -14,6 +14,7 @@ import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:christiandimene/networks/api_acess.dart';
 import 'package:christiandimene/networks/endpoints.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -33,13 +34,28 @@ class CertificationMainScreen extends StatefulWidget {
 
 class _CertificationMainScreenState extends State<CertificationMainScreen> {
   String? _selectedType;
+  List<Purchase> purchaseCourse = [];
+  bool userHasViewedCourse = false;
 
   @override
   void initState() {
     super.initState();
     _selectedType = 'data';
+
     getCourseDetailsRxObj.getCourseDetailsdata(widget.data!.id);
     getMockTestRxObj.getMockTest(widget.data!.id);
+    purchaseCourse;
+    checkIfUserViewed();
+  }
+
+  void checkIfUserViewed() {
+    if (purchaseCourse.isNotEmpty &&
+        purchaseCourse[0].userId.toString() ==
+            appData.read(userId).toString()) {
+      userHasViewedCourse = false;
+    } else {
+      userHasViewedCourse = true;
+    }
   }
 
   @override
@@ -55,65 +71,51 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
         padding: EdgeInsets.all(24.sp),
         child: Column(
           children: [
-            ///build header card...
             _buildHeaderCard(),
             UIHelper.verticalSpace(24.h),
-
-            ///custom ask me card...
             CustomAskMeCard(),
             UIHelper.verticalSpace(25.h),
-
-            ///toggle data and mock tests button...
             _buildCourseAndTestButton(),
-
             UIHelper.verticalSpace(16.h),
-
-            ///build data item...
             if (_selectedType == 'data') _buildCourseItem(),
-
-            ///build mock tests item...
             if (_selectedType == 'test') _buildMockTestItem(),
-
             UIHelper.verticalSpace(100.h),
           ],
         ),
       ),
-      bottomSheet: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24.w),
-        height: 95.h,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              '${widget.data!.coursePrice} ${'\$'}',
-              style: TextFontStyle.headline24w700c245741StyleGTWalsheim,
-            ),
-            customButton(
-                minWidth: 170.w,
-                height: 48.h,
-                name: 'Buy Now',
-                onCallBack: () async {
-                  try {
-                    // Payment APi
-                    var paymentResponse = await paymentRxObj
-                        .paymentData(courseId: {"course_id": widget.data!.id});
-
-                    // final data = json.decode(paymentResponse);
-
-                    log('payment client secret key is : ${paymentResponse["client_secret"]}');
-
-                    await stripePaymentSheet(
-                        orderId: widget.data!.id,
-                        paymentIntentClientSecret:
-                            paymentResponse["client_secret"]);
-                  } catch (e) {
-                    log(e.toString());
-                  }
-                },
-                context: context)
-          ],
-        ),
-      ),
+      bottomSheet: userHasViewedCourse && purchaseCourse.isEmpty
+          ? Container(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              height: 95.h,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${widget.data!.coursePrice} \$',
+                    style: TextFontStyle.headline24w700c245741StyleGTWalsheim,
+                  ),
+                  customButton(
+                    minWidth: 170.w,
+                    height: 48.h,
+                    name: 'Buy Now',
+                    onCallBack: () async {
+                      try {
+                        var paymentResponse = await paymentRxObj.paymentData(
+                            courseId: {"course_id": widget.data!.id});
+                        await stripePaymentSheet(
+                            orderId: widget.data!.id,
+                            paymentIntentClientSecret:
+                                paymentResponse["client_secret"]);
+                      } catch (e) {
+                        log(e.toString());
+                      }
+                    },
+                    context: context,
+                  )
+                ],
+              ),
+            )
+          : SizedBox.shrink(),
     );
   }
 
@@ -128,6 +130,8 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
 
     await Stripe.instance.presentPaymentSheet().then((value) async {
       if (value == null) {
+        NavigationService.navigateToUntilReplacement(Routes.bottomNavBarScreen);
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
               content: Text('Payment Success'.toUpperCase(),
@@ -226,14 +230,15 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             if (snapshot.hasError) {
-              return Center(child: Text("Error: ${snapshot.error}"));
+              DioException errorRes = snapshot.error as DioException;
+              return Center(
+                  child: Text("Error: ${errorRes.response!.statusMessage}"));
             } else if (snapshot.hasData) {
               MockTestResponse mockTest = snapshot.data;
 
               if (mockTest.data == null || mockTest.data!.quizzes!.isEmpty) {
                 return Center(child: Text('No mock test available'));
               } else {
-                //
                 return ListView.builder(
                     itemCount: mockTest.data!.quizzes!.length,
                     shrinkWrap: true,
@@ -243,15 +248,43 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                       quiz = mockTest.data!.quizzes![index];
                       return InkWell(
                         onTap: () {
-                          mockTestPopup(
-                            context,
-                            () {},
-                            () {
-                              NavigationService.navigateToWithArgs(
-                                  Routes.testExamInstructionScreen,
-                                  {'data': quiz});
-                            },
-                          );
+                          if (purchaseCourse.isEmpty) {
+                            Get.snackbar(
+                              'Something wrong',
+                              'Enroll in this course then start',
+                              backgroundColor: AppColors.allPrimaryColor,
+                            );
+                          } else {
+                            if (purchaseCourse[0].courseId.toString() ==
+                                widget.data!.id.toString()) {
+                              if (purchaseCourse[0].userId.toString() ==
+                                  appData.read(userId).toString()) {
+                                mockTestPopup(
+                                  context,
+                                  () {
+                                    NavigationService.navigateToWithArgs(
+                                        Routes.practiceExamInstruction,
+                                        {'data': quiz});
+                                  },
+                                  () {
+                                    NavigationService.navigateToWithArgs(
+                                        Routes.testExamInstructionScreen,
+                                        {'data': quiz});
+                                  },
+                                );
+                              } else {
+                                Get.snackbar(
+                                    backgroundColor: AppColors.allPrimaryColor,
+                                    'Something wrong',
+                                    'No Course Found');
+                              }
+                            } else {
+                              Get.snackbar(
+                                  backgroundColor: AppColors.allPrimaryColor,
+                                  'Something wrong',
+                                  'No Course Found');
+                            }
+                          }
                         },
                         child: Container(
                             alignment: Alignment.center,
@@ -341,8 +374,11 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
               return Center(child: Text("Error: ${snapshot.error}"));
             } else if (snapshot.hasData) {
               CourseDetailsResponse courseData = snapshot.data;
-              List<Purchase>? purchaseCourse = courseData.data!.purchases;
-              ;
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                setState(() {
+                  purchaseCourse = courseData.data!.purchases!;
+                });
+              });
 
               if (courseData.data == null ||
                   courseData.data!.courseModules!.isEmpty) {
@@ -353,27 +389,38 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                     shrinkWrap: true,
                     primary: false,
                     itemBuilder: (_, index) {
-                      final CourseModule? data;
-                      data = courseData.data!.courseModules![index];
-                      String userid = appData.read(userId).toString();
-
-                      log('==========Course ID== ${widget.data!.id}=========');
-                      if (purchaseCourse!.isNotEmpty)
-                        log('==========course id== ${purchaseCourse.first.courseId}=======');
-
-                      log('==========User ID== ${appData.read(userId).toString()}=========');
-                      if (purchaseCourse.isNotEmpty)
-                        log('==========user id ${purchaseCourse.first.userId}=============');
-
+                      final CourseModule? data =
+                          courseData.data!.courseModules![index];
                       return InkWell(
                         onTap: () {
-                          if (purchaseCourse.isNotEmpty) {
-                            NavigationService.navigateToWithArgs(
-                                Routes.certificationSectionScreen,
-                                {'data': data});
+                          if (purchaseCourse.isEmpty) {
+                            Get.snackbar(
+                              backgroundColor: AppColors.allPrimaryColor,
+                              'Something wrong',
+                              'Enroll in this course then start',
+                            );
                           } else {
-                            Get.snackbar('Something wrong',
-                                'Enroll this course then Starting');
+                            if (purchaseCourse[0].courseId.toString() ==
+                                widget.data!.id.toString()) {
+                              if (purchaseCourse[0].userId.toString() ==
+                                  appData.read(userId).toString()) {
+                                NavigationService.navigateToWithArgs(
+                                    Routes.certificationSectionScreen,
+                                    {'data': data});
+                              } else {
+                                Get.snackbar(
+                                  backgroundColor: AppColors.allPrimaryColor,
+                                  'Something wrong',
+                                  'No Course Found',
+                                );
+                              }
+                            } else {
+                              Get.snackbar(
+                                backgroundColor: AppColors.allPrimaryColor,
+                                'Something wrong',
+                                'No Course Found',
+                              );
+                            }
                           }
                         },
                         child: Container(
@@ -421,7 +468,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                     children: [
                                       Text(
                                         overflow: TextOverflow.ellipsis,
-                                        data.courseModuleName.toString(),
+                                        data!.courseModuleName.toString(),
                                         style: TextFontStyle
                                             .headline18w500c222222StyleGTWalsheim,
                                       ),
@@ -437,21 +484,6 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                               color: AppColors.c8C8C8C,
                                             ),
                                           ),
-                                          // Container(
-                                          //   width: 2.w,
-                                          //   height: 12.h,
-                                          //   margin: EdgeInsets.symmetric(
-                                          //       horizontal: 5.w),
-                                          //   color: AppColors.c8C8C8C,
-                                          // ),
-                                          // Text(
-                                          //   '3 Pdf',
-                                          //   overflow: TextOverflow.ellipsis,
-                                          //   style: TextFontStyle
-                                          //       .textStyle14w400c9AB2A8StyleGTWalsheim
-                                          //       .copyWith(
-                                          //           color: AppColors.c8C8C8C),
-                                          // ),
                                         ],
                                       ),
                                     ],
@@ -540,21 +572,6 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                       .copyWith(color: AppColors.c8C8C8C),
                                 ),
                               ),
-                              // Container(
-                              //   width: 2.w,
-                              //   height: 12.h,
-                              //   margin: EdgeInsets.symmetric(horizontal: 5.w),
-                              //   color: AppColors.c8C8C8C,
-                              // ),
-                              // Expanded(
-                              //   child: Text(
-                              //     "${widget.data!.totalLessons} ",
-                              //     overflow: TextOverflow.ellipsis,
-                              //     style: TextFontStyle
-                              //         .textStyle14w400c9AB2A8StyleGTWalsheim
-                              //         .copyWith(color: AppColors.c8C8C8C),
-                              //   ),
-                              // ),
                             ],
                           )
                         ],
@@ -574,7 +591,3 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
         });
   }
 }
-
-/*
- 
-  */
