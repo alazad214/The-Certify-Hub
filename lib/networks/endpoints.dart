@@ -40,5 +40,8 @@ final class Endpoints {
   //MOCK TEST-->
 
   static String testQuiz(int id) => "/quizzes/$id";
+  static String testQuizResult(int id) => "/quiz-result/$id";
   static String resultCalculate() => "/quizzes/calculate-result";
+  static String practiceQuiz(int id) => "/quizzes/$id/correct-answers";
+  static String purchaseCourse() => "/purchased-courses";
 }

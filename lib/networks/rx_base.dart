@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'package:christiandimene/helpers/all_routes.dart';
+import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:rxdart/subjects.dart';
 
 abstract class RxResponseInt<T> {
@@ -20,7 +22,12 @@ abstract class RxResponseInt<T> {
 
   dynamic handleErrorWithReturn(dynamic error) {
     log(error.toString());
-    
+    // DioException responseError = error as DioException;
+
+    if (error.response!.statusCode == 401) {
+      NavigationService.navigateToUntilReplacement(Routes.logInScreen);
+    }
+
     dataFetcher.sink.addError(error);
     throw error;
   }

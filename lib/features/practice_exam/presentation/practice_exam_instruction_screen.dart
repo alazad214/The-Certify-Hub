@@ -1,6 +1,7 @@
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
+import 'package:christiandimene/features/certification/model/mock_test_response.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,8 @@ import '../../../gen/colors.gen.dart';
 import '../../../helpers/all_routes.dart';
 
 class PracticeExamInstructionScreen extends StatefulWidget {
-  const PracticeExamInstructionScreen({super.key});
+  QuizData? quiz;
+  PracticeExamInstructionScreen({this.quiz, super.key});
 
   @override
   State<PracticeExamInstructionScreen> createState() =>
@@ -33,7 +35,10 @@ class _PracticeExamInstructionScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-        title: 'practice: Managing Your Time Wisely',
+        title: widget.quiz!.title.toString(),
+        onCallBack: () {
+          NavigationService.goBack;
+        },
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -61,16 +66,14 @@ class _PracticeExamInstructionScreenState
                     ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: instructionTitles
-                          .length, // Use the length of the instruction list
+                      itemCount: instructionTitles.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: EdgeInsets.symmetric(vertical: 4.h),
                           child: Column(
                             children: [
                               InstructionItem(
-                                title: instructionTitles[
-                                    index], // Pass each sentence by index
+                                title: instructionTitles[index],
                               ),
                             ],
                           ),
@@ -81,8 +84,9 @@ class _PracticeExamInstructionScreenState
                     customButton(
                         name: 'Start Now',
                         onCallBack: () {
-                          NavigationService.navigateTo(
-                              Routes.practiceQuestionScreen);
+                          NavigationService.navigateToWithArgs(
+                              Routes.practiceQuestionScreen,
+                              {'data': widget.quiz});
                         },
                         context: context)
                   ],
@@ -126,7 +130,7 @@ class _PracticeExamInstructionScreenState
                                 .copyWith(color: AppColors.c000000),
                           ),
                           Text(
-                            '15'.tr,
+                            widget.quiz!.totalQuestions.toString(),
                             style: TextFontStyle
                                 .textStyle16w500c222222StyleGTWalsheim,
                           ),
@@ -163,7 +167,7 @@ class _PracticeExamInstructionScreenState
                                 .copyWith(color: AppColors.c000000),
                           ),
                           Text(
-                            '15'.tr,
+                            widget.quiz!.totalTime.toString(),
                             style: TextFontStyle
                                 .textStyle16w500c222222StyleGTWalsheim
                                 .copyWith(color: AppColors.c000000),

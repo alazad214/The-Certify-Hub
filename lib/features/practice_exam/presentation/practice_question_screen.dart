@@ -1,16 +1,23 @@
+import 'dart:developer';
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
-import 'package:christiandimene/features/widgets/practice_exam_finish.dart';
+import 'package:christiandimene/features/certification/model/mock_test_response.dart';
+import 'package:christiandimene/features/practice_exam/model/practice_quiz_response.dart';
+import 'package:christiandimene/features/widgets/exam_finish_popup.dart';
+import 'package:christiandimene/features/widgets/quiz_dismiss_popup.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
+import 'package:christiandimene/helpers/all_routes.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
+import 'package:christiandimene/networks/api_acess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../gen/assets.gen.dart';
-import '../../../helpers/all_routes.dart';
 
 class PracticeQuestionScreen extends StatefulWidget {
+  QuizData? quiz;
+  PracticeQuestionScreen({this.quiz, super.key});
   @override
   _PracticeQuestionScreenState createState() => _PracticeQuestionScreenState();
 }
@@ -18,49 +25,30 @@ class PracticeQuestionScreen extends StatefulWidget {
 class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
   int _selectedQuestionIndex = 0;
   int _previousSelectedIndex = -1;
-
   Map<int, int> selectedOptions = {};
-
   Map<int, bool> completedQuestionsStatus = {};
   Set<int> flaggedQuestions = {};
+  PracticeQuiz? quizData;
+  int selectedQuestionIndex = 0;
+  Set<int> attemped = {};
+  late int unttempted;
 
-  final List<Map<String, dynamic>> questionData = [
-    {
-      "question":
-          "What Is The Primary Function Of The Operating System In A Computer?",
-      "options": [
-        "To provide a platform for applications to run",
-        "To manage hardware and software resources",
-        "To manage user data",
-        "To improve hardware speed",
-      ],
-      "correctIndex": 1,
-    },
-    {
-      "question": "Which protocol is used to send emails?",
-      "options": [
-        "SMTP",
-        "HTTP",
-        "FTP",
-        "IMAP",
-      ],
-      "correctIndex": 0,
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    getPracticeQuizRxObj.practiceQuiz(widget.quiz!.id!);
+  }
 
   @override
   Widget build(BuildContext context) {
+    unttempted = widget.quiz!.totalQuestions! - attemped.length;
     return Scaffold(
       appBar: CustomAppbar(
-        title: 'Practice: Managing Your Time Wisely',
+        title: widget.quiz!.title!,
         onCallBack: () {
-          practiceExamFinish(context, () {
-            NavigationService.navigateToReplacement(Routes.bottomNavBarScreen);
-          });
+          quizDismissPopup(context);
         },
         actions: [
-          //build flag button..
-
           _buildFlagButton(),
         ],
       ),
@@ -68,51 +56,148 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              //QUESTION NO...
-              Text(
-                "Question ${_selectedQuestionIndex + 1}",
-                style: TextFontStyle.textStyle12w400c9AB2A8StyleGTWalsheim,
-                textAlign: TextAlign.center,
-              ),
-              UIHelper.verticalSpace(6.h),
+          child: StreamBuilder(
+              stream: getPracticeQuizRxObj.dataFetcher,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.active) {
+                  if (snapshot.hasError) {
+                    return Center(child: Text("Error: ${snapshot.error}"));
+                  } else if (snapshot.hasData) {
+                    quizData = snapshot.data!.quiz;
 
-              //QUESTION NAME...
-              Text(
-                questionData[_selectedQuestionIndex]['question'],
-                style: TextFontStyle.headline18w500c222222StyleGTWalsheim,
-                textAlign: TextAlign.center,
-              ),
-              UIHelper.verticalSpace(40.h),
+                    if (quizData == null || quizData!.questions!.isEmpty) {
+                      return Center(child: Text('No Quiz Available'));
+                    } else {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Question ${selectedQuestionIndex + 1}",
+                            style: TextFontStyle
+                                .textStyle14w500c6B6B6BtyleGTWalsheim,
+                            textAlign: TextAlign.center,
+                          ),
+                          UIHelper.verticalSpace(15.h),
+                          Text(
+                            quizData!.questions![selectedQuestionIndex].text!,
+                            style: TextFontStyle
+                                .headline18w500c222222StyleGTWalsheim,
+                            textAlign: TextAlign.center,
+                          ),
+                          UIHelper.verticalSpace(25.h),
 
-              //QUESTION OPTION...
-              _buildQuestionOption(),
-              UIHelper.verticalSpace(40.h),
+                          //QUESTION OPTION...
+                          buildQuestion(),
+                          UIHelper.verticalSpace(40.h),
 
-              //QUESTION ITEM LIST...
-              _questionList(),
-              UIHelper.verticalSpace(40.h),
+                          //QUESTION ITEM LIST...
+                          buildQuizItem(),
+                          UIHelper.verticalSpace(40.h),
 
-              //NAVIGATION BUTTONS...
-              _navigationButtons(),
-            ],
-          ),
+                          //NAVIGATION BUTTONS...
+                          navigationButtons(),
+                        ],
+                      );
+                    }
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                } else if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              }),
         ),
       ),
     );
   }
 
-  InkWell _buildFlagButton() {
-    bool isFlagged = flaggedQuestions.contains(_selectedQuestionIndex);
+  Widget buildQuizItem() {
+    return SizedBox(
+      height: 50.h,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: ListView.builder(
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemCount: quizData!.questions!.length,
+          itemBuilder: (context, index) {
+            bool isSelected = selectedQuestionIndex == index;
+            bool? isCompleted = completedQuestionsStatus[index];
+            bool isFlagged = flaggedQuestions.contains(index);
+            Color backgroundColor;
+
+            if (isSelected) {
+              backgroundColor = AppColors.c245741;
+            } else if (isCompleted == true) {
+              backgroundColor = AppColors.c36AD2F;
+            } else {
+              backgroundColor = Colors.transparent;
+            }
+
+            return InkWell(
+              onTap: () {
+                setState(() {
+                  selectedQuestionIndex;
+                  selectedQuestionIndex = index;
+                });
+              },
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Container(
+                    width: 40.w,
+                    height: 40.h,
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(right: 15.w),
+                    decoration: BoxDecoration(
+                      color: backgroundColor,
+                      borderRadius: BorderRadius.circular(4.r),
+                      border: Border.all(
+                        color: isSelected
+                            ? AppColors.c245741
+                            : AppColors.c31CD63.withOpacity(0.5),
+                      ),
+                    ),
+                    child: Text(
+                      "${index + 1}",
+                      style: TextFontStyle.textStyle14w500c6B6B6BtyleGTWalsheim
+                          .copyWith(
+                        color:
+                            isSelected ? AppColors.cFFFFFF : AppColors.c000000,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  if (isFlagged)
+                    Positioned(
+                        top: -8,
+                        right: 10.w,
+                        child: SvgPicture.asset(
+                          Assets.icons.flagBorder,
+                          height: 18.h,
+                          width: 18.w,
+                        ))
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFlagButton() {
+    bool isFlagged = flaggedQuestions.contains(selectedQuestionIndex);
     return InkWell(
       onTap: () {
         setState(() {
           if (isFlagged) {
-            flaggedQuestions.remove(_selectedQuestionIndex);
+            flaggedQuestions.remove(selectedQuestionIndex);
           } else {
-            flaggedQuestions.add(_selectedQuestionIndex);
+            flaggedQuestions.add(selectedQuestionIndex);
           }
         });
       },
@@ -132,55 +217,55 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
     );
   }
 
-  Widget _buildQuestionOption() {
-    var options = questionData[_selectedQuestionIndex]['options'];
-    var correctIndex = questionData[_selectedQuestionIndex]['correctIndex'];
+  Widget buildQuestion() {
+    final options = quizData!.questions![selectedQuestionIndex].options!
+        .map((e) => e)
+        .toList();
 
-    var selectedOption = selectedOptions[_selectedQuestionIndex] ?? -1;
+    final selectedOption = selectedOptions[selectedQuestionIndex] ?? -1;
 
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
       itemCount: options.length,
       itemBuilder: (context, index) {
         final isSelected = selectedOption == index;
-        final isCorrect = index == correctIndex;
 
-        return GestureDetector(
+        return InkWell(
           onTap: () {
             if (selectedOption == -1) {
+              attemped.add(selectedQuestionIndex);
               setState(() {
-                selectedOptions[_selectedQuestionIndex] = index;
-
-                completedQuestionsStatus[_selectedQuestionIndex] =
-                    index == correctIndex;
+                selectedOptions[selectedQuestionIndex] = index;
+                log('selectedOptions[selectedQuestionIndex] ${selectedOptions[selectedQuestionIndex].toString()}');
+                log('selectedQuestionIndex $selectedQuestionIndex');
+                log('quize id : ${quizData!.questions![selectedQuestionIndex].id}');
+                log('tester answer id : ${options[index].id}');
+                log('tester answer id : ${options[index].text}');
               });
             }
           },
           child: Container(
-            margin: EdgeInsets.symmetric(vertical: 8.h),
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+            margin: EdgeInsets.only(top: 16.h),
+            padding: EdgeInsets.all(16.sp),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(8.r),
               border: Border.all(
-                color: isSelected
-                    ? (isCorrect ? AppColors.c31CD63 : AppColors.cFF402F)
-                    : (selectedOption != -1 && index == correctIndex
-                        ? AppColors.c31CD63
-                        : Colors.transparent),
+                color:
+                    isSelected ? AppColors.allPrimaryColor : Colors.transparent,
               ),
             ),
             child: Row(
               children: [
-                // Circle Radio Button
                 Container(
                   height: 20.h,
                   width: 20.w,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: AppColors.c6B6B6B,
+                      color: isSelected
+                          ? AppColors.allPrimaryColor
+                          : AppColors.c6B6B6B,
                     ),
                   ),
                   child: Center(
@@ -194,24 +279,21 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
                 UIHelper.horizontalSpace(6.h),
                 Expanded(
                   child: Text(
-                    options[index],
-                    style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim
-                        .copyWith(
+                    options[index].text!,
+                    style: TextFontStyle.textStyle14w400c9AB2A8.copyWith(
                       color: isSelected
-                          ? (isCorrect ? AppColors.c6B6B6B : AppColors.c6B6B6B)
-                          : (selectedOption != -1 && index == correctIndex
-                              ? AppColors.c6B6B6B
+                          ? AppColors.black
+                          : (selectedOption != -1
+                              ? AppColors.black
                               : AppColors.c6B6B6B),
                     ),
                   ),
                 ),
-                if (isSelected ||
-                    (selectedOption != -1 && index == correctIndex))
+                if (isSelected)
                   SvgPicture.asset(
-                    index == correctIndex
-                        ? Assets.icons.correct
-                        : Assets.icons.closeCircle,
-                  ),
+                    Assets.icons.tickCircle,
+                    color: AppColors.allPrimaryColor,
+                  )
               ],
             ),
           ),
@@ -220,156 +302,74 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
     );
   }
 
-  Widget _questionList() {
-    return Wrap(
-      spacing: 8.sp,
-      runSpacing: 16.sp,
-      children: List.generate(questionData.length, (index) {
-        bool isSelected = _selectedQuestionIndex == index;
-        bool isPrevious = _previousSelectedIndex == index;
-        bool isFlagged = flaggedQuestions.contains(index);
-
-        bool? isCorrect = completedQuestionsStatus[index];
-        Color backgroundColor;
-        if (isCorrect == true) {
-          backgroundColor = AppColors.c31CD63.withOpacity(0.5);
-        } else if (isCorrect == false) {
-          backgroundColor = AppColors.cFF402F.withOpacity(0.5);
-        } else {
-          backgroundColor = Colors.transparent;
-        }
-
-        return GestureDetector(
-            onTap: () {
-              setState(() {
-                _previousSelectedIndex = _selectedQuestionIndex;
-                _selectedQuestionIndex = index;
-              });
-            },
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Container(
-                  width: 40.w,
-                  height: 40.h,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: isSelected ? AppColors.c245741 : backgroundColor,
-                    borderRadius: BorderRadius.circular(4.r),
-                    border: Border.all(
-                      color: isSelected || isPrevious
-                          ? AppColors.c245741
-                          : AppColors.c31CD63.withOpacity(0.5),
-                    ),
-                  ),
-                  child: Text(
-                    "${index + 1}",
-                    style: TextFontStyle.textStyle14w500c6B6B6BtyleGTWalsheim
-                        .copyWith(
-                      color: isSelected ? AppColors.cFFFFFF : AppColors.c000000,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                if (isFlagged)
-                  Positioned(
-                      top: -5,
-                      right: -5,
-                      child: SvgPicture.asset(
-                        Assets.icons.flagBorder,
-                        height: 18.h,
-                        width: 18.w,
-                      ))
-              ],
-            ));
-      }),
-    );
-  }
-
-  Widget _navigationButtons() {
-    bool allQuestionsAnswered =
-        completedQuestionsStatus.length == questionData.length;
-
+  Widget navigationButtons() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        GestureDetector(
+        InkWell(
           onTap: () {
-            if (_selectedQuestionIndex > 0) {
+            if (selectedQuestionIndex > 0) {
               setState(() {
-                _previousSelectedIndex = _selectedQuestionIndex;
-                _selectedQuestionIndex--;
+                selectedQuestionIndex;
+                selectedQuestionIndex--;
               });
             }
           },
           child: Container(
             height: 46.h,
             width: 40.w,
-            decoration: ShapeDecoration(
-              shape: RoundedRectangleBorder(
-                side: BorderSide(
-                  width: 1.sp,
-                  color: Color(0xFF727272),
-                ),
-                borderRadius: BorderRadius.circular(8.r),
-              ),
+            decoration: BoxDecoration(
+              color: AppColors.cFDB338,
+              borderRadius: BorderRadius.circular(8),
             ),
             child: Padding(
-              padding: EdgeInsets.all(8.sp),
+              padding: const EdgeInsets.all(8.0),
               child: SvgPicture.asset(
                 Assets.icons.arrowLeft,
-                height: 24.h,
-                width: 24.w,
+                height: 24,
+                width: 24,
               ),
             ),
           ),
         ),
-        GestureDetector(
+        InkWell(
           onTap: () {
-            if (allQuestionsAnswered) {
-              // examFinishPopup(
-              //   context,
-              //   () {
-              //     NavigationService.navigateToReplacement(
-              //         Routes.practiceExamResult);
-              //   },
-              //   '08:11',
-              //   '08',
-              //   '08',
-              // );
-            }
+            examFinishPopup(
+              context,
+              'Are you sure finish this quiz.',
+              () {
+                NavigationService.navigateTo(Routes.practiceExamResult);
+              },
+              '08:11',
+              attemped.length.toString(),
+              unttempted.toString(),
+              true,
+            );
           },
           child: Container(
             width: 176.w,
             height: 46,
             decoration: BoxDecoration(
-              color:
-                  allQuestionsAnswered ? AppColors.cFDB338 : Colors.transparent,
+              color: AppColors.cFDB338,
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                color: allQuestionsAnswered
-                    ? AppColors.cFDB338
-                    : AppColors.c6B6B6B,
-              ),
             ),
             child: Center(
               child: Text(
                 "Finish",
-                style: TextFontStyle.headline18w500c222222StyleGTWalsheim
-                    .copyWith(
-                        color: allQuestionsAnswered
-                            ? AppColors.cFFFFFF
-                            : AppColors.c6B6B6B),
+                style:
+                    TextFontStyle.headline18w500c222222StyleGTWalsheim.copyWith(
+                  color: AppColors.black,
+                ),
               ),
             ),
           ),
         ),
         GestureDetector(
           onTap: () {
-            if (_selectedQuestionIndex < questionData.length - 1) {
+            if (selectedQuestionIndex < quizData!.questions!.length - 1) {
               setState(() {
-                _previousSelectedIndex = _selectedQuestionIndex;
-                _selectedQuestionIndex++;
+                selectedQuestionIndex;
+                selectedQuestionIndex++;
               });
             }
           },
@@ -381,11 +381,11 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
               borderRadius: BorderRadius.circular(8.r),
             ),
             child: Padding(
-              padding: EdgeInsets.all(8.sp),
+              padding: const EdgeInsets.all(8.0),
               child: SvgPicture.asset(
-                Assets.icons.arrowBlacks,
-                height: 24.h,
-                width: 24.w,
+                Assets.icons.arrowRightSvg,
+                height: 24,
+                width: 24,
               ),
             ),
           ),

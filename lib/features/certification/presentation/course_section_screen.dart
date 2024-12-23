@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
-import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/model/course_details_response.dart';
 import 'package:christiandimene/features/certification/model/pdf_model_response.dart';
@@ -37,6 +36,8 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log('=====================course module id========================');
+    log(widget.data!.id!.toString());
     return Scaffold(
       appBar: CustomAppbar(
         title: widget.data!.courseModuleName!,
@@ -193,9 +194,6 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                     itemBuilder: (_, index) {
                       CourseContent? data;
                       data = lessonData.data!.courseContents[index];
-
-                      log('=====================video =======================');
-                      log(data.videoFile);
 
                       return InkWell(
                         onTap: () {

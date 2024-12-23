@@ -141,12 +141,6 @@ class _TestExamQuizState extends State<TestExamQuiz> {
         return InkWell(
           onTap: () {
             if (selectedOption == -1) {
-              // log('========question id========');
-              // log(quizData!.quiz!.id.toString());
-              // log('========quiz id========');
-              // log(widget.quiz!.id.toString());
-              // log('========option id========');
-
               attemped.add(selectedQuestionIndex);
               setState(() {
                 selectedOptions[selectedQuestionIndex] = index;
@@ -170,7 +164,8 @@ class _TestExamQuizState extends State<TestExamQuiz> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(8.r),
               border: Border.all(
-                color: isSelected ? AppColors.black : Colors.transparent,
+                color:
+                    isSelected ? AppColors.allPrimaryColor : Colors.transparent,
               ),
             ),
             child: Row(
@@ -181,7 +176,9 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: isSelected ? AppColors.black : AppColors.c6B6B6B,
+                      color: isSelected
+                          ? AppColors.allPrimaryColor
+                          : AppColors.c6B6B6B,
                     ),
                   ),
                   child: Center(
@@ -205,7 +202,11 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                     ),
                   ),
                 ),
-                if (isSelected) Icon(Icons.done),
+                if (isSelected)
+                  SvgPicture.asset(
+                    Assets.icons.tickCircle,
+                    color: AppColors.allPrimaryColor,
+                  )
               ],
             ),
           ),
@@ -366,11 +367,10 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                       'Something a wrong', 'Contribute a minimum 1 quiz',
                       backgroundColor: AppColors.cFDB338);
                 } else {
+                  timer?.cancel();
                   postCalculateQuizRxObj
                       .calculateResult(answers: answer)
                       .then((value) {
-                    log("result data is : $value");
-                    log("result data is : ${value["result"]["id"]}");
                     NavigationService.navigateToWithArgs(
                         Routes.testExamResult, {'data': value});
                   });

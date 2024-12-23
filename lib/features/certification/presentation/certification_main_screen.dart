@@ -14,6 +14,7 @@ import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:christiandimene/networks/api_acess.dart';
 import 'package:christiandimene/networks/endpoints.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -43,6 +44,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
 
     getCourseDetailsRxObj.getCourseDetailsdata(widget.data!.id);
     getMockTestRxObj.getMockTest(widget.data!.id);
+    purchaseCourse;
     checkIfUserViewed();
   }
 
@@ -228,7 +230,9 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             if (snapshot.hasError) {
-              return Center(child: Text("Error: ${snapshot.error}"));
+              DioException errorRes = snapshot.error as DioException;
+              return Center(
+                  child: Text("Error: ${errorRes.response!.statusMessage}"));
             } else if (snapshot.hasData) {
               MockTestResponse mockTest = snapshot.data;
 
@@ -245,8 +249,11 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                       return InkWell(
                         onTap: () {
                           if (purchaseCourse.isEmpty) {
-                            Get.snackbar('Something wrong',
-                                'Enroll in this course then start');
+                            Get.snackbar(
+                              'Something wrong',
+                              'Enroll in this course then start',
+                              backgroundColor: AppColors.allPrimaryColor,
+                            );
                           } else {
                             if (purchaseCourse[0].courseId.toString() ==
                                 widget.data!.id.toString()) {
@@ -254,18 +261,28 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                   appData.read(userId).toString()) {
                                 mockTestPopup(
                                   context,
-                                  () {},
                                   () {
-                                    
+                                    NavigationService.navigateToWithArgs(
+                                        Routes.practiceExamInstruction,
+                                        {'data': quiz});
+                                  },
+                                  () {
+                                    NavigationService.navigateToWithArgs(
+                                        Routes.testExamInstructionScreen,
+                                        {'data': quiz});
                                   },
                                 );
                               } else {
                                 Get.snackbar(
-                                    'Something wrong', 'No Course Found');
+                                    backgroundColor: AppColors.allPrimaryColor,
+                                    'Something wrong',
+                                    'No Course Found');
                               }
                             } else {
                               Get.snackbar(
-                                  'Something wrong', 'No Course Found');
+                                  backgroundColor: AppColors.allPrimaryColor,
+                                  'Something wrong',
+                                  'No Course Found');
                             }
                           }
                         },
@@ -377,8 +394,11 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                       return InkWell(
                         onTap: () {
                           if (purchaseCourse.isEmpty) {
-                            Get.snackbar('Something wrong',
-                                'Enroll in this course then start');
+                            Get.snackbar(
+                              backgroundColor: AppColors.allPrimaryColor,
+                              'Something wrong',
+                              'Enroll in this course then start',
+                            );
                           } else {
                             if (purchaseCourse[0].courseId.toString() ==
                                 widget.data!.id.toString()) {
@@ -389,11 +409,17 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                     {'data': data});
                               } else {
                                 Get.snackbar(
-                                    'Something wrong', 'No Course Found');
+                                  backgroundColor: AppColors.allPrimaryColor,
+                                  'Something wrong',
+                                  'No Course Found',
+                                );
                               }
                             } else {
                               Get.snackbar(
-                                  'Something wrong', 'No Course Found');
+                                backgroundColor: AppColors.allPrimaryColor,
+                                'Something wrong',
+                                'No Course Found',
+                              );
                             }
                           }
                         },

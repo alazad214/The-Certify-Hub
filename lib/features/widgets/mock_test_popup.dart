@@ -11,7 +11,7 @@ void mockTestPopup(
     BuildContext context, VoidCallback practiceOntap, VoidCallback testOntap) {
   showDialog(
     context: context,
-    barrierDismissible: false,
+    barrierDismissible: true,
     builder: (BuildContext context) {
       return Dialog(
         elevation: 12,
@@ -38,12 +38,12 @@ void mockTestPopup(
                 ),
               ),
               UIHelper.verticalSpace(16.h),
-              Text(
-                "You are about to begin the quiz. Please ensure sufficient time and a quiet environment to complete the test. Do you wish to proceed and start the quiz now?",
-                textAlign: TextAlign.center,
-                style: TextFontStyle.headline18w500c222222StyleGTWalsheim,
-              ),
-              UIHelper.verticalSpace(8.h),
+              // Text(
+              //   "You are about to begin the quiz. Please ensure sufficient time and a quiet environment to complete the test. Do you wish to proceed and start the quiz now?",
+              //   textAlign: TextAlign.center,
+              //   style: TextFontStyle.headline18w500c222222StyleGTWalsheim,
+              // ),
+              // UIHelper.verticalSpace(8.h),
               Text(
                 "How would you like to proceed with this topic? Select 'Practice' to learn at your own pace or 'Test' to simulate real exam conditions.",
                 textAlign: TextAlign.center,
