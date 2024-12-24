@@ -44,4 +44,5 @@ final class Endpoints {
   static String resultCalculate() => "/quizzes/calculate-result";
   static String practiceQuiz(int id) => "/quizzes/$id/correct-answers";
   static String purchaseCourse() => "/purchased-courses";
+  static String courseProgress() => "/course-progress";
 }

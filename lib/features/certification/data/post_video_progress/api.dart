@@ -12,7 +12,7 @@ final class PostVideoProgress {
   Future<Map> progressData({required Map<String, dynamic> body}) async {
     try {
       Response response = await postHttp(
-        PaymentGateway.gateway(),
+        Endpoints.courseProgress(),
         body,
       );
       if (response.statusCode == 200) {

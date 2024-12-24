@@ -144,9 +144,9 @@ class Quiz {
 }
 
 class Result {
-  int? score;
+  num? score;
   int? totalQuestions;
-  int? percentage;
+  num? percentage;
 
   Result({
     this.score,

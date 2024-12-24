@@ -1,4 +1,7 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:developer';
+
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/model/mock_test_response.dart';
@@ -32,6 +35,7 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
   int selectedQuestionIndex = 0;
   Set<int> attemped = {};
   late int unttempted;
+  Map<String, int> result = {};
 
   @override
   void initState() {
@@ -55,7 +59,7 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
       backgroundColor: Colors.grey[200],
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.sp),
           child: StreamBuilder(
               stream: getPracticeQuizRxObj.dataFetcher,
               builder: (context, snapshot) {
@@ -88,7 +92,7 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
 
                           //QUESTION OPTION...
                           buildQuestion(),
-                          UIHelper.verticalSpace(40.h),
+                          UIHelper.verticalSpace(30.h),
 
                           //QUESTION ITEM LIST...
                           buildQuizItem(),
@@ -223,6 +227,10 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
         .toList();
 
     final selectedOption = selectedOptions[selectedQuestionIndex] ?? -1;
+    final correctOptionId =
+        quizData!.questions![selectedQuestionIndex].correctOption!;
+
+    bool isCorrectAns = false;
 
     return ListView.builder(
       shrinkWrap: true,
@@ -236,11 +244,16 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
               attemped.add(selectedQuestionIndex);
               setState(() {
                 selectedOptions[selectedQuestionIndex] = index;
-                log('selectedOptions[selectedQuestionIndex] ${selectedOptions[selectedQuestionIndex].toString()}');
-                log('selectedQuestionIndex $selectedQuestionIndex');
-                log('quize id : ${quizData!.questions![selectedQuestionIndex].id}');
-                log('tester answer id : ${options[index].id}');
-                log('tester answer id : ${options[index].text}');
+                log('practic result: ${quizData!.questions![selectedQuestionIndex].id.toString()}');
+                result.addAll({
+                  quizData!.questions![selectedQuestionIndex].id.toString():
+                      options[index].id!
+                });
+                if (options[index].id == correctOptionId) {
+                  isCorrectAns = true;
+                } else {
+                  isCorrectAns = false;
+                }
               });
             }
           },
@@ -251,8 +264,14 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(8.r),
               border: Border.all(
-                color:
-                    isSelected ? AppColors.allPrimaryColor : Colors.transparent,
+                color: isSelected
+                    ? ((options[index].isCorrect == 1)
+                        ? AppColors.allPrimaryColor
+                        : Colors.red)
+                    : (options[index].id == correctOptionId &&
+                            selectedOption != -1)
+                        ? AppColors.allPrimaryColor
+                        : Colors.transparent,
               ),
             ),
             child: Row(
@@ -263,9 +282,7 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: isSelected
-                          ? AppColors.allPrimaryColor
-                          : AppColors.c6B6B6B,
+                      color: AppColors.c6B6B6B,
                     ),
                   ),
                   child: Center(
@@ -292,7 +309,9 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
                 if (isSelected)
                   SvgPicture.asset(
                     Assets.icons.tickCircle,
-                    color: AppColors.allPrimaryColor,
+                    color: (options[index].isCorrect == 1)
+                        ? AppColors.allPrimaryColor
+                        : Colors.red,
                   )
               ],
             ),
@@ -338,7 +357,12 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
               context,
               'Are you sure finish this quiz.',
               () {
-                NavigationService.navigateTo(Routes.practiceExamResult);
+                NavigationService.navigateToWithArgs(
+                    Routes.practiceExamResult, {
+                  'quiz': quizData,
+                  'attempted': attemped,
+                  'selectedOptions': result,
+                });
               },
               '08:11',
               attemped.length.toString(),

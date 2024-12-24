@@ -1,11 +1,17 @@
 import 'dart:convert';
+import 'package:christiandimene/constants/text_font_style.dart';
+import 'package:christiandimene/helpers/ui_helpers.dart';
+import 'package:flutter/material.dart';
+import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/features/certification/model/lesson_model_response.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
+import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/networks/api_acess.dart';
-import 'package:flutter/material.dart';
+import 'package:christiandimene/provider/video_screen_provider/video_screen_provider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:provider/provider.dart';
 
 class CertificationVideoPlayerScreen extends StatefulWidget {
   final CourseContent? data;
@@ -20,13 +26,11 @@ class _CertificationVideoPlayerScreenState
     extends State<CertificationVideoPlayerScreen> {
   late WebViewController _controller;
   bool _isControllerReady = false;
-  bool _popupShown = false;
 
   @override
   void initState() {
     super.initState();
     _initializeWebView();
-    _checkIfPopupShown();
   }
 
   Future<void> _initializeWebView() async {
@@ -38,14 +42,18 @@ class _CertificationVideoPlayerScreenState
         },
         onPageFinished: (url) {
           debugPrint('Page finished loading: $url');
+          // Update the video loading state
+          context.read<VideoScreenProvider>().setLoading(false);
         },
       ))
       ..addJavaScriptChannel(
         'VimeoChannel',
         onMessageReceived: (message) {
           if (message.message == "ended") {
+            // Video ended, update the completion state
+            context.read<VideoScreenProvider>().setCompleted(true);
             postProgressRxObj.progressData(courseId: {
-              "course_id": 7,
+              "course_id": widget.data!.courseId,
               "course_content_id": widget.data!.id.toString(),
               "is_completed": true
             });
@@ -93,10 +101,6 @@ class _CertificationVideoPlayerScreenState
     _controller.loadRequest(Uri.parse('data:text/html;base64,$contentBase64'));
   }
 
-  void _checkIfPopupShown() {
-    setState(() {});
-  }
-
   void _lockOrientation() {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
@@ -116,24 +120,49 @@ class _CertificationVideoPlayerScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.data!.contentTitle),
-        backgroundColor: AppColors.allPrimaryColor,
+      appBar: CustomAppbar(
+        title: widget.data!.contentTitle,
+        onCallBack: () {
+          NavigationService.goBack;
+        },
       ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 18.w),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _isControllerReady
-                  ? Container(
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.r)),
-                      height: 200,
-                      child: WebViewWidget(controller: _controller))
-                  : CircularProgressIndicator(),
+              Container(
+                height: 195.h,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppColors.allPrimaryColor,
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+                child: _isControllerReady
+                    ? Container(
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.r)),
+                        height: 200.h,
+                        child: WebViewWidget(
+                          controller: _controller,
+                        ))
+                    : Center(child: CircularProgressIndicator()),
+              ),
+              UIHelper.verticalSpace(20.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Duration:",
+                    style: TextFontStyle.textStyle16w700c222222StyleGTWalsheim,
+                  ),
+                  Text(
+                    widget.data!.contentLength,
+                    style: TextFontStyle.textStyle16w700c222222StyleGTWalsheim,
+                  ),
+                ],
+              )
             ],
           ),
         ),

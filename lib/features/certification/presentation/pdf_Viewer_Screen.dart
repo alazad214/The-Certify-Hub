@@ -1,6 +1,7 @@
 import 'dart:io';
+import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/features/certification/model/pdf_model_response.dart';
-import 'package:christiandimene/gen/colors.gen.dart';
+import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/networks/endpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
@@ -8,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
 class PdfViewerScreen extends StatefulWidget {
-  PdfData? data;
+  FileElement? data;
 
   PdfViewerScreen({required this.data, super.key});
   @override
@@ -22,7 +23,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
   @override
   void initState() {
     super.initState();
-    downloadPdf(baseUrl + widget.data!.filePath);
+    downloadPdf(baseUrl + widget.data!.filePath.toString());
   }
 
   Future<void> downloadPdf(String url) async {
@@ -58,9 +59,11 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('PDF File'),
-        backgroundColor: AppColors.allPrimaryColor,
+      appBar: CustomAppbar(
+        title: "Document File",
+        onCallBack: () {
+          NavigationService.goBack;
+        },
       ),
       body: loading
           ? Center(child: CircularProgressIndicator())
