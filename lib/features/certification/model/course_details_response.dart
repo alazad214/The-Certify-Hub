@@ -51,6 +51,10 @@ class CourseDetailsData {
   dynamic deletedAt;
   List<CourseModule>? courseModules;
   List<Purchase>? purchases;
+  String? aiName;
+  String? aiUrl;
+  String? aiDescription;
+  String? aiPicture;
 
   CourseDetailsData({
     this.id,
@@ -67,6 +71,10 @@ class CourseDetailsData {
     this.deletedAt,
     this.courseModules,
     this.purchases,
+    this.aiName,
+    this.aiUrl,
+    this.aiDescription,
+    this.aiPicture,
   });
 
   factory CourseDetailsData.fromRawJson(String str) =>
@@ -102,6 +110,10 @@ class CourseDetailsData {
             ? []
             : List<Purchase>.from(
                 json["purchases"]!.map((x) => Purchase.fromJson(x))),
+        aiName: json["ai_name"],
+        aiUrl: json["ai_url"],
+        aiDescription: json["ai_description"],
+        aiPicture: json["ai_picture"],
       );
 
   Map<String, dynamic> toJson() => {

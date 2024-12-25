@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/model/course_details_response.dart';
@@ -17,7 +16,8 @@ import '../model/lesson_model_response.dart';
 
 class CourseSectionScreen extends StatefulWidget {
   CourseModule? data;
-  CourseSectionScreen({this.data, super.key});
+  CourseDetailsData? aiData;
+  CourseSectionScreen({this.aiData, this.data, super.key});
 
   @override
   State<CourseSectionScreen> createState() => _CertificationMainScreenState();
@@ -36,8 +36,6 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    log('=====================course module id========================');
-    log(widget.data!.id!.toString());
     return Scaffold(
       appBar: CustomAppbar(
         title: widget.data!.courseModuleName!,
@@ -63,19 +61,22 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
             // ),
 
             if (_selectedType == 'lesson') UIHelper.verticalSpace(21.h),
-            if (_selectedType == 'lesson') CustomAskMeCard(),
+            if (_selectedType == 'lesson')
+              CustomAskMeCard(
+                aiText: widget.aiData!.aiName,
+                aiDescription: widget.aiData!.aiDescription,
+                aiImage: widget.aiData!.aiPicture,
+                aiUrl: widget.aiData!.aiUrl,
+              ),
 
             UIHelper.verticalSpace(25.h),
 
-            ///toggle button....
             _buildCourseAndTestButton(),
 
             UIHelper.verticalSpace(16.h),
 
-            ///build lesson item....
             if (_selectedType == 'lesson') _buildLessonItem(),
 
-            ///build pdf item....
             if (_selectedType == 'pdf') _buildPDFItem(),
             UIHelper.verticalSpace(120.h),
           ],
@@ -94,16 +95,17 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
             } else if (snapshot.hasData) {
               PdfModelResponse? pdfData = snapshot.data;
 
-              if (pdfData!.data == null || pdfData.data!.isEmpty) {
+              if (pdfData!.data!.files == null ||
+                  pdfData.data!.files!.isEmpty) {
                 return Center(child: Text('No pdf available'));
               } else {
                 return ListView.builder(
-                    itemCount: pdfData.data!.length,
+                    itemCount: pdfData.data!.files!.length,
                     shrinkWrap: true,
                     primary: false,
                     itemBuilder: (_, index) {
-                      PdfData? pdf;
-                      pdf = pdfData.data![index];
+                      FileElement? pdf;
+                      pdf = pdfData.data!.files![index];
 
                       return InkWell(
                         onTap: () {
@@ -132,7 +134,7 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Weekend lessons for children',
+                                      "Document- ${index + 1}",
                                       overflow: TextOverflow.ellipsis,
                                       style: TextFontStyle
                                           .textStyle16w400c999999StyleGTWalsheim

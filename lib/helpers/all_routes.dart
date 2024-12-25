@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:christiandimene/features/auth/presentation/forget_pass_screen.dart/create_new_pass.dart';
 import 'package:christiandimene/features/auth/presentation/forget_pass_screen.dart/forget_pass_screen.dart';
 import 'package:christiandimene/features/auth/presentation/otp_screen/forget_verify_screen.dart';
@@ -22,9 +21,7 @@ import 'package:christiandimene/features/profile_screen/presentation/profile/edi
 import 'package:christiandimene/features/test_exam/presentation/test_exam_instruction_screen.dart';
 import 'package:christiandimene/features/test_exam/presentation/test_exam_question_screen.dart';
 import 'package:christiandimene/features/test_exam/presentation/test_exam_result.dart';
-
 import 'package:flutter/cupertino.dart';
-
 import '../features/certification/presentation/pdf_Viewer_Screen.dart';
 
 final class Routes {
@@ -142,11 +139,13 @@ final class RouteGenerator {
             ? _FadedTransitionRoute(
                 widget: CourseSectionScreen(
                   data: arg!['data'],
+                  aiData: arg['aidata'],
                 ),
                 settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => CourseSectionScreen(
                       data: arg!['data'],
+                      aiData: arg['aidata'],
                     ));
 
       case Routes.mockTestSectionScreen:
@@ -217,7 +216,6 @@ final class RouteGenerator {
                       quiz: arg!['data'],
                     ));
 
-
       case Routes.practiceQuestionScreen:
         final arg = settings.arguments as Map?;
         return Platform.isAndroid
@@ -233,10 +231,23 @@ final class RouteGenerator {
               );
 
       case Routes.practiceExamResult:
+        final arg = settings.arguments as Map?;
         return Platform.isAndroid
             ? _FadedTransitionRoute(
-                widget: PracticeExmaResult(), settings: settings)
-            : CupertinoPageRoute(builder: (context) => PracticeExmaResult());
+                widget: PracticeExamResult(
+                  quiz: arg!['quiz'],
+                  attempted: arg['attempted'],
+                  selectedOptions: arg['selectedOptions'],
+                ),
+                settings: settings,
+              )
+            : CupertinoPageRoute(
+                builder: (context) => PracticeExamResult(
+                  quiz: arg!['quiz'],
+                  attempted: arg['attempted'],
+                  selectedOptions: arg['selectedOptions'],
+                ),
+              );
 
       case Routes.createNewPassword:
         return Platform.isAndroid

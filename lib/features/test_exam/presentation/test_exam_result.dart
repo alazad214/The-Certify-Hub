@@ -112,6 +112,7 @@ class _TestExamResultState extends State<TestExamResult> {
                             return ListView.builder(
                               shrinkWrap: true,
                               itemCount: result!.length,
+                              physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
                                 final questionData = result[index];
                                 return Padding(

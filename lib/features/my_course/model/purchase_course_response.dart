@@ -38,13 +38,13 @@ class PurchaseCourseData {
   String? duration;
   String? summary;
   DateTime? lastUpdate;
-  int? coursePrice;
+  num? coursePrice;
   String? courseFeatureImage;
   String? status;
   DateTime? createdAt;
   DateTime? updatedAt;
   dynamic deletedAt;
-  int? progressRate;
+  num? progressRate;
 
   PurchaseCourseData({
     this.id,

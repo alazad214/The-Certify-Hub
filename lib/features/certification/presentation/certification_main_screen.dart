@@ -36,6 +36,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
   String? _selectedType;
   List<Purchase> purchaseCourse = [];
   bool userHasViewedCourse = false;
+  CourseDetailsData? data;
 
   @override
   void initState() {
@@ -67,22 +68,44 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
           NavigationService.goBack;
         },
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(24.sp),
-        child: Column(
-          children: [
-            _buildHeaderCard(),
-            UIHelper.verticalSpace(24.h),
-            CustomAskMeCard(),
-            UIHelper.verticalSpace(25.h),
-            _buildCourseAndTestButton(),
-            UIHelper.verticalSpace(16.h),
-            if (_selectedType == 'data') _buildCourseItem(),
-            if (_selectedType == 'test') _buildMockTestItem(),
-            UIHelper.verticalSpace(100.h),
-          ],
-        ),
-      ),
+      body: StreamBuilder(
+          stream: getCourseDetailsRxObj.dataFetcher,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              if (snapshot.hasError) {
+                return Center(child: Text("Error: ${snapshot.error}"));
+              } else if (snapshot.hasData) {
+                data = snapshot.data!.data;
+                return SingleChildScrollView(
+                  padding: EdgeInsets.all(24.sp),
+                  child: Column(
+                    children: [
+                      _buildHeaderCard(),
+                      UIHelper.verticalSpace(24.h),
+                      CustomAskMeCard(
+                        aiText: data!.aiName,
+                        aiDescription: data!.aiDescription,
+                        aiImage: data!.aiPicture,
+                        aiUrl: data!.aiUrl,
+                      ),
+                      UIHelper.verticalSpace(25.h),
+                      _buildCourseAndTestButton(),
+                      UIHelper.verticalSpace(16.h),
+                      if (_selectedType == 'data') _buildCourseItem(),
+                      if (_selectedType == 'test') _buildMockTestItem(),
+                      UIHelper.verticalSpace(100.h),
+                    ],
+                  ),
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          }),
       bottomSheet: userHasViewedCourse && purchaseCourse.isEmpty
           ? Container(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -389,7 +412,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                     shrinkWrap: true,
                     primary: false,
                     itemBuilder: (_, index) {
-                      final CourseModule? data =
+                      final CourseModule? coursedata =
                           courseData.data!.courseModules![index];
                       return InkWell(
                         onTap: () {
@@ -406,7 +429,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                   appData.read(userId).toString()) {
                                 NavigationService.navigateToWithArgs(
                                     Routes.certificationSectionScreen,
-                                    {'data': data});
+                                    {'data': coursedata, 'aidata': data});
                               } else {
                                 Get.snackbar(
                                   backgroundColor: AppColors.allPrimaryColor,
@@ -468,7 +491,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                     children: [
                                       Text(
                                         overflow: TextOverflow.ellipsis,
-                                        data!.courseModuleName.toString(),
+                                        coursedata!.courseModuleName.toString(),
                                         style: TextFontStyle
                                             .headline18w500c222222StyleGTWalsheim,
                                       ),
@@ -476,7 +499,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                       Row(
                                         children: [
                                           Text(
-                                            "Lessons: ${data.lessonCount}",
+                                            "Lessons: ${coursedata.lessonCount}",
                                             overflow: TextOverflow.ellipsis,
                                             style: TextFontStyle
                                                 .textStyle12w400c9AB2A8StyleGTWalsheim
@@ -507,87 +530,68 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
 
   ///build header card....
   Widget _buildHeaderCard() {
-    return StreamBuilder(
-        stream: getCourseDetailsRxObj.dataFetcher,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.active) {
-            if (snapshot.hasError) {
-              return Center(child: Text("Error: ${snapshot.error}"));
-            } else if (snapshot.hasData) {
-              CourseDetailsData? data = snapshot.data!.data;
-              return Container(
-                height: 132.h,
-                padding: EdgeInsets.all(8.sp),
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(8.r),
+    return Container(
+      height: 132.h,
+      padding: EdgeInsets.all(8.sp),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(8.r),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 130.w,
+            height: 120.h,
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(8.r)),
+            child: CachedNetworkImage(
+              imageUrl: baseUrl + data!.courseFeatureImage!,
+              placeholder: (context, url) =>
+                  Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+              fit: BoxFit.cover,
+            ),
+          ),
+          UIHelper.horizontalSpace(12.w),
+          Flexible(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  data!.courseTitle!,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  style: TextFontStyle.headline20w500c222222StyleGTWalsheim,
                 ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
                   children: [
-                    Container(
-                      width: 130.w,
-                      height: 120.h,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.r)),
-                      child: CachedNetworkImage(
-                        imageUrl: baseUrl + data!.courseFeatureImage!,
-                        placeholder: (context, url) =>
-                            Center(child: CircularProgressIndicator()),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
-                        fit: BoxFit.cover,
+                    Flexible(
+                      child: Text(
+                        "Duration: ",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextFontStyle
+                            .textStyle16w400c999999StyleGTWalsheim
+                            .copyWith(color: AppColors.c8C8C8C),
                       ),
                     ),
-                    UIHelper.horizontalSpace(12.w),
                     Flexible(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            data.courseTitle!,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            style: TextFontStyle
-                                .headline20w500c222222StyleGTWalsheim,
-                          ),
-                          Row(
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  "Duration: ",
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextFontStyle
-                                      .textStyle16w400c999999StyleGTWalsheim
-                                      .copyWith(color: AppColors.c8C8C8C),
-                                ),
-                              ),
-                              Flexible(
-                                child: Text(
-                                  data.duration!,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextFontStyle
-                                      .textStyle14w400c9AB2A8StyleGTWalsheim
-                                      .copyWith(color: AppColors.c8C8C8C),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
+                      child: Text(
+                        data!.duration!,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextFontStyle
+                            .textStyle14w400c9AB2A8StyleGTWalsheim
+                            .copyWith(color: AppColors.c8C8C8C),
                       ),
-                    )
+                    ),
                   ],
-                ),
-              );
-            } else {
-              return const SizedBox.shrink();
-            }
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        });
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

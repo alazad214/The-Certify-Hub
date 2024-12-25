@@ -9,8 +9,6 @@ import 'package:christiandimene/networks/endpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../helpers/all_routes.dart';
-import '../../../helpers/navigation_service.dart';
 import '../../../networks/api_acess.dart';
 
 class MyCourseScreen extends StatefulWidget {
@@ -91,9 +89,9 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                 data = coursesToShow[index];
                                 return InkWell(
                                   onTap: () {
-                                    NavigationService.navigateToWithArgs(
-                                        Routes.certificationScreen,
-                                        {'data': data});
+                                    // NavigationService.navigateToWithArgs(
+                                    //     Routes.certificationScreen,
+                                    //     {'data': data});
                                   },
                                   child: Container(
                                     height: 100.h,

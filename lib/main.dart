@@ -1,10 +1,12 @@
 import 'package:christiandimene/loading_screen.dart';
+import 'package:christiandimene/provider/video_screen_provider/video_screen_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:auto_animated/auto_animated.dart';
+import 'package:provider/provider.dart';
 import 'constants/custome_theme.dart';
 import 'gen/colors.gen.dart';
 import 'helpers/all_routes.dart';
@@ -24,7 +26,14 @@ void main() async {
 
   DioSingleton.instance.create();
 
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => VideoScreenProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
