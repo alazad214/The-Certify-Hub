@@ -155,19 +155,13 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
       if (value == null) {
         NavigationService.navigateToUntilReplacement(Routes.bottomNavBarScreen);
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text('Payment Success'.toUpperCase(),
-                  style: TextStyle(fontSize: 18.sp, color: Colors.green))),
-        );
+        Get.snackbar(
+            backgroundColor: Colors.green, 'Successfull', 'Payment Success');
       }
     }).catchError((e) {
       log(e.toString());
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text('Payment Failed',
-                style: TextStyle(fontSize: 18.sp, color: Colors.red))),
-      );
+      Get.snackbar(
+          backgroundColor: Colors.red, 'Something wrong', 'Payment Failed');
     });
   }
 
