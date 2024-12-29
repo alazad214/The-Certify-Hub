@@ -209,11 +209,13 @@ final class RouteGenerator {
             ? _FadedTransitionRoute(
                 widget: PracticeExamInstructionScreen(
                   quiz: arg!['data'],
+                  data: arg['courseId'],
                 ),
                 settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => PracticeExamInstructionScreen(
                       quiz: arg!['data'],
+                      data: arg['courseId'],
                     ));
 
       case Routes.practiceQuestionScreen:
@@ -222,11 +224,13 @@ final class RouteGenerator {
             ? _FadedTransitionRoute(
                 widget: PracticeQuestionScreen(
                   quiz: arg!['data'],
+                  data: arg['course'],
                 ),
                 settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => PracticeQuestionScreen(
                   quiz: arg!['data'],
+                  data: arg['course'],
                 ),
               );
 
@@ -238,6 +242,8 @@ final class RouteGenerator {
                   quiz: arg!['quiz'],
                   attempted: arg['attempted'],
                   selectedOptions: arg['selectedOptions'],
+                  data: arg['course'],
+                  
                 ),
                 settings: settings,
               )
@@ -267,11 +273,13 @@ final class RouteGenerator {
             ? _FadedTransitionRoute(
                 widget: TestExamInstructionScreen(
                   quiz: arg!['data'],
+                  data: arg['courseId'],
                 ),
                 settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => TestExamInstructionScreen(
                       quiz: arg!['data'],
+                      data: arg['courseId'],
                     ));
 
       case Routes.testExamQuestionScreen:
@@ -280,11 +288,13 @@ final class RouteGenerator {
             ? _FadedTransitionRoute(
                 widget: TestExamQuiz(
                   quiz: arg!['data'],
+                  data: arg['courseId'],
                 ),
                 settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => TestExamQuiz(
                   quiz: arg!['data'],
+                  data: arg['courseId'],
                 ),
               );
 
@@ -294,11 +304,13 @@ final class RouteGenerator {
             ? _FadedTransitionRoute(
                 widget: TestExamResult(
                   quiz: arg!['data'],
+                  data: arg['courseId'],
                 ),
                 settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => TestExamResult(
                   quiz: arg!['data'],
+                  data: arg['courseId'],
                 ),
               );
 

@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
+import 'package:christiandimene/features/home/model/course_response.dart';
+import 'package:christiandimene/features/widgets/quiz_restart_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,13 +20,11 @@ class PracticeExamResult extends StatefulWidget {
   final PracticeQuiz? quiz;
   final Set<int>? attempted;
   final Map<String, int>? selectedOptions;
+  Course? data;
 
-  const PracticeExamResult({
-    Key? key,
-    this.quiz,
-    this.attempted,
-    this.selectedOptions,
-  }) : super(key: key);
+  PracticeExamResult(
+      {Key? key, this.data, this.quiz, this.attempted, this.selectedOptions})
+      : super(key: key);
 
   @override
   State<PracticeExamResult> createState() => _PracticeExamResultState();
@@ -38,7 +38,7 @@ class _PracticeExamResultState extends State<PracticeExamResult> {
       appBar: CustomAppbar(title: widget.quiz!.title ?? 'No Title'),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 35.w),
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: Column(
             children: [
               Center(
@@ -240,8 +240,14 @@ class _PracticeExamResultState extends State<PracticeExamResult> {
           height: 48.h,
           name: 'Restart Quiz',
           onCallBack: () {
-            NavigationService.navigateToUntilReplacement(
-              Routes.bottomNavBarScreen,
+            quizRestartPopupPopup(
+              context,
+              () {
+                NavigationService.navigateToWithArgs(
+                    Routes.certificationScreen, {
+                  "data": widget.data,
+                });
+              },
             );
           },
           context: context,

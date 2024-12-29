@@ -115,10 +115,10 @@ void examFinishPopup(
                 children: [
                   Expanded(
                     child: customButton(
-                      name: 'Restart',
-                      height: 46.h,
+                      name: 'Cancel',
+                      height: 42.h,
                       color: AppColors.white,
-                      borderColor: AppColors.black,
+                      borderColor: AppColors.black.withOpacity(0.3),
                       onCallBack: () {
                         NavigationService.navigateToUntilReplacement(
                             Routes.bottomNavBarScreen);
@@ -130,7 +130,7 @@ void examFinishPopup(
                   Expanded(
                     child: customButton(
                       name: 'Result',
-                      height: 46.h,
+                      height: 42.h,
                       onCallBack: finishOntap,
                       context: context,
                     ),

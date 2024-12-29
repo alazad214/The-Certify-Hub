@@ -203,7 +203,7 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                               Routes.videoPlayerScreen, {'data': data});
                         },
                         child: Container(
-                          height: 93.h,
+                          height: 115.h,
                           padding: EdgeInsets.all(8.sp),
                           margin: EdgeInsets.symmetric(vertical: 8.h),
                           decoration: BoxDecoration(

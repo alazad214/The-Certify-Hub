@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/model/mock_test_response.dart';
+import 'package:christiandimene/features/home/model/course_response.dart';
 import 'package:christiandimene/features/widgets/exam_finish_popup.dart';
 import 'package:christiandimene/features/widgets/quiz_dismiss_popup.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
@@ -20,7 +21,9 @@ import '../model/test_quiz_response.dart';
 
 class TestExamQuiz extends StatefulWidget {
   QuizData? quiz;
-  TestExamQuiz({this.quiz, super.key});
+  Course? data;
+
+  TestExamQuiz({this.data, this.quiz, super.key});
 
   @override
   _TestExamQuizState createState() => _TestExamQuizState();
@@ -45,6 +48,8 @@ class _TestExamQuizState extends State<TestExamQuiz> {
   @override
   Widget build(BuildContext context) {
     unttempted = widget.quiz!.totalQuestions! - attemped.length;
+
+    log('=====Course Id ${widget.data!.id}=====');
     return Scaffold(
       appBar: CustomAppbar(
         title: "${widget.quiz!.title}",
@@ -140,22 +145,23 @@ class _TestExamQuizState extends State<TestExamQuiz> {
 
         return InkWell(
           onTap: () {
-            if (selectedOption == -1) {
-              attemped.add(selectedQuestionIndex);
-              setState(() {
-                selectedOptions[selectedQuestionIndex] = index;
-                log('selectedOptions[selectedQuestionIndex] ${selectedOptions[selectedQuestionIndex].toString()}');
-                log('selectedQuestionIndex $selectedQuestionIndex');
-                log('quize id : ${quizData!.quiz!.questions![selectedQuestionIndex].id}');
-                log('tester answer id : ${options[index].id}');
-                log('tester answer id : ${options[index].text}');
-                result.addAll({
-                  quizData!.quiz!.questions![selectedQuestionIndex].id
-                      .toString(): options[index].id!
-                });
+            setState(() {
+              selectedOptions[selectedQuestionIndex] = index;
+              log('selectedOptions[selectedQuestionIndex] ${selectedOptions[selectedQuestionIndex].toString()}');
+              log('selectedQuestionIndex $selectedQuestionIndex');
+              log('quiz id : ${quizData!.quiz!.questions![selectedQuestionIndex].id}');
+              log('answer id : ${options[index].id}');
+              log('answer text : ${options[index].text}');
+
+              result.addAll({
+                quizData!.quiz!.questions![selectedQuestionIndex].id.toString():
+                    options[index].id!
               });
-              log(result.toString());
-            }
+
+              attemped.add(selectedQuestionIndex);
+            });
+
+            log(result.toString());
           },
           child: Container(
             margin: EdgeInsets.only(top: 16.h),
@@ -164,8 +170,8 @@ class _TestExamQuizState extends State<TestExamQuiz> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(8.r),
               border: Border.all(
-                color:
-                    isSelected ? AppColors.allPrimaryColor : Colors.transparent,
+                width: 2.w,
+                color: isSelected ? Colors.grey : Colors.transparent,
               ),
             ),
             child: Row(
@@ -176,16 +182,15 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: isSelected
-                          ? AppColors.allPrimaryColor
-                          : AppColors.c6B6B6B,
+                      color: isSelected ? Colors.grey : AppColors.c6B6B6B,
                     ),
                   ),
                   child: Center(
                     child: Radio(
                       value: index,
                       groupValue: selectedOption,
-                      onChanged: null,
+                      onChanged:
+                          null, // Disable default behavior to manage it manually
                     ),
                   ),
                 ),
@@ -203,10 +208,7 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                   ),
                 ),
                 if (isSelected)
-                  SvgPicture.asset(
-                    Assets.icons.tickCircle,
-                    color: AppColors.allPrimaryColor,
-                  )
+                  SvgPicture.asset(Assets.icons.tickCircle, color: Colors.grey)
               ],
             ),
           ),
@@ -319,9 +321,6 @@ class _TestExamQuizState extends State<TestExamQuiz> {
   }
 
   Widget navigationButtons() {
-    // bool allAnswered =
-    //     selectedOptions.length == quizData!.quiz!.questions!.length;
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -371,8 +370,8 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                   postCalculateQuizRxObj
                       .calculateResult(answers: answer)
                       .then((value) {
-                    NavigationService.navigateToWithArgs(
-                        Routes.testExamResult, {'data': value});
+                    NavigationService.navigateToWithArgs(Routes.testExamResult,
+                        {'data': value, "courseId": widget.data});
                   });
                 }
               },
@@ -487,8 +486,10 @@ class _TestExamQuizState extends State<TestExamQuiz> {
               backgroundColor: AppColors.cFDB338);
         } else {
           postCalculateQuizRxObj.calculateResult(answers: answer).then((value) {
-            NavigationService.navigateToWithArgs(
-                Routes.testExamResult, {'data': widget.quiz});
+            NavigationService.navigateToWithArgs(Routes.testExamResult, {
+              'data': widget.quiz,
+              "courseId": widget.data,
+            });
           });
         }
       },
@@ -522,3 +523,95 @@ class _TestExamQuizState extends State<TestExamQuiz> {
     super.dispose();
   }
 }
+
+
+/*
+
+  Widget buildQuestion() {
+    final options = quizData!.quiz!.questions![selectedQuestionIndex].options!
+        .map((e) => e)
+        .toList();
+
+    final selectedOption = selectedOptions[selectedQuestionIndex] ?? -1;
+
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: options.length,
+      itemBuilder: (context, index) {
+        final isSelected = selectedOption == index;
+
+        return InkWell(
+          onTap: () {
+            if (selectedOption == -1) {
+              setState(() {
+                selectedOptions[selectedQuestionIndex] = index;
+                log('selectedOptions[selectedQuestionIndex] ${selectedOptions[selectedQuestionIndex].toString()}');
+                log('selectedQuestionIndex $selectedQuestionIndex');
+                log('quize id : ${quizData!.quiz!.questions![selectedQuestionIndex].id}');
+                log('tester answer id : ${options[index].id}');
+                log('tester answer id : ${options[index].text}');
+                result.addAll({
+                  quizData!.quiz!.questions![selectedQuestionIndex].id
+                      .toString(): options[index].id!
+                });
+              });
+
+              attemped.add(selectedQuestionIndex);
+              log(result.toString());
+            }
+          },
+          child: Container(
+            margin: EdgeInsets.only(top: 16.h),
+            padding: EdgeInsets.all(16.sp),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.r),
+              border: Border.all(
+                width: 2.w,
+                color: isSelected ? Colors.grey : Colors.transparent,
+              ),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  height: 20.h,
+                  width: 20.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: isSelected ? Colors.grey : AppColors.c6B6B6B,
+                    ),
+                  ),
+                  child: Center(
+                    child: Radio(
+                      value: index,
+                      groupValue: selectedOption,
+                      onChanged: null,
+                    ),
+                  ),
+                ),
+                UIHelper.horizontalSpace(6.h),
+                Expanded(
+                  child: Text(
+                    options[index].text!,
+                    style: TextFontStyle.textStyle14w400c9AB2A8.copyWith(
+                      color: isSelected
+                          ? AppColors.black
+                          : (selectedOption != -1
+                              ? AppColors.black
+                              : AppColors.c6B6B6B),
+                    ),
+                  ),
+                ),
+                if (isSelected)
+                  SvgPicture.asset(Assets.icons.tickCircle, color: Colors.grey)
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+ */
