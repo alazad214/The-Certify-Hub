@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/model/mock_test_response.dart';
+import 'package:christiandimene/features/home/model/course_response.dart';
 import 'package:christiandimene/features/practice_exam/model/practice_quiz_response.dart';
 import 'package:christiandimene/features/widgets/exam_finish_popup.dart';
 import 'package:christiandimene/features/widgets/quiz_dismiss_popup.dart';
@@ -20,7 +21,9 @@ import '../../../gen/assets.gen.dart';
 
 class PracticeQuestionScreen extends StatefulWidget {
   QuizData? quiz;
-  PracticeQuestionScreen({this.quiz, super.key});
+
+  Course? data;
+  PracticeQuestionScreen({this.data, this.quiz, super.key});
   @override
   _PracticeQuestionScreenState createState() => _PracticeQuestionScreenState();
 }
@@ -46,6 +49,8 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
   @override
   Widget build(BuildContext context) {
     unttempted = widget.quiz!.totalQuestions! - attemped.length;
+
+    log('=====Course Id ${widget.data!.id}=====');
     return Scaffold(
       appBar: CustomAppbar(
         title: widget.quiz!.title!,
@@ -362,6 +367,7 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
                   'quiz': quizData,
                   'attempted': attemped,
                   'selectedOptions': result,
+                  'course': widget.data
                 });
               },
               '08:11',

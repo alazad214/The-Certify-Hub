@@ -1,5 +1,11 @@
+import 'dart:developer';
+
+import 'package:christiandimene/common_widgets/custom_appbar.dart';
+import 'package:christiandimene/features/home/model/course_response.dart';
 import 'package:christiandimene/features/test_exam/model/test_result_response.dart';
+import 'package:christiandimene/features/widgets/quiz_restart_popup.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
+import 'package:christiandimene/helpers/all_routes.dart';
 import 'package:christiandimene/networks/api_acess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,11 +16,12 @@ import '../../../constants/text_font_style.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../helpers/navigation_service.dart';
 import '../../../helpers/ui_helpers.dart';
-import '../../../helpers/all_routes.dart';
 
 class TestExamResult extends StatefulWidget {
   final Map? quiz;
-  TestExamResult({this.quiz, super.key});
+
+  Course? data;
+  TestExamResult({this.data, this.quiz, super.key});
   @override
   State<TestExamResult> createState() => _TestExamResultState();
 }
@@ -28,16 +35,9 @@ class _TestExamResultState extends State<TestExamResult> {
 
   @override
   Widget build(BuildContext context) {
+    log('=====Course Id ${widget.data!.id}=====');
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Quiz Result'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () => NavigationService.goBack(),
-          ),
-        ],
-      ),
+      appBar: CustomAppbar(title: 'Quiz Result'),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
@@ -96,7 +96,7 @@ class _TestExamResultState extends State<TestExamResult> {
                 ),
                 UIHelper.verticalSpace(30.h),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.w),
+                  padding: EdgeInsets.symmetric(horizontal: 5.w),
                   child: StreamBuilder(
                       stream: getTestQuizResultRxObj.dataFetcher,
                       builder: (_, snapshot) {
@@ -170,17 +170,24 @@ class _TestExamResultState extends State<TestExamResult> {
       ),
       bottomSheet: Container(
         padding: EdgeInsets.symmetric(horizontal: 24.w),
-        height: 95.h,
-        color: Colors.white,
+        height: 80.h,
+        color: Colors.transparent,
         child: Center(
           child: customButton(
             context: context,
             minWidth: double.infinity,
-            height: 48.h,
+            height: 44.h,
             name: 'Restart Quiz',
             onCallBack: () {
-              NavigationService.navigateToUntilReplacement(
-                  Routes.bottomNavBarScreen);
+              quizRestartPopupPopup(
+                context,
+                () {
+                  NavigationService.navigateToWithArgs(
+                      Routes.certificationScreen, {
+                    "data": widget.data,
+                  });
+                },
+              );
             },
           ),
         ),
@@ -195,8 +202,12 @@ class _TestExamResultState extends State<TestExamResult> {
         final option = options![index];
         final isCorrect = option.text == correctOption;
         final outlineColor = option.isSelected == true
-            ? (isCorrect ? Colors.green : Colors.red)
-            : Colors.transparent;
+            ? (isCorrect ? Colors.greenAccent : Colors.red)
+            : option.isCorrect == 1
+                ? Colors.green
+                : Colors.transparent;
+
+        int selectedIndex = option.isSelected == true ? index : -1;
 
         return Container(
           margin: EdgeInsets.symmetric(vertical: 8.h),
@@ -209,7 +220,23 @@ class _TestExamResultState extends State<TestExamResult> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(Icons.circle_outlined),
+              Container(
+                height: 20.h,
+                width: 20.w,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: AppColors.c6B6B6B,
+                  ),
+                ),
+                child: Center(
+                  child: Radio(
+                    value: index,
+                    groupValue: selectedIndex,
+                    onChanged: null,
+                  ),
+                ),
+              ),
               SizedBox(width: 10),
               Expanded(
                 child: Text(

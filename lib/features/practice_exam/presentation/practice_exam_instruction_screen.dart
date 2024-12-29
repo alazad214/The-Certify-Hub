@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/model/mock_test_response.dart';
+import 'package:christiandimene/features/home/model/course_response.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +17,9 @@ import '../../../helpers/all_routes.dart';
 
 class PracticeExamInstructionScreen extends StatefulWidget {
   QuizData? quiz;
-  PracticeExamInstructionScreen({this.quiz, super.key});
+  Course? data;
+
+  PracticeExamInstructionScreen({this.data, this.quiz, super.key});
 
   @override
   State<PracticeExamInstructionScreen> createState() =>
@@ -33,6 +38,8 @@ class _PracticeExamInstructionScreenState
 
   @override
   Widget build(BuildContext context) {
+    log('=====Course Id ${widget.data!.id}=====');
+
     return Scaffold(
       appBar: CustomAppbar(
         title: widget.quiz!.title.toString(),
@@ -85,8 +92,10 @@ class _PracticeExamInstructionScreenState
                         name: 'Start Now',
                         onCallBack: () {
                           NavigationService.navigateToWithArgs(
-                              Routes.practiceQuestionScreen,
-                              {'data': widget.quiz});
+                              Routes.practiceQuestionScreen, {
+                            'data': widget.quiz,
+                            'course': widget.data
+                          });
                         },
                         context: context)
                   ],

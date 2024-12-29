@@ -65,7 +65,8 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
       appBar: CustomAppbar(
         title: widget.data!.courseTitle,
         onCallBack: () {
-          NavigationService.goBack;
+          NavigationService.navigateToUntilReplacement(
+              Routes.bottomNavBarScreen);
         },
       ),
       body: StreamBuilder(
@@ -280,13 +281,17 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                   context,
                                   () {
                                     NavigationService.navigateToWithArgs(
-                                        Routes.practiceExamInstruction,
-                                        {'data': quiz});
+                                        Routes.practiceExamInstruction, {
+                                      'data': quiz,
+                                      'courseId': widget.data
+                                    });
                                   },
                                   () {
                                     NavigationService.navigateToWithArgs(
-                                        Routes.testExamInstructionScreen,
-                                        {'data': quiz});
+                                        Routes.testExamInstructionScreen, {
+                                      'data': quiz,
+                                      'courseId': widget.data
+                                    });
                                   },
                                 );
                               } else {
