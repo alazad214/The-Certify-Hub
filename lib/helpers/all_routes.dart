@@ -160,11 +160,13 @@ final class RouteGenerator {
             ? _FadedTransitionRoute(
                 widget: CertificationVideoPlayerScreen(
                   data: arg!['data'],
+                  lessonData: arg['lessonData'],
                 ),
                 settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => CertificationVideoPlayerScreen(
                       data: arg!['data'],
+                      lessonData: arg['lessonData'],
                     ));
 
       case Routes.otpVerification:
@@ -243,7 +245,6 @@ final class RouteGenerator {
                   attempted: arg['attempted'],
                   selectedOptions: arg['selectedOptions'],
                   data: arg['course'],
-                  
                 ),
                 settings: settings,
               )

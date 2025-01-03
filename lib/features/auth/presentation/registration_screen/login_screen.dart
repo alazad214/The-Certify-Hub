@@ -145,20 +145,29 @@ class _LoginScreenState extends State<LoginScreen> {
                   customButton(
                     name: 'Log In',
                     onCallBack: () async {
-                      if (_formKey.currentState!.validate()) {
-                        if (_isChecked == true) {
-                          await postLoginRxObj.postLogin(
-                            email: emailController.text,
-                            password: passwordController.text,
-                          );
+                      // if (_formKey.currentState!.validate()) {
+                      //   if (_isChecked == true) {
+                      //     await postLoginRxObj.postLogin(
+                      //       email: emailController.text,
+                      //       password: passwordController.text,
+                      //     );
 
-                          emailController.clear();
-                          passwordController.clear();
-                        } else {
-                          Get.snackbar("Something Wrong",
-                              "Don't forget to check \"Remember me\"",
-                              backgroundColor: AppColors.allPrimaryColor);
-                        }
+                      //     emailController.clear();
+                      //     passwordController.clear();
+                      //   } else {
+                      //     Get.snackbar("Something Wrong",
+                      //         "Don't forget to check \"Remember me\"",
+                      //         backgroundColor: AppColors.allPrimaryColor);
+                      //   }
+                      // }
+                      if (_formKey.currentState!.validate()) {
+                        await postLoginRxObj.postLogin(
+                          email: emailController.text,
+                          password: passwordController.text,
+                        );
+
+                        emailController.clear();
+                        passwordController.clear();
                       }
                     },
                     context: context,

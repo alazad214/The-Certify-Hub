@@ -34,6 +34,7 @@ class _TestExamQuizState extends State<TestExamQuiz> {
   late int duration = 0;
   late int remainingSeconds;
   Timer? timer;
+  bool isTimerRunning = false;
   int selectedQuestionIndex = 0;
 
   final box = GetStorage();
@@ -80,17 +81,18 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         UIHelper.verticalSpace(12.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _buildTimeWidget(),
-                            Text(
-                              "Total- ${widget.quiz!.totalQuestions}",
-                              style: TextFontStyle
-                                  .headline20w500c222222StyleGTWalsheim,
-                            )
-                          ],
-                        ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+
+                        //     // Text(
+                        //     //   "Total- ${widget.quiz!.totalQuestions}",
+                        //     //   style: TextFontStyle
+                        //     //       .headline20w500c222222StyleGTWalsheim,
+                        //     // )
+                        //   ],
+                        // ),
+                        _buildTimeWidget(),
                         Text(
                           "Question ${selectedQuestionIndex + 1}",
                           style: TextFontStyle
@@ -189,8 +191,7 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                     child: Radio(
                       value: index,
                       groupValue: selectedOption,
-                      onChanged:
-                          null, // Disable default behavior to manage it manually
+                      onChanged: null,
                     ),
                   ),
                 ),
@@ -352,6 +353,7 @@ class _TestExamQuizState extends State<TestExamQuiz> {
         ),
         InkWell(
           onTap: () {
+            pauseTime();
             examFinishPopup(
               context,
               'Are you sure finish this quiz.',
@@ -362,23 +364,33 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                 };
 
                 if (result.isEmpty) {
-                  Get.snackbar(
-                      'Something a wrong', 'Contribute a minimum 1 quiz',
+                  Get.snackbar('Contribute a minimum of 1 quiz.',
+                      'please continue and Contribute to the minimum of 1 quiz.',
                       backgroundColor: AppColors.cFDB338);
                 } else {
                   timer?.cancel();
-                  postCalculateQuizRxObj
-                      .calculateResult(answers: answer)
-                      .then((value) {
-                    NavigationService.navigateToWithArgs(Routes.testExamResult,
-                        {'data': value, "courseId": widget.data});
-                  });
+                  postCalculateQuizRxObj.calculateResult(answers: answer).then(
+                    (value) {
+                      NavigationService.navigateToWithArgs(
+                        Routes.testExamResult,
+                        {
+                          'data': value,
+                          "courseId": widget.data,
+                        },
+                      );
+                    },
+                  );
                 }
               },
-              '08:11',
+              () {
+                Navigator.pop(context);
+                resumeTime();
+              },
               attemped.length.toString(),
               unttempted.toString(),
-              true,
+              false,
+              'Finish',
+              'Continue',
             );
           },
           child: Container(
@@ -390,7 +402,7 @@ class _TestExamQuizState extends State<TestExamQuiz> {
             ),
             child: Center(
               child: Text(
-                "Finish",
+                "Pause",
                 style:
                     TextFontStyle.headline18w500c222222StyleGTWalsheim.copyWith(
                   color: AppColors.black,
@@ -476,13 +488,19 @@ class _TestExamQuizState extends State<TestExamQuiz> {
       context,
       'Time is up, see your results now?',
       () {
+        NavigationService.navigateToWithArgs(Routes.certificationScreen, {
+          "data": widget.data,
+        });
+      },
+      () {
         Map<String, dynamic> answer = {
           "quiz_id": widget.quiz!.id!,
           "answers": result
         };
 
         if (result.isEmpty) {
-          Get.snackbar('Something a wrong', 'Contribute a minimum 1 quiz',
+          Get.snackbar(
+              'Contribute a minimum of 1 quiz.', 'Please Restart the Quiz.',
               backgroundColor: AppColors.cFDB338);
         } else {
           postCalculateQuizRxObj.calculateResult(answers: answer).then((value) {
@@ -495,9 +513,26 @@ class _TestExamQuizState extends State<TestExamQuiz> {
       },
       '08:11',
       attemped.length.toString(),
-      '08',
       false,
+      'Restart',
+      'Results',
     );
+  }
+
+  // Pause the timer
+  void pauseTime() {
+    if (timer != null) {
+      timer?.cancel();
+    }
+
+    setState(() {
+      isTimerRunning = false;
+    });
+  }
+
+  // Resume the timer
+  void resumeTime() {
+    startTime();
   }
 
   String formatTime(int seconds) {
@@ -523,95 +558,3 @@ class _TestExamQuizState extends State<TestExamQuiz> {
     super.dispose();
   }
 }
-
-
-/*
-
-  Widget buildQuestion() {
-    final options = quizData!.quiz!.questions![selectedQuestionIndex].options!
-        .map((e) => e)
-        .toList();
-
-    final selectedOption = selectedOptions[selectedQuestionIndex] ?? -1;
-
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: options.length,
-      itemBuilder: (context, index) {
-        final isSelected = selectedOption == index;
-
-        return InkWell(
-          onTap: () {
-            if (selectedOption == -1) {
-              setState(() {
-                selectedOptions[selectedQuestionIndex] = index;
-                log('selectedOptions[selectedQuestionIndex] ${selectedOptions[selectedQuestionIndex].toString()}');
-                log('selectedQuestionIndex $selectedQuestionIndex');
-                log('quize id : ${quizData!.quiz!.questions![selectedQuestionIndex].id}');
-                log('tester answer id : ${options[index].id}');
-                log('tester answer id : ${options[index].text}');
-                result.addAll({
-                  quizData!.quiz!.questions![selectedQuestionIndex].id
-                      .toString(): options[index].id!
-                });
-              });
-
-              attemped.add(selectedQuestionIndex);
-              log(result.toString());
-            }
-          },
-          child: Container(
-            margin: EdgeInsets.only(top: 16.h),
-            padding: EdgeInsets.all(16.sp),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8.r),
-              border: Border.all(
-                width: 2.w,
-                color: isSelected ? Colors.grey : Colors.transparent,
-              ),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  height: 20.h,
-                  width: 20.w,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: isSelected ? Colors.grey : AppColors.c6B6B6B,
-                    ),
-                  ),
-                  child: Center(
-                    child: Radio(
-                      value: index,
-                      groupValue: selectedOption,
-                      onChanged: null,
-                    ),
-                  ),
-                ),
-                UIHelper.horizontalSpace(6.h),
-                Expanded(
-                  child: Text(
-                    options[index].text!,
-                    style: TextFontStyle.textStyle14w400c9AB2A8.copyWith(
-                      color: isSelected
-                          ? AppColors.black
-                          : (selectedOption != -1
-                              ? AppColors.black
-                              : AppColors.c6B6B6B),
-                    ),
-                  ),
-                ),
-                if (isSelected)
-                  SvgPicture.asset(Assets.icons.tickCircle, color: Colors.grey)
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-
- */

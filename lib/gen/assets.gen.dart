@@ -222,6 +222,10 @@ class $AssetsImagesGen {
   AssetGenImage get characterPass =>
       const AssetGenImage('assets/images/character_pass.png');
 
+  /// File path: assets/images/customer-support.png
+  AssetGenImage get customerSupport =>
+      const AssetGenImage('assets/images/customer-support.png');
+
   /// File path: assets/images/error_image.png
   AssetGenImage get errorImage =>
       const AssetGenImage('assets/images/error_image.png');
@@ -232,6 +236,9 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/google.png
   AssetGenImage get google => const AssetGenImage('assets/images/google.png');
+
+  /// File path: assets/images/help.png
+  AssetGenImage get help => const AssetGenImage('assets/images/help.png');
 
   /// File path: assets/images/home_card_image.png
   AssetGenImage get homeCardImage =>
@@ -286,9 +293,11 @@ class $AssetsImagesGen {
         askme,
         characterOops,
         characterPass,
+        customerSupport,
         errorImage,
         facebook,
         google,
+        help,
         homeCardImage,
         onboading,
         onboading2,

@@ -10,12 +10,17 @@ import 'package:christiandimene/networks/api_acess.dart';
 import 'package:christiandimene/provider/video_screen_provider/video_screen_provider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../../../gen/assets.gen.dart';
+
 class CertificationVideoPlayerScreen extends StatefulWidget {
   final CourseContent? data;
-  CertificationVideoPlayerScreen({this.data, Key? key}) : super(key: key);
+  LessonsModelResponse? lessonData;
+  CertificationVideoPlayerScreen({this.lessonData, this.data, Key? key})
+      : super(key: key);
 
   @override
   State<CertificationVideoPlayerScreen> createState() =>
@@ -26,12 +31,8 @@ class _CertificationVideoPlayerScreenState
     extends State<CertificationVideoPlayerScreen> {
   late WebViewController _controller;
   bool _isControllerReady = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeWebView();
-  }
+  int? currentPlayingVideoIndex;
+  String? currentVideoTitle;
 
   Future<void> _initializeWebView() async {
     _controller = WebViewController()
@@ -42,15 +43,18 @@ class _CertificationVideoPlayerScreenState
         },
         onPageFinished: (url) {
           debugPrint('Page finished loading: $url');
-          // Update the video loading state
+
           context.read<VideoScreenProvider>().setLoading(false);
         },
       ))
       ..addJavaScriptChannel(
         'VimeoChannel',
         onMessageReceived: (message) {
-          if (message.message == "ended") {
-            // Video ended, update the completion state
+          if (message.message == 'enter_full_screen') {
+            _lockOrientation();
+          } else if (message.message == 'exit_full_screen') {
+            _unlockOrientation();
+          } else if (message.message == "ended") {
             context.read<VideoScreenProvider>().setCompleted(true);
             postProgressRxObj.progressData(courseId: {
               "course_id": widget.data!.courseId,
@@ -63,39 +67,66 @@ class _CertificationVideoPlayerScreenState
 
     _loadVimeoVideo(widget.data!.videoFile);
     setState(() {
+      currentVideoTitle = widget.data!.contentTitle;
       _isControllerReady = true;
     });
   }
 
   void _loadVimeoVideo(String videoId) {
     final html = '''
-      <html>
-        <head>
-          <style>
-            body { margin: 0; background-color: black; }
-            iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-          </style>
-          <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
-          <script src="https://player.vimeo.com/api/player.js"></script>
-        </head>
-        <body>
-          <iframe 
-            id="vimeo-player"
-            src="$videoId" 
-            allowfullscreen>
-          </iframe>
-          <script>
+    <html>
+      <head>
+        <style>
+          body { 
+            margin: 0; 
+            background-color: black; 
+            overflow: hidden;
+          }
+          iframe { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+          }
+          html, body { 
+            height: 100%; 
+            width: 100%; 
+            overflow: hidden; 
+            margin: 0;
+          }
+        </style>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <script src="https://player.vimeo.com/api/player.js"></script>
+      </head>
+      <body>
+        <iframe 
+          id="vimeo-player"
+         src="$videoId" 
+          width="100%" height="100%" frameborder="0" allow="fullscreen" 
+        ></iframe>
+        <script>
+          document.addEventListener("DOMContentLoaded", function() {
             var iframe = document.getElementById('vimeo-player');
-            var player = new Vimeo.Player(iframe);
+            window.player = new Vimeo.Player(iframe);
 
-            player.on('ended', function() {
-              console.log('Video ended');
-              VimeoChannel.postMessage("ended");
+            window.player.on("fullscreenchange", function () {
+              if (document.fullscreenElement) {
+                VimeoChannel.postMessage("enter_full_screen");
+              } else {
+                VimeoChannel.postMessage("exit_full_screen");
+              }
             });
-          </script>
-        </body>
-      </html>
-    ''';
+
+            window.player.on('ended', function (data) {
+                VimeoChannel.postMessage("ended");
+            });
+          });
+        </script>
+      </body>
+    </html>
+  ''';
 
     final String contentBase64 = base64Encode(utf8.encode(html));
     _controller.loadRequest(Uri.parse('data:text/html;base64,$contentBase64'));
@@ -103,12 +134,22 @@ class _CertificationVideoPlayerScreenState
 
   void _lockOrientation() {
     SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+        [DeviceOrientation.landscapeRight, DeviceOrientation.landscapeLeft]);
   }
 
   void _unlockOrientation() {
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeWebView();
   }
 
   @override
@@ -121,15 +162,16 @@ class _CertificationVideoPlayerScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppbar(
-        title: widget.data!.contentTitle,
+        title: currentVideoTitle ?? 'Loading...',
         onCallBack: () {
           NavigationService.goBack;
         },
       ),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 18.w),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 height: 195.h,
@@ -149,20 +191,154 @@ class _CertificationVideoPlayerScreenState
                         ))
                     : Center(child: CircularProgressIndicator()),
               ),
-              UIHelper.verticalSpace(20.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Duration:",
-                    style: TextFontStyle.textStyle16w700c222222StyleGTWalsheim,
+              UIHelper.verticalSpace(16.h),
+
+              // Update the current title
+              Text(currentVideoTitle ?? 'Loading...',
+                  style: TextFontStyle.headline20w500c222222StyleGTWalsheim),
+              UIHelper.verticalSpace(24.h),
+
+              ///UP NEXT=========>>>>>>>>>
+              Container(
+                padding: EdgeInsets.all(16.sp),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Up Next',
+                        style:
+                            TextFontStyle.headline20w500c222222StyleGTWalsheim,
+                      ),
+                      ListView.builder(
+                          itemCount:
+                              widget.lessonData!.data!.courseContents.length,
+                          shrinkWrap: true,
+                          primary: false,
+                          itemBuilder: (_, index) {
+                            CourseContent? video;
+                            video =
+                                widget.lessonData!.data!.courseContents[index];
+
+                            bool isCurrentlyPlaying =
+                                currentPlayingVideoIndex == index;
+
+                            return InkWell(
+                              onTap: () {
+                                _loadVimeoVideo(video!.videoFile);
+                                setState(() {
+                                  currentPlayingVideoIndex = index;
+                                  currentVideoTitle = video!.contentTitle;
+                                });
+                              },
+                              child: Container(
+                                height: 93.h,
+                                padding: EdgeInsets.all(8.sp),
+                                margin: EdgeInsets.symmetric(vertical: 8.h),
+                                decoration: BoxDecoration(
+                                  color: AppColors.white,
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      spreadRadius: 1,
+                                      blurRadius: 8,
+                                      offset: Offset(2, 2),
+                                    ),
+                                  ],
+                                  border: Border.all(
+                                    color: isCurrentlyPlaying
+                                        ? AppColors.c245741
+                                        : Colors.transparent,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 103.w,
+                                      height: 120.h,
+                                      clipBehavior: Clip.antiAlias,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(8.r),
+                                      ),
+                                      child: Image.asset(
+                                        Assets.images.homeCardImage.path,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    UIHelper.horizontalSpace(12.w),
+                                    Flexible(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${video.contentTitle}',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextFontStyle
+                                                .headline20w500c222222StyleGTWalsheim,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Flexible(
+                                                child: Text(
+                                                  'Video',
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextFontStyle
+                                                      .textStyle14w400c9AB2A8StyleGTWalsheim
+                                                      .copyWith(
+                                                          color: AppColors
+                                                              .c8C8C8C),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 2.w,
+                                                height: 12.h,
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal: 8.w),
+                                                color: AppColors.c8C8C8C,
+                                              ),
+                                              Flexible(
+                                                child: Text(
+                                                  '${video.contentLength}',
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextFontStyle
+                                                      .textStyle14w400c9AB2A8StyleGTWalsheim
+                                                      .copyWith(
+                                                    color: AppColors.c8C8C8C,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SvgPicture.asset(
+                                      Assets.icons.playButtonContainer,
+                                      height: 30.h,
+                                      width: 30.w,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          })
+                    ],
                   ),
-                  Text(
-                    widget.data!.contentLength,
-                    style: TextFontStyle.textStyle16w700c222222StyleGTWalsheim,
-                  ),
-                ],
-              )
+                ),
+              ),
             ],
           ),
         ),
@@ -170,7 +346,6 @@ class _CertificationVideoPlayerScreenState
     );
   }
 }
-
 
 
 // import 'package:chewie/chewie.dart';
