@@ -92,10 +92,8 @@ class _PracticeExamInstructionScreenState
                         name: 'Start Now',
                         onCallBack: () {
                           NavigationService.navigateToWithArgs(
-                              Routes.practiceQuestionScreen, {
-                            'data': widget.quiz,
-                            'course': widget.data
-                          });
+                              Routes.practiceQuestionScreen,
+                              {'data': widget.quiz, 'course': widget.data});
                         },
                         context: context)
                   ],
@@ -163,24 +161,26 @@ class _PracticeExamInstructionScreenState
                 child: Row(
                   children: [
                     SvgPicture.asset(Assets.icons.marks),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 10.0.h, horizontal: 5.w),
+                    SizedBox(
+                      width: 10.w,
+                    ),
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Duration'.tr,
+                            'Passing Score: '.tr,
                             style: TextFontStyle
                                 .textStyle12w400c9AB2A8StyleGTWalsheim
                                 .copyWith(color: AppColors.c000000),
                           ),
                           Text(
-                            widget.quiz!.totalTime.toString(),
+                            '70%',
                             style: TextFontStyle
                                 .textStyle16w500c222222StyleGTWalsheim
                                 .copyWith(color: AppColors.c000000),
                           ),
+                          //widget.quiz!.totalTime.toString(),
                         ],
                       ),
                     ),

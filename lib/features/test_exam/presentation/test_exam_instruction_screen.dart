@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
@@ -30,14 +29,13 @@ class _PracticeExamInstructionScreenState
   final List<String> instructionTitles = [
     'Passing Score : 70%',
     'You have a time limit for the quiz.',
-    'After each answer, you’ll immediately see whether you got it correct, along with a detailed explanation.',
+    'You will able to see the correct response only at the end of the test',
     'You can skip questions or answer them in any order. Tap on any question to revisit it at any time.',
     'Mark any question for review if you’d like to come back to it later. However, be mindful of the time limit.',
   ];
 
   @override
   Widget build(BuildContext context) {
-    log('=====Course Id ${widget.data!.id}=====');
     return Scaffold(
       appBar: CustomAppbar(
         title: widget.quiz!.title.toString(),
@@ -117,29 +115,26 @@ class _PracticeExamInstructionScreenState
                 padding: EdgeInsets.symmetric(horizontal: 5.w),
                 child: Row(
                   children: [
-                    SvgPicture.asset(
-                      Assets.icons.question,
-                      height: 40.h,
-                      width: 40.w,
-                    ),
+                    SvgPicture.asset(Assets.icons.question,
+                        height: 25.h, width: 25.w),
                     UIHelper.horizontalSpace(5.w),
                     Flexible(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                            'Questions',
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextFontStyle
-                                .textStyle12w400c9AB2A8StyleGTWalsheim
-                                .copyWith(color: AppColors.c000000),
-                          ),
                           Text(
                             "${widget.quiz!.totalQuestions}",
                             overflow: TextOverflow.ellipsis,
                             style: TextFontStyle
                                 .textStyle16w500c222222StyleGTWalsheim,
+                          ),
+                          Text(
+                            'questions',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextFontStyle
+                                .textStyle12w400c9AB2A8StyleGTWalsheim
+                                .copyWith(color: AppColors.c000000),
                           ),
                         ],
                       ),
@@ -159,14 +154,15 @@ class _PracticeExamInstructionScreenState
                 padding: EdgeInsets.symmetric(horizontal: 8.w),
                 child: Row(
                   children: [
-                    SvgPicture.asset(Assets.icons.testTime),
+                    SvgPicture.asset(Assets.icons.testTime,
+                        height: 25.h, width: 25.w),
                     UIHelper.horizontalSpace(5.w),
                     Flexible(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            'Duration'.tr,
+                            '${widget.quiz!.totalTime}',
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                             style: TextFontStyle
@@ -174,7 +170,7 @@ class _PracticeExamInstructionScreenState
                                 .copyWith(color: AppColors.c000000),
                           ),
                           Text(
-                            "${widget.quiz!.totalTime}",
+                            "munites",
                             overflow: TextOverflow.ellipsis,
                             style: TextFontStyle
                                 .textStyle16w500c222222StyleGTWalsheim
@@ -198,14 +194,15 @@ class _PracticeExamInstructionScreenState
                 padding: EdgeInsets.symmetric(horizontal: 8.w),
                 child: Row(
                   children: [
-                    SvgPicture.asset(Assets.icons.marks),
+                    SvgPicture.asset(Assets.icons.marks,
+                        height: 25.h, width: 25.w),
                     UIHelper.horizontalSpace(8.w),
                     Flexible(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Passing Score',
+                            'Passing Score: ',
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                             style: TextFontStyle

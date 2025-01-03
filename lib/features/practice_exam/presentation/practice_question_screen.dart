@@ -363,6 +363,12 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
               'Are you sure finish this quiz.',
               () {
                 NavigationService.navigateToWithArgs(
+                    Routes.certificationScreen, {
+                  "data": widget.data,
+                });
+              },
+              () {
+                NavigationService.navigateToWithArgs(
                     Routes.practiceExamResult, {
                   'quiz': quizData,
                   'attempted': attemped,
@@ -370,10 +376,11 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
                   'course': widget.data
                 });
               },
-              '08:11',
               attemped.length.toString(),
               unttempted.toString(),
               true,
+              'Restart',
+              'Result',
             );
           },
           child: Container(

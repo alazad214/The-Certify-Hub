@@ -22,11 +22,28 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
   String? _selectedType;
   PurchaseCourseData? data;
 
+  TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
   @override
   void initState() {
     super.initState();
     _selectedType = 'Ongoing';
     getPurchaseCourseRxObj.GetCourseData();
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    setState(() {
+      _searchQuery = _searchController.text.toLowerCase();
+    });
   }
 
   @override
@@ -44,8 +61,9 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
               ),
               UIHelper.verticalSpace(16.h),
 
-              //SEARCH TEXTFIELD...
+              // SEARCH TEXTFIELD...
               CustomTextfield(
+                controller: _searchController,
                 hintText: 'Search a certification',
                 fillColor: AppColors.white,
                 borderRadius: 16.r,
@@ -61,10 +79,10 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
 
               UIHelper.verticalSpace(24.h),
 
-              //ONGOING AND COMPLETED BUTTON...
+              // ONGOING AND COMPLETED BUTTON...
               _buildOngoingAndCompletedButton(),
 
-              ///ONGOING COURSE...
+              /// ONGOING COURSE...
               if (_selectedType == 'Ongoing')
                 StreamBuilder(
                   stream: getPurchaseCourseRxObj.getCourse,
@@ -79,7 +97,11 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                         } else {
                           List<PurchaseCourseData> coursesToShow = courseData
                               .data!
-                              .where((course) => course.progressRate! < 100)
+                              .where((course) =>
+                                  course.progressRate! < 100 &&
+                                  (course.courseTitle!
+                                      .toLowerCase()
+                                      .contains(_searchQuery)))
                               .toList();
                           return ListView.builder(
                               shrinkWrap: true,
@@ -152,11 +174,9 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                                         LinearProgressIndicator(
                                                       minHeight: 8.h,
                                                       value:
-                                                          data!.progressRate! /
-                                                              100.0,
+                                                          data!.progressRate! / 100.0,
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              10.r),
+                                                          BorderRadius.circular(10.r),
                                                       backgroundColor:
                                                           Colors.grey[300],
                                                       color: AppColors.c245741,
@@ -176,8 +196,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                       } else {
                         return const SizedBox.shrink();
                       }
-                    } else if (snapshot.connectionState ==
-                        ConnectionState.waiting) {
+                    } else if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     } else {
                       return Center(child: CircularProgressIndicator());
@@ -185,7 +204,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                   },
                 ),
 
-              //ONGOING COURSE...
+              // COMPLETED COURSE...
               if (_selectedType == 'complete')
                 StreamBuilder(
                   stream: getPurchaseCourseRxObj.getCourse,
@@ -200,7 +219,11 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                         } else {
                           List<PurchaseCourseData> coursesToShow = courseData
                               .data!
-                              .where((course) => course.progressRate! == 100)
+                              .where((course) =>
+                                  course.progressRate! == 100 &&
+                                  (course.courseTitle!
+                                      .toLowerCase()
+                                      .contains(_searchQuery)))
                               .toList();
                           return ListView.builder(
                               shrinkWrap: true,
@@ -273,11 +296,9 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                                         LinearProgressIndicator(
                                                       minHeight: 8.h,
                                                       value:
-                                                          data!.progressRate! /
-                                                              100.0,
+                                                          data!.progressRate! / 100.0,
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              10.r),
+                                                          BorderRadius.circular(10.r),
                                                       backgroundColor:
                                                           Colors.grey[300],
                                                       color: AppColors.c245741,
@@ -297,8 +318,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                       } else {
                         return const SizedBox.shrink();
                       }
-                    } else if (snapshot.connectionState ==
-                        ConnectionState.waiting) {
+                    } else if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     } else {
                       return Center(child: CircularProgressIndicator());
@@ -314,7 +334,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
     );
   }
 
-  //ONGOING AND COMPLETED BUTTON...
+  // ONGOING AND COMPLETED BUTTON...
   Widget _buildOngoingAndCompletedButton() {
     return Row(
       children: [

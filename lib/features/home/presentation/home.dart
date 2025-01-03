@@ -12,7 +12,7 @@ import 'package:christiandimene/networks/api_acess.dart';
 import 'package:christiandimene/networks/endpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../profile_screen/model/get_profile_response.dart';
 
@@ -25,11 +25,25 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   User? profileData;
+  TextEditingController searchController = TextEditingController();
+  List<Course> allCourses = [];
+  List<Course> filteredCourses = [];
+
   @override
   void initState() {
     getCourseRxObj.getCourseData();
     getProfileDataRxObj.getprofileData();
     super.initState();
+  }
+
+  void filterCourses(String query) {
+    List<Course> filtered = allCourses.where((course) {
+      return course.courseTitle.toLowerCase().contains(query.toLowerCase());
+    }).toList();
+
+    setState(() {
+      filteredCourses = filtered;
+    });
   }
 
   @override
@@ -46,16 +60,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
             ///search textfield...
             CustomTextfield(
-                hintText: 'Search a certification',
-                fillColor: AppColors.white,
-                prefixIcon: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 13),
-                  child: SvgPicture.asset(
-                    Assets.icons.search,
-                    height: 20,
-                    width: 20,
-                  ),
-                )),
+              hintText: 'Search a certification',
+              fillColor: AppColors.white,
+              controller: searchController,
+              prefixIcon: Padding(
+                padding: EdgeInsets.symmetric(vertical: 13),
+                child: SvgPicture.asset(
+                  Assets.icons.search,
+                  height: 20,
+                  width: 20,
+                ),
+              ),
+              onChanged: (query) {
+                filterCourses(query);
+              },
+            ),
             UIHelper.verticalSpace(26.h),
 
             ///build custom card...
@@ -78,10 +97,14 @@ class _HomeScreenState extends State<HomeScreen> {
             if (courseData.data == null || courseData.data!.isEmpty) {
               return Center(child: Text('No courses available'));
             } else {
+              allCourses = courseData.data!;
+
               return GridView.builder(
                 shrinkWrap: true,
                 primary: false,
-                itemCount: courseData.data!.length,
+                itemCount: filteredCourses.isEmpty
+                    ? allCourses.length
+                    : filteredCourses.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 8.w,
@@ -89,8 +112,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   childAspectRatio: 0.9,
                 ),
                 itemBuilder: (context, index) {
-                  final Course? data;
-                  data = courseData.data![index];
+                  final Course data = filteredCourses.isEmpty
+                      ? allCourses[index]
+                      : filteredCourses[index];
 
                   log(data.id.toString());
                   return InkWell(

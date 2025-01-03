@@ -4,7 +4,9 @@ import 'package:christiandimene/constants/app_constants.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/profile_screen/model/get_profile_response.dart';
 import 'package:christiandimene/features/profile_screen/presentation/about_us.dart';
+import 'package:christiandimene/features/profile_screen/presentation/academic_support_screen.dart';
 import 'package:christiandimene/features/profile_screen/presentation/privacy_policy.dart';
+import 'package:christiandimene/features/profile_screen/presentation/technical_support.dart';
 import 'package:christiandimene/features/profile_screen/presentation/terms_and_conditions.dart';
 import 'package:christiandimene/features/profile_screen/widget/logout_button_dialog.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
@@ -165,10 +167,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   thickness: 0.5,
                 ),
                 profileItem(
-                  title: 'Notification',
-                  svg: SvgPicture.asset(Assets.icons.notification),
+                  title: 'Technical support',
+                  svg: Image.asset(
+                    Assets.images.help.path,
+                    height: 20.h,
+                    width: 24.w,
+                  ),
                   onPressed: () {
-                    NavigationService.navigateTo(Routes.notification);
+                    // NavigationService.navigateTo(Routes.notification);
+
+                    Get.to(() => TechnicalSupportScreen());
+                  },
+                ),
+                Divider(
+                  color: AppColors.cBBCBC4,
+                  thickness: 0.5,
+                ),
+                profileItem(
+                  title: 'Academic support',
+                  svg: Image.asset(
+                    Assets.images.customerSupport.path,
+                    height: 20.h,
+                    width: 24.w,
+                  ),
+                  onPressed: () {
+                    // NavigationService.navigateTo(Routes.notification);
+
+                    Get.to(() => AcademicSupportScreen());
                   },
                 ),
                 Divider(
@@ -208,7 +233,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                 ///logout button....
                 _buildLogoutButton(),
-                UIHelper.verticalSpace(30.h),
+                UIHelper.verticalSpace(50.h),
               ],
             ),
           ),
@@ -223,16 +248,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
         logOutButtonDialog(context, () {
           postLogoutRxObj.logogoutF().then((value) {
             NavigationService.navigateToReplacement(Routes.anotherOnboading);
+
+            appData.write(kKeyIsLoggedIn, false);
+            appData.remove(kKeyAccessToken);
+            appData.read(userId).toString();
+            DioSingleton.instance.update('');
+            appData.erase();
           });
         });
-        appData.write(kKeyIsLoggedIn, false);
-        appData.remove(kKeyAccessToken);
-        appData.read(userId).toString();
-        DioSingleton.instance.update('');
-        appData.erase();
       },
       child: Container(
-        height: 62.h,
+        height: 55.h,
         width: double.infinity,
         alignment: Alignment.center,
         decoration: BoxDecoration(

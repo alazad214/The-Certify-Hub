@@ -268,9 +268,9 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                         onTap: () {
                           if (purchaseCourse.isEmpty) {
                             Get.snackbar(
-                              'Something wrong',
-                              'Enroll in this course then start',
-                              backgroundColor: AppColors.allPrimaryColor,
+                              backgroundColor: Colors.red,
+                              'Something went wrong!',
+                              'Enroll in this course to get started',
                             );
                           } else {
                             if (purchaseCourse[0].courseId.toString() ==
@@ -296,14 +296,14 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                 );
                               } else {
                                 Get.snackbar(
-                                    backgroundColor: AppColors.allPrimaryColor,
-                                    'Something wrong',
+                                    backgroundColor: Colors.red,
+                                    'Something went wrong!',
                                     'No Course Found');
                               }
                             } else {
                               Get.snackbar(
-                                  backgroundColor: AppColors.allPrimaryColor,
-                                  'Something wrong',
+                                  backgroundColor: Colors.red,
+                                  'Something went wrong!',
                                   'No Course Found');
                             }
                           }
@@ -417,9 +417,9 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                         onTap: () {
                           if (purchaseCourse.isEmpty) {
                             Get.snackbar(
-                              backgroundColor: AppColors.allPrimaryColor,
-                              'Something wrong',
-                              'Enroll in this course then start',
+                              backgroundColor: Colors.red,
+                              'Something went wrong!',
+                              'Enroll in this course to get started',
                             );
                           } else {
                             if (purchaseCourse[0].courseId.toString() ==
@@ -431,15 +431,15 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                     {'data': coursedata, 'aidata': data});
                               } else {
                                 Get.snackbar(
-                                  backgroundColor: AppColors.allPrimaryColor,
-                                  'Something wrong',
+                                  backgroundColor: Colors.red,
+                                  'Something went wrong!',
                                   'No Course Found',
                                 );
                               }
                             } else {
                               Get.snackbar(
-                                backgroundColor: AppColors.allPrimaryColor,
-                                'Something wrong',
+                                backgroundColor: Colors.red,
+                                'Something went wrong!',
                                 'No Course Found',
                               );
                             }
@@ -562,7 +562,8 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                   data!.courseTitle!,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
-                  style: TextFontStyle.headline20w500c222222StyleGTWalsheim,
+                  style: TextFontStyle.headline20w700c222222StyleGTWalsheim
+                      .copyWith(fontSize: 16.sp),
                 ),
                 Row(
                   children: [

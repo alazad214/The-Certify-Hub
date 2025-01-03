@@ -1,7 +1,7 @@
-import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/model/course_details_response.dart';
 import 'package:christiandimene/features/certification/model/pdf_model_response.dart';
+import 'package:christiandimene/features/certification/widgets/custom_appbar2.dart';
 import 'package:christiandimene/features/widgets/custom_ask_me_card.dart';
 import 'package:christiandimene/gen/assets.gen.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
@@ -37,49 +37,46 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(
-        title: widget.data!.courseModuleName!,
-        onCallBack: () {
-          NavigationService.goBack;
-        },
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 24.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // UIHelper.verticalSpace(21.h),
-            // CustomAppbar2(
-            //   title: 'Managing Your Time Wisely',
-            //   subtitle:
-            //       _selectedType == 'lesson' ? '0/5 lesson(s) completed' : '',
-            //   ontap: () {
-            //     // NavigationService.navigateToReplacement(
-            //     //     Routes.certificationScreen);
-            //     NavigationService.goBack;
-            //   },
-            // ),
-
-            if (_selectedType == 'lesson') UIHelper.verticalSpace(21.h),
-            if (_selectedType == 'lesson')
-              CustomAskMeCard(
-                aiText: widget.aiData!.aiName,
-                aiDescription: widget.aiData!.aiDescription,
-                aiImage: widget.aiData!.aiPicture,
-                aiUrl: widget.aiData!.aiUrl,
+      // appBar: CustomAppbar(
+      //   title: widget.data!.courseModuleName!,
+      //   onCallBack: () {
+      //     NavigationService.goBack;
+      //   },
+      // ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              UIHelper.verticalSpace(21.h),
+              CustomAppbar2(
+                title: 'Managing Your Time Wisely',
+                subtitle: _selectedType == 'lesson'
+                    ? '0/${widget.data!.lessonCount} lesson(s) completed'
+                    : '',
+                ontap: () {
+                  // NavigationService.navigateToReplacement(
+                  //     Routes.certificationScreen);
+                  NavigationService.goBack;
+                },
               ),
-
-            UIHelper.verticalSpace(25.h),
-
-            _buildCourseAndTestButton(),
-
-            UIHelper.verticalSpace(16.h),
-
-            if (_selectedType == 'lesson') _buildLessonItem(),
-
-            if (_selectedType == 'pdf') _buildPDFItem(),
-            UIHelper.verticalSpace(120.h),
-          ],
+              if (_selectedType == 'lesson') UIHelper.verticalSpace(21.h),
+              if (_selectedType == 'lesson')
+                CustomAskMeCard(
+                  aiText: widget.aiData!.aiName,
+                  aiDescription: widget.aiData!.aiDescription,
+                  aiImage: widget.aiData!.aiPicture,
+                  aiUrl: widget.aiData!.aiUrl,
+                ),
+              UIHelper.verticalSpace(25.h),
+              _buildCourseAndTestButton(),
+              UIHelper.verticalSpace(16.h),
+              if (_selectedType == 'lesson') _buildLessonItem(),
+              if (_selectedType == 'pdf') _buildPDFItem(),
+              UIHelper.verticalSpace(120.h),
+            ],
+          ),
         ),
       ),
     );
@@ -200,7 +197,12 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                       return InkWell(
                         onTap: () {
                           NavigationService.navigateToWithArgs(
-                              Routes.videoPlayerScreen, {'data': data});
+                            Routes.videoPlayerScreen,
+                            {
+                              'data': data,
+                              'lessonData': lessonData,
+                            },
+                          );
                         },
                         child: Container(
                           height: 115.h,
@@ -329,7 +331,7 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                 overflow: TextOverflow.ellipsis,
                 style:
                     TextFontStyle.headline18w500c222222StyleGTWalsheim.copyWith(
-                  color: _selectedType == 'lesson        '
+                  color: _selectedType == 'lesson'
                       ? AppColors.cFFFFFF
                       : AppColors.c8C8C8C,
                 ),
