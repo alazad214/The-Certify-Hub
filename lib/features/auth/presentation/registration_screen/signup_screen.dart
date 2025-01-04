@@ -138,11 +138,14 @@ class _SignupScreenState extends State<SignupScreen> {
                         )
                             .then((value) {
                           NavigationService.navigateToReplacement(
-                              Routes.bottomNavBarScreen);
+                            Routes.otpVerification,
+                          );
                         });
 
-                        emailController.clear();
-                        passwordController.clear();
+                        // nameController.clear();
+                        // confirmPasswordController.clear();
+                        // emailController.clear();
+                        // passwordController.clear();`
                       }
                     },
                     context: context,

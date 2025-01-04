@@ -2,6 +2,8 @@ import 'dart:developer';
 import 'package:christiandimene/constants/app_constants.dart';
 import 'package:christiandimene/helpers/loading_helper.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../../../networks/dio/dio.dart';
 import '../../../../../networks/rx_base.dart';
@@ -55,6 +57,14 @@ final class PostRegisterRx extends RxResponseInt {
       DioSingleton.instance.update(accessToken!);
     } else if (statusCode == 422) {
       log("The email has already been taken.");
+
+      Get.snackbar(
+        "Error",
+        "The email has already been taken.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     }
 
     dataFetcher.sink.add(data);

@@ -14,6 +14,7 @@ class AcademicSupportScreen extends StatelessWidget {
   Future<void> _launchWhatsApp() async {
     final String whatsappUrl = 'https://wa.me/$whatsappNumber';
 
+
     if (await canLaunch(whatsappUrl)) {
       await launch(whatsappUrl);
     } else {

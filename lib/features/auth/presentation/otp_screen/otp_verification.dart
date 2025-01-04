@@ -25,7 +25,7 @@ class _OtpVerificationState extends State<OtpVerification> {
       backgroundColor: AppColors.white,
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 55.h),
+          padding: EdgeInsets.symmetric(horizontal: 15.0.w, vertical: 55.h),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -88,44 +88,44 @@ class _OtpVerificationState extends State<OtpVerification> {
                     appContext: context,
                   ),
                   UIHelper.verticalSpace(16.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Didn’t Receive Code?'.tr,
-                        style: TextFontStyle
-                            .textStyle14w400c9AB2A8StyleGTWalsheim
-                            .copyWith(color: AppColors.c6B6B6B),
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Text(
-                          ' Resend Code'.tr,
-                          style: TextFontStyle
-                              .textStyle14w400c9AB2A8StyleGTWalsheim
-                              .copyWith(color: AppColors.c245741),
-                        ),
-                      )
-                    ],
-                  ),
-                  UIHelper.verticalSpace(8.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Resend code in'.tr,
-                        style: TextFontStyle
-                            .textStyle14w400c9AB2A8StyleGTWalsheim
-                            .copyWith(color: AppColors.c6B6B6B),
-                      ),
-                      Text(
-                        ' 00:59'.tr,
-                        style: TextFontStyle
-                            .textStyle14w400c9AB2A8StyleGTWalsheim
-                            .copyWith(color: AppColors.c245741),
-                      )
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Text(
+                  //       'Didn’t Receive Code?'.tr,
+                  //       style: TextFontStyle
+                  //           .textStyle14w400c9AB2A8StyleGTWalsheim
+                  //           .copyWith(color: AppColors.c6B6B6B),
+                  //     ),
+                  //     GestureDetector(
+                  //       onTap: () {},
+                  //       child: Text(
+                  //         ' Resend Code'.tr,
+                  //         style: TextFontStyle
+                  //             .textStyle14w400c9AB2A8StyleGTWalsheim
+                  //             .copyWith(color: AppColors.c245741),
+                  //       ),
+                  //     )
+                  //   ],
+                  // ),
+                  // UIHelper.verticalSpace(8.h),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Text(
+                  //       'Resend code in'.tr,
+                  //       style: TextFontStyle
+                  //           .textStyle14w400c9AB2A8StyleGTWalsheim
+                  //           .copyWith(color: AppColors.c6B6B6B),
+                  //     ),
+                  //     Text(
+                  //       ' 00:59'.tr,
+                  //       style: TextFontStyle
+                  //           .textStyle14w400c9AB2A8StyleGTWalsheim
+                  //           .copyWith(color: AppColors.c245741),
+                  //     )
+                  //   ],
+                  // ),
                   UIHelper.verticalSpace(180.h),
                   customButton(
                     name: 'Verify',
@@ -134,11 +134,6 @@ class _OtpVerificationState extends State<OtpVerification> {
                       NavigationService.navigateTo(Routes.bottomNavBarScreen);
                     },
                     context: context,
-                    textStyle: TextFontStyle
-                        .headline18w500c222222StyleGTWalsheim
-                        .copyWith(
-                      color: AppColors.c000000,
-                    ),
                   ),
                 ],
               ),

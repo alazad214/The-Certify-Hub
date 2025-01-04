@@ -174,9 +174,11 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                                         LinearProgressIndicator(
                                                       minHeight: 8.h,
                                                       value:
-                                                          data!.progressRate! / 100.0,
+                                                          data!.progressRate! /
+                                                              100.0,
                                                       borderRadius:
-                                                          BorderRadius.circular(10.r),
+                                                          BorderRadius.circular(
+                                                              10.r),
                                                       backgroundColor:
                                                           Colors.grey[300],
                                                       color: AppColors.c245741,
@@ -196,7 +198,8 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                       } else {
                         return const SizedBox.shrink();
                       }
-                    } else if (snapshot.connectionState == ConnectionState.waiting) {
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     } else {
                       return Center(child: CircularProgressIndicator());
@@ -296,9 +299,11 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                                         LinearProgressIndicator(
                                                       minHeight: 8.h,
                                                       value:
-                                                          data!.progressRate! / 100.0,
+                                                          data!.progressRate! /
+                                                              100.0,
                                                       borderRadius:
-                                                          BorderRadius.circular(10.r),
+                                                          BorderRadius.circular(
+                                                              10.r),
                                                       backgroundColor:
                                                           Colors.grey[300],
                                                       color: AppColors.c245741,
@@ -318,7 +323,8 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                       } else {
                         return const SizedBox.shrink();
                       }
-                    } else if (snapshot.connectionState == ConnectionState.waiting) {
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     } else {
                       return Center(child: CircularProgressIndicator());
