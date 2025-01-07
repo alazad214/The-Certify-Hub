@@ -1,11 +1,12 @@
 import 'dart:developer';
-import 'package:christiandimene/constants/app_constants.dart';
 import 'package:christiandimene/helpers/loading_helper.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
-import '../../../../../networks/dio/dio.dart';
 import '../../../../../networks/rx_base.dart';
-import '../../../../helpers/di.dart';
+import '../../../../helpers/all_routes.dart';
+import '../../../../helpers/navigation_service.dart';
 import 'api.dart';
 
 final class PostRegisterRx extends RxResponseInt {
@@ -39,22 +40,26 @@ final class PostRegisterRx extends RxResponseInt {
   @override
   handleSuccessWithReturn(data) async {
     int? statusCode = data['code'];
-    String? accessToken = data['data']['token'];
-
-    int id = data['data']['user']['id'];
-
-    appData.write(userId, id);
-    log(appData.read(userId).toString());
 
     // SAVE USER TOKEN, ID & EMAIL...
-    if (statusCode == 200) {
-      await appData.write(kKeyAccessToken, accessToken);
-      await appData.write(kKeyIsLoggedIn, true);
 
-      // TOKEN UPDATE...
-      DioSingleton.instance.update(accessToken!);
+    if (statusCode == 200) {
+      NavigationService.navigateToReplacement(Routes.otpVerification);
+      Get.snackbar(
+        "Success",
+        "Verify Otp Send",
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
     } else if (statusCode == 422) {
       log("The email has already been taken.");
+      Get.snackbar(
+        "Error",
+        "The email has already been taken.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     }
 
     dataFetcher.sink.add(data);

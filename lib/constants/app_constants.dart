@@ -66,6 +66,9 @@ const String kSelectedCategotyId = "selectedCategotyId";
 const String kKeyStatus = 'status';
 const String kEmail = 'email';
 const String kUserEmail = 'userEmail';
+const String kUserRegisterEmail = 'userRegisterEmail';
+
+
 const String kforgetOtp = 'forgetOtp';
 const String kPassword = 'password';
 const String kMediaFile = 'media_files';

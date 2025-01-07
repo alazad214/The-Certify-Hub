@@ -86,7 +86,7 @@ class CustomTextfield extends StatelessWidget {
       textInputAction: textInputAction,
 
       validator: validator,
-      
+
       maxLines: maxline ?? 1,
       controller: controller,
       onFieldSubmitted: onFieldSubmitted,

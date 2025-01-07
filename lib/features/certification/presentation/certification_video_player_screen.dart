@@ -1,5 +1,9 @@
 import 'dart:convert';
+import 'dart:developer';
+import 'package:christiandimene/constants/app_constants.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
+import 'package:christiandimene/features/certification/model/course_details_response.dart';
+import 'package:christiandimene/helpers/di.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
@@ -13,13 +17,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:provider/provider.dart';
-
 import '../../../gen/assets.gen.dart';
 
 class CertificationVideoPlayerScreen extends StatefulWidget {
   final CourseContent? data;
   LessonsModelResponse? lessonData;
-  CertificationVideoPlayerScreen({this.lessonData, this.data, Key? key})
+  CourseModule? courseModule;
+  CertificationVideoPlayerScreen(
+      {this.lessonData, this.data, this.courseModule, Key? key})
       : super(key: key);
 
   @override
@@ -55,17 +60,27 @@ class _CertificationVideoPlayerScreenState
           } else if (message.message == 'exit_full_screen') {
             _unlockOrientation();
           } else if (message.message == "ended") {
+            log('========================course track======================');
             context.read<VideoScreenProvider>().setCompleted(true);
             postProgressRxObj.progressData(courseId: {
               "course_id": widget.data!.courseId,
               "course_content_id": widget.data!.id.toString(),
               "is_completed": true
             });
+
+            log('========================content track======================');
+
+            postTrackContentRxObj.postTrackContent(
+              userId: appData.read(userId),
+              courseModuleId: widget.courseModule!.id!,
+              courseContentId: widget.data!.id!,
+              isCompleted: true,
+            );
           }
         },
       );
 
-    _loadVimeoVideo(widget.data!.videoFile);
+    _loadVimeoVideo(widget.data!.videoFile!);
     setState(() {
       currentVideoTitle = widget.data!.contentTitle;
       _isControllerReady = true;
@@ -160,6 +175,7 @@ class _CertificationVideoPlayerScreenState
 
   @override
   Widget build(BuildContext context) {
+    log('========================Video Url ${widget.data!.videoFile}============================');
     return Scaffold(
       appBar: CustomAppbar(
         title: currentVideoTitle ?? 'Loading...',
@@ -216,21 +232,19 @@ class _CertificationVideoPlayerScreenState
                             TextFontStyle.headline20w500c222222StyleGTWalsheim,
                       ),
                       ListView.builder(
-                          itemCount:
-                              widget.lessonData!.data!.courseContents.length,
+                          itemCount: widget.lessonData!.data!.contents!.length,
                           shrinkWrap: true,
                           primary: false,
                           itemBuilder: (_, index) {
                             CourseContent? video;
-                            video =
-                                widget.lessonData!.data!.courseContents[index];
+                            video = widget.lessonData!.data!.contents![index];
 
                             bool isCurrentlyPlaying =
                                 currentPlayingVideoIndex == index;
 
                             return InkWell(
                               onTap: () {
-                                _loadVimeoVideo(video!.videoFile);
+                                _loadVimeoVideo(video!.videoFile!);
                                 setState(() {
                                   currentPlayingVideoIndex = index;
                                   currentVideoTitle = video!.contentTitle;
@@ -291,7 +305,7 @@ class _CertificationVideoPlayerScreenState
                                             children: [
                                               Flexible(
                                                 child: Text(
-                                                  'Video',
+                                                  widget.data!.contentLength!,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: TextFontStyle
@@ -301,22 +315,27 @@ class _CertificationVideoPlayerScreenState
                                                               .c8C8C8C),
                                                 ),
                                               ),
-                                              Container(
-                                                width: 2.w,
-                                                height: 12.h,
-                                                margin: EdgeInsets.symmetric(
-                                                    horizontal: 8.w),
-                                                color: AppColors.c8C8C8C,
-                                              ),
+                                              widget.data!.viewed == true
+                                                  ? Container(
+                                                      width: 1.5.w,
+                                                      height: 16.h,
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 4.w),
+                                                      color: AppColors.c8C8C8C,
+                                                    )
+                                                  : SizedBox.shrink(),
                                               Flexible(
                                                 child: Text(
-                                                  '${video.contentLength}',
+                                                  widget.data!.viewed == true
+                                                      ? "Completed"
+                                                      : "",
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: TextFontStyle
                                                       .textStyle14w400c9AB2A8StyleGTWalsheim
                                                       .copyWith(
-                                                    color: AppColors.c8C8C8C,
+                                                    color: Colors.blueAccent,
                                                   ),
                                                 ),
                                               ),

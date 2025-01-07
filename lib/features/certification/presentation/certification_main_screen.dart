@@ -45,6 +45,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
 
     getCourseDetailsRxObj.getCourseDetailsdata(widget.data!.id);
     getMockTestRxObj.getMockTest(widget.data!.id);
+    // getTrackContentRxObj.gettrackContent(appData.read(userId), coursedata!.id!);
     purchaseCourse;
     checkIfUserViewed();
   }
@@ -411,7 +412,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                     shrinkWrap: true,
                     primary: false,
                     itemBuilder: (_, index) {
-                      final CourseModule? coursedata =
+                      CourseModule? coursedata =
                           courseData.data!.courseModules![index];
                       return InkWell(
                         onTap: () {
@@ -490,7 +491,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                     children: [
                                       Text(
                                         overflow: TextOverflow.ellipsis,
-                                        coursedata!.courseModuleName.toString(),
+                                        coursedata.courseModuleName.toString(),
                                         style: TextFontStyle
                                             .headline18w500c222222StyleGTWalsheim,
                                       ),
@@ -504,6 +505,22 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                                 .textStyle12w400c9AB2A8StyleGTWalsheim
                                                 .copyWith(
                                               color: AppColors.c8C8C8C,
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 1.w,
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 5.w),
+                                            height: 10.h,
+                                            color: AppColors.c8C8C8C,
+                                          ),
+                                          Text(
+                                            " ${coursedata.completionRate}% Completed",
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextFontStyle
+                                                .textStyle12w400c9AB2A8StyleGTWalsheim
+                                                .copyWith(
+                                              color: Colors.blueAccent,
                                             ),
                                           ),
                                         ],

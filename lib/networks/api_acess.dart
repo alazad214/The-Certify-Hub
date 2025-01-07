@@ -2,14 +2,18 @@ import 'package:christiandimene/features/auth/data/post_forget_rx/rx.dart';
 import 'package:christiandimene/features/auth/data/post_login_rx/rx.dart';
 import 'package:christiandimene/features/auth/data/post_reset_rx/rx.dart';
 import 'package:christiandimene/features/auth/data/post_signup_rx/rx.dart';
+import 'package:christiandimene/features/auth/data/register_verify/rx.dart';
 import 'package:christiandimene/features/certification/data/get_course_detials_rx/rx.dart';
 import 'package:christiandimene/features/certification/data/get_mock_test_rx/rx.dart';
+import 'package:christiandimene/features/certification/data/get_track_content/rx.dart';
 import 'package:christiandimene/features/certification/data/post_payment_rx/rx.dart';
+import 'package:christiandimene/features/certification/data/post_track_content/rx.dart';
 import 'package:christiandimene/features/certification/data/post_video_progress/rx.dart';
 import 'package:christiandimene/features/certification/model/course_details_response.dart';
 import 'package:christiandimene/features/certification/model/lesson_model_response.dart';
 import 'package:christiandimene/features/certification/model/mock_test_response.dart';
 import 'package:christiandimene/features/certification/model/pdf_model_response.dart';
+import 'package:christiandimene/features/certification/model/track_content_response.dart';
 import 'package:christiandimene/features/home/data/rx.dart';
 import 'package:christiandimene/features/home/model/course_response.dart';
 import 'package:christiandimene/features/my_course/data/rx.dart';
@@ -74,6 +78,10 @@ GetMockTestRx getMockTestRxObj = GetMockTestRx(
     empty: MockTestResponse(),
     dataFetcher: BehaviorSubject<MockTestResponse>());
 
+GetTrackContentRx getTrackContentRxObj = GetTrackContentRx(
+    empty: TrackContentResponse(),
+    dataFetcher: BehaviorSubject<TrackContentResponse>());
+
 GetTestQuizRx getTestQuizRxObj = GetTestQuizRx(
     empty: TestQuizResponse(),
     dataFetcher: BehaviorSubject<TestQuizResponse>());
@@ -98,3 +106,9 @@ GetPurchaseCourseRx getPurchaseCourseRxObj = GetPurchaseCourseRx(
 
 PostProgressRx postProgressRxObj =
     PostProgressRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
+
+RegisterVerifyRx registerVerifyRxObj =
+    RegisterVerifyRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
+
+PostTrackContentRx postTrackContentRxObj =
+    PostTrackContentRx(empty: {}, dataFetcher: BehaviorSubject<Map>());

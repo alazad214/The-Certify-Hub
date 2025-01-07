@@ -138,13 +138,13 @@ final class RouteGenerator {
         return Platform.isAndroid
             ? _FadedTransitionRoute(
                 widget: CourseSectionScreen(
-                  data: arg!['data'],
+                  courseModule: arg!['data'],
                   aiData: arg['aidata'],
                 ),
                 settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => CourseSectionScreen(
-                      data: arg!['data'],
+                      courseModule: arg!['data'],
                       aiData: arg['aidata'],
                     ));
 
@@ -161,12 +161,14 @@ final class RouteGenerator {
                 widget: CertificationVideoPlayerScreen(
                   data: arg!['data'],
                   lessonData: arg['lessonData'],
+                  courseModule: arg['module'],
                 ),
                 settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => CertificationVideoPlayerScreen(
                       data: arg!['data'],
                       lessonData: arg['lessonData'],
+                      courseModule: arg['module'],
                     ));
 
       case Routes.otpVerification:

@@ -126,7 +126,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
                 UIHelper.verticalSpace(16.h),
                 CustomTextfield(
-                  hintText: '+123 123 123 123',
+                  hintText: 'Phone',
                   borderRadius: 12.r,
                   controller: phoneController,
                   inputType: TextInputType.number,
