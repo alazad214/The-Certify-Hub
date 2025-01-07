@@ -1,5 +1,6 @@
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/common_widgets/custom_textfeild.dart';
+import 'package:christiandimene/constants/app_constants.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/constants/textfield_validation.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../helpers/all_routes.dart';
+import '../../../../helpers/di.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -137,9 +139,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           name: nameController.text,
                         )
                             .then((value) {
-                          NavigationService.navigateToReplacement(
-                            Routes.otpVerification,
-                          );
+                      
+                          appData.write(kUserEmail, emailController.text);
                         });
 
                         // nameController.clear();

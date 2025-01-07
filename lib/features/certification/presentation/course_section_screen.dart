@@ -15,9 +15,10 @@ import 'package:flutter_svg/svg.dart';
 import '../model/lesson_model_response.dart';
 
 class CourseSectionScreen extends StatefulWidget {
-  CourseModule? data;
+  CourseModule? courseModule;
   CourseDetailsData? aiData;
-  CourseSectionScreen({this.aiData, this.data, super.key});
+
+  CourseSectionScreen({this.aiData, this.courseModule, super.key});
 
   @override
   State<CourseSectionScreen> createState() => _CertificationMainScreenState();
@@ -30,8 +31,8 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
   void initState() {
     super.initState();
     _selectedType = 'lesson';
-    getLessonsRxObj.getLessonsData(widget.data!.id!);
-    getPdfRxObj.getPdfFile(widget.data!.id!);
+    getLessonsRxObj.getLessonsData(widget.courseModule!.id!);
+    getPdfRxObj.getPdfFile(widget.courseModule!.id!);
   }
 
   @override
@@ -51,13 +52,11 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
             children: [
               UIHelper.verticalSpace(21.h),
               CustomAppbar2(
-                title: 'Managing Your Time Wisely',
+                title: widget.courseModule!.courseModuleName,
                 subtitle: _selectedType == 'lesson'
-                    ? '0/${widget.data!.lessonCount} lesson(s) completed'
+                    ? '0/${widget.courseModule!.lessonCount} lesson(s) completed'
                     : '',
                 ontap: () {
-                  // NavigationService.navigateToReplacement(
-                  //     Routes.certificationScreen);
                   NavigationService.goBack;
                 },
               ),
@@ -183,16 +182,16 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
               ;
 
               if (lessonData!.data == null ||
-                  lessonData.data!.courseContents.isEmpty) {
+                  lessonData.data!.contents!.isEmpty) {
                 return Center(child: Text('No Lessons available'));
               } else {
                 return ListView.builder(
-                    itemCount: lessonData.data!.courseContents.length,
+                    itemCount: lessonData.data!.contents!.length,
                     shrinkWrap: true,
                     primary: false,
                     itemBuilder: (_, index) {
                       CourseContent? data;
-                      data = lessonData.data!.courseContents[index];
+                      data = lessonData.data!.contents![index];
 
                       return InkWell(
                         onTap: () {
@@ -201,6 +200,7 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                             {
                               'data': data,
                               'lessonData': lessonData,
+                              'module': widget.courseModule
                             },
                           );
                         },
@@ -236,7 +236,7 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            data.contentTitle,
+                                            data.contentTitle ?? '',
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 2,
                                             style: TextFontStyle
@@ -249,7 +249,7 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                                       children: [
                                         Flexible(
                                           child: Text(
-                                            'Video',
+                                            data.contentLength!,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextFontStyle
                                                 .textStyle14w400c9AB2A8StyleGTWalsheim
@@ -258,21 +258,25 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                                             ),
                                           ),
                                         ),
-                                        Container(
-                                          width: 1.w,
-                                          height: 12.h,
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 8.w),
-                                          color: AppColors.c8C8C8C,
-                                        ),
+                                        data.viewed == true
+                                            ? Container(
+                                                width: 1.w,
+                                                height: 12.h,
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal: 8.w),
+                                                color: AppColors.c8C8C8C,
+                                              )
+                                            : SizedBox.shrink(),
                                         Flexible(
                                           child: Text(
-                                            data.contentLength,
+                                            data.viewed == true
+                                                ? "Completed"
+                                                : "",
                                             overflow: TextOverflow.ellipsis,
                                             style: TextFontStyle
                                                 .textStyle14w400c9AB2A8StyleGTWalsheim
                                                 .copyWith(
-                                                    color: AppColors.c8C8C8C),
+                                                    color: Colors.blueAccent),
                                           ),
                                         ),
                                       ],

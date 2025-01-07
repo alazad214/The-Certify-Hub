@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
@@ -6,8 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import '../../../../constants/app_constants.dart';
 import '../../../../helpers/all_routes.dart';
+import '../../../../helpers/di.dart';
 import '../../../../helpers/navigation_service.dart';
+import '../../../../networks/api_acess.dart';
 
 class OtpVerification extends StatefulWidget {
   const OtpVerification({super.key});
@@ -25,7 +30,7 @@ class _OtpVerificationState extends State<OtpVerification> {
       backgroundColor: AppColors.white,
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15.0.w, vertical: 55.h),
+          padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 55.h),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -53,9 +58,9 @@ class _OtpVerificationState extends State<OtpVerification> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 14.0),
+                    padding: EdgeInsets.symmetric(horizontal: 8.w),
                     child: Text(
-                      "Enter 4 digit code.".tr,
+                      "Enter 6 digit code.".tr,
                       style: TextFontStyle.textStyle16w400c999999StyleGTWalsheim
                           .copyWith(color: AppColors.c000000.withOpacity(0.6)),
                       textAlign: TextAlign.start,
@@ -63,15 +68,15 @@ class _OtpVerificationState extends State<OtpVerification> {
                   ),
                   UIHelper.verticalSpace(16.h),
                   PinCodeTextField(
-                    length: 4,
+                    length: 6,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     obscureText: false,
                     animationType: AnimationType.fade,
                     pinTheme: PinTheme(
                         shape: PinCodeFieldShape.box,
                         borderRadius: BorderRadius.circular(12.r),
-                        fieldHeight: 52.h,
-                        fieldWidth: 70.w,
+                        fieldHeight: 55.h,
+                        fieldWidth: 45.w,
                         inactiveFillColor: AppColors.cE8E8E8,
                         inactiveColor: AppColors.cE8E8E8,
                         selectedColor: Colors.transparent,
@@ -87,6 +92,9 @@ class _OtpVerificationState extends State<OtpVerification> {
                     onChanged: (value) {},
                     appContext: context,
                   ),
+                 
+                 
+                 
                   UIHelper.verticalSpace(16.h),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.center,
@@ -131,7 +139,23 @@ class _OtpVerificationState extends State<OtpVerification> {
                     name: 'Verify',
                     borderRadius: 12.r,
                     onCallBack: () {
-                      NavigationService.navigateTo(Routes.bottomNavBarScreen);
+                      if (_otpTEController.text.isEmpty) {
+                        log('Please Enter OTP');
+                      } else {
+                        registerVerifyRxObj
+                            .verifyOTP(
+                          email: appData.read(kUserEmail),
+                          otp: _otpTEController.text,
+                        )
+                            .then((value) {
+                          NavigationService.navigateToUntilReplacement(
+                              Routes.bottomNavBarScreen);
+                        });
+
+                        // appData.write(kforgetOtp, _otpTEController.text);
+                        _otpTEController.clear();
+                      }
+                      // NavigationService.navigateTo(Routes.bottomNavBarScreen);
                     },
                     context: context,
                   ),

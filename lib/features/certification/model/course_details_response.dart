@@ -66,9 +66,6 @@ class CourseDetailsData {
     this.coursePrice,
     this.courseFeatureImage,
     this.status,
-    this.createdAt,
-    this.updatedAt,
-    this.deletedAt,
     this.courseModules,
     this.purchases,
     this.aiName,
@@ -87,7 +84,7 @@ class CourseDetailsData {
         id: json["id"],
         courseTitle: json["course_title"],
         courseSlug: json["course_slug"],
-        duration: json["duration"],
+        duration: json["duaration"],
         summary: json["summary"],
         lastUpdate: json["last_update"] == null
             ? null
@@ -95,13 +92,6 @@ class CourseDetailsData {
         coursePrice: json["course_price"]?.toDouble(),
         courseFeatureImage: json["course_feature_image"],
         status: json["status"],
-        createdAt: json["created_at"] == null
-            ? null
-            : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null
-            ? null
-            : DateTime.parse(json["updated_at"]),
-        deletedAt: json["deleted_at"],
         courseModules: json["course_modules"] == null
             ? []
             : List<CourseModule>.from(
@@ -120,7 +110,7 @@ class CourseDetailsData {
         "id": id,
         "course_title": courseTitle,
         "course_slug": courseSlug,
-        "duration": duration,
+        "duaration": duration,
         "summary": summary,
         "last_update": lastUpdate?.toIso8601String(),
         "course_price": coursePrice,
@@ -147,6 +137,7 @@ class CourseModule {
   DateTime? updatedAt;
   dynamic deletedAt;
   int? lessonCount;
+  num? completionRate;
 
   CourseModule({
     this.id,
@@ -157,6 +148,7 @@ class CourseModule {
     this.updatedAt,
     this.deletedAt,
     this.lessonCount,
+    this.completionRate,
   });
 
   factory CourseModule.fromRawJson(String str) =>
@@ -168,26 +160,16 @@ class CourseModule {
         id: json["id"],
         courseModuleName: json["course_module_name"],
         courseId: json["course_id"],
-        status: json["status"],
-        createdAt: json["created_at"] == null
-            ? null
-            : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null
-            ? null
-            : DateTime.parse(json["updated_at"]),
-        deletedAt: json["deleted_at"],
         lessonCount: json["lesson_count"],
+        completionRate: json["completion_rate"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "course_module_name": courseModuleName,
         "course_id": courseId,
-        "status": status,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "deleted_at": deletedAt,
         "lesson_count": lessonCount,
+        "completion_rate": completionRate,
       };
 }
 

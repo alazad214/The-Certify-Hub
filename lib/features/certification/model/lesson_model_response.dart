@@ -22,37 +22,27 @@ class LessonsModelResponse {
       LessonsModelResponse(
         success: json["success"],
         message: json["message"],
-        data: LessonData.fromJson(json["data"]),
+        data: json["data"] == null ? null : LessonData.fromJson(json["data"]),
         code: json["code"],
       );
 
   Map<String, dynamic> toJson() => {
         "success": success,
         "message": message,
-        "data": data!.toJson(),
+        "data": data?.toJson(),
         "code": code,
       };
 }
 
 class LessonData {
-  int id;
-  String courseModuleName;
-  int courseId;
-  String status;
-  DateTime createdAt;
-  DateTime updatedAt;
-  dynamic deletedAt;
-  List<CourseContent> courseContents;
+  int? moduleId;
+  String? moduleTitle;
+  List<CourseContent>? contents;
 
   LessonData({
-    required this.id,
-    required this.courseModuleName,
-    required this.courseId,
-    required this.status,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.deletedAt,
-    required this.courseContents,
+    this.moduleId,
+    this.moduleTitle,
+    this.contents,
   });
 
   factory LessonData.fromRawJson(String str) =>
@@ -61,53 +51,42 @@ class LessonData {
   String toRawJson() => json.encode(toJson());
 
   factory LessonData.fromJson(Map<String, dynamic> json) => LessonData(
-        id: json["id"],
-        courseModuleName: json["course_module_name"],
-        courseId: json["course_id"],
-        status: json["status"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        deletedAt: json["deleted_at"],
-        courseContents: List<CourseContent>.from(
-            json["course_contents"].map((x) => CourseContent.fromJson(x))),
+        moduleId: json["module_id"],
+        moduleTitle: json["module_title"],
+        contents: json["contents"] == null
+            ? []
+            : List<CourseContent>.from(
+                json["contents"]!.map((x) => CourseContent.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "course_module_name": courseModuleName,
-        "course_id": courseId,
-        "status": status,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "deleted_at": deletedAt,
-        "course_contents":
-            List<dynamic>.from(courseContents.map((x) => x.toJson())),
+        "module_id": moduleId,
+        "module_title": moduleTitle,
+        "contents": contents == null
+            ? []
+            : List<dynamic>.from(contents!.map((x) => x.toJson())),
       };
 }
 
 class CourseContent {
-  int id;
-  String contentTitle;
-  String videoFile;
-  String contentLength;
-  int courseId;
-  int courseModuleId;
-  String status;
-  DateTime createdAt;
-  DateTime updatedAt;
-  dynamic deletedAt;
+  int? id;
+  dynamic contentTitle;
+  String? videoFile;
+  String? contentLength;
+  int? courseId;
+  int? courseModuleId;
+  String? status;
+  bool? viewed;
 
   CourseContent({
-    required this.id,
-    required this.contentTitle,
-    required this.videoFile,
-    required this.contentLength,
-    required this.courseId,
-    required this.courseModuleId,
-    required this.status,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.deletedAt,
+    this.id,
+    this.contentTitle,
+    this.videoFile,
+    this.contentLength,
+    this.courseId,
+    this.courseModuleId,
+    this.status,
+    this.viewed,
   });
 
   factory CourseContent.fromRawJson(String str) =>
@@ -117,15 +96,13 @@ class CourseContent {
 
   factory CourseContent.fromJson(Map<String, dynamic> json) => CourseContent(
         id: json["id"],
-        contentTitle: json["content_title"],
+        contentTitle: json["content_title"] ?? '',
         videoFile: json["video_file"],
         contentLength: json["content_length"],
         courseId: json["course_id"],
         courseModuleId: json["course_module_id"],
         status: json["status"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        deletedAt: json["deleted_at"],
+        viewed: json["viewed"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -136,8 +113,6 @@ class CourseContent {
         "course_id": courseId,
         "course_module_id": courseModuleId,
         "status": status,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "deleted_at": deletedAt,
+        "viewed": viewed,
       };
 }

@@ -28,7 +28,10 @@ final class Endpoints {
   static String logout() => "/logout";
   static String forget() => "/forget-password";
   static String verifyOtp() => "/verify-otp-password";
+  static String verifyRegisterOtp() => "/verify-otp";
+
   static String resetPassword() => "/reset-password";
+
   static String profile() => "/me";
   static String course() => "/course";
   static String profileEdit() => "/user-update";
@@ -45,4 +48,6 @@ final class Endpoints {
   static String practiceQuiz(int id) => "/quizzes/$id/correct-answers";
   static String purchaseCourse() => "/purchased-courses";
   static String courseProgress() => "/course-progress";
+  static String trackContentProgress() => "/track-content-progress";
+  static String contentProgress() => "/content-progress";
 }
