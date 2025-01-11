@@ -51,8 +51,10 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                 () => CustomAppbar2(
                   title: widget.courseModule!.courseModuleName,
                   subtitle: _selectedType == 'lesson'
-                      ? '${totalViewed.value == 0 ? '0' : totalViewed.value}/${widget.courseModule!.lessonCount} Done | ${widget.courseModule!.completionRate}% completed'
+                      ? '${totalViewed.value == 0 ? '0' : totalViewed.value}/${widget.courseModule!.lessonCount} Done | '
                       : '',
+                  subtitle2:
+                      "${widget.courseModule!.completionRate}% completed",
                   ontap: () {
                     NavigationService.goBack;
                   },
@@ -275,8 +277,7 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                                             overflow: TextOverflow.ellipsis,
                                             style: TextFontStyle
                                                 .textStyle14w400c9AB2A8StyleGTWalsheim
-                                                .copyWith(
-                                                    color: Colors.blueAccent),
+                                                .copyWith(color: Colors.green),
                                           ),
                                         ),
                                       ],

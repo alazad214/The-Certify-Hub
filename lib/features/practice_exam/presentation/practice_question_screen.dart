@@ -380,7 +380,7 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
               attemped.length.toString(),
               unttempted.toString(),
               true,
-              'Results',
+              'Finish',
               'Continue',
             );
           },
@@ -393,7 +393,7 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
             ),
             child: Center(
               child: Text(
-                "Pause",
+                "Pause/Finish",
                 style:
                     TextFontStyle.headline18w500c222222StyleGTWalsheim.copyWith(
                   color: AppColors.black,

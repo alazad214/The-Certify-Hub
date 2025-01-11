@@ -8,9 +8,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class CustomAppbar2 extends StatelessWidget {
-  const CustomAppbar2({super.key, this.title, this.subtitle, this.ontap});
+  const CustomAppbar2({super.key, this.title, this.subtitle, this.ontap, this.subtitle2});
   final title;
   final subtitle;
+  final subtitle2;
   final ontap;
 
   @override
@@ -39,11 +40,20 @@ class CustomAppbar2 extends StatelessWidget {
                 style: TextFontStyle.headline18w500c222222StyleGTWalsheim
                     .copyWith(color: AppColors.c222222),
               ),
-              Text(
-                subtitle,
-                style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim
-                    .copyWith(color: Colors.black54),
-              ),
+              Row(
+                children: [
+                  Text(
+                    subtitle,
+                    style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim
+                        .copyWith(color: Colors.black54),
+                  ),
+                  Text(
+                    subtitle2,
+                    style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim
+                        .copyWith(color: Colors.green),
+                  ),
+                ],
+              )
             ],
           )
         ],

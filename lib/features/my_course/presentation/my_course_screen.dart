@@ -23,7 +23,6 @@ class MyCourseScreen extends StatefulWidget {
 
 class _MyCourseScreenState extends State<MyCourseScreen> {
   String? _selectedType;
-  Course? data;
 
   TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
@@ -67,7 +66,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
               // SEARCH TEXTFIELD...
               CustomTextfield(
                 controller: _searchController,
-                hintText: 'Search a certification',
+                hintText: 'Search a certification. Ex.: CMRP, PMP, etc.',
                 fillColor: AppColors.white,
                 borderRadius: 16.r,
                 prefixIcon: Padding(
@@ -119,7 +118,8 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                               primary: false,
                               itemCount: coursesToShow.length,
                               itemBuilder: (_, index) {
-                                data = coursesToShow[index];
+                                Course data = coursesToShow[index];
+                                int progress = data.progressRate!.toInt();
                                 return InkWell(
                                   onTap: () {
                                     NavigationService.navigateToWithArgs(
@@ -146,7 +146,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                           ),
                                           child: CachedNetworkImage(
                                             imageUrl: baseUrl +
-                                                data!.courseFeatureImage
+                                                data.courseFeatureImage
                                                     .toString(),
                                             fit: BoxFit.cover,
                                             placeholder: (context, url) => Center(
@@ -166,7 +166,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                data!.courseTitle.toString(),
+                                                data.courseTitle.toString(),
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 2,
                                                 style: TextFontStyle
@@ -175,7 +175,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                               Row(
                                                 children: [
                                                   Text(
-                                                    '${data!.progressRate.toString()}%',
+                                                    '${progress}%',
                                                     style: TextFontStyle
                                                         .textStyle14w500c6B6B6BtyleGTWalsheim,
                                                   ),
@@ -185,7 +185,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                                         LinearProgressIndicator(
                                                       minHeight: 8.h,
                                                       value:
-                                                          data!.progressRate! /
+                                                          data.progressRate! /
                                                               100.0,
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -253,10 +253,13 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                               primary: false,
                               itemCount: coursesToShow.length,
                               itemBuilder: (_, index) {
-                                data = coursesToShow[index];
+                                Course data = coursesToShow[index];
+
+                                int progress = data.progressRate!.toInt();
+
                                 return InkWell(
                                   onTap: () {
-                                      NavigationService.navigateToWithArgs(
+                                    NavigationService.navigateToWithArgs(
                                         Routes.certificationScreen,
                                         {'data': data});
                                   },
@@ -280,7 +283,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                           ),
                                           child: CachedNetworkImage(
                                             imageUrl: baseUrl +
-                                                data!.courseFeatureImage
+                                                data.courseFeatureImage
                                                     .toString(),
                                             fit: BoxFit.cover,
                                             placeholder: (context, url) => Center(
@@ -300,7 +303,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                data!.courseTitle.toString(),
+                                                data.courseTitle.toString(),
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 2,
                                                 style: TextFontStyle
@@ -309,7 +312,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                               Row(
                                                 children: [
                                                   Text(
-                                                    '${data!.progressRate.toString()}%',
+                                                    '${progress}%',
                                                     style: TextFontStyle
                                                         .textStyle14w500c6B6B6BtyleGTWalsheim,
                                                   ),
@@ -319,7 +322,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                                         LinearProgressIndicator(
                                                       minHeight: 8.h,
                                                       value:
-                                                          data!.progressRate! /
+                                                          data.progressRate! /
                                                               100.0,
                                                       borderRadius:
                                                           BorderRadius.circular(

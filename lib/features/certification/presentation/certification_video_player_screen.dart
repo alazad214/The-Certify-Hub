@@ -314,8 +314,7 @@ class _CertificationVideoPlayerScreenState
                                                   children: [
                                                     Flexible(
                                                       child: Text(
-                                                        widget.data!
-                                                            .contentLength!,
+                                                        video.contentLength!,
                                                         overflow: TextOverflow
                                                             .ellipsis,
                                                         style: TextFontStyle
@@ -348,7 +347,7 @@ class _CertificationVideoPlayerScreenState
                                                             .textStyle14w400c9AB2A8StyleGTWalsheim
                                                             .copyWith(
                                                           color:
-                                                              Colors.blueAccent,
+                                                              Colors.green,
                                                         ),
                                                       ),
                                                     ),

@@ -37,6 +37,9 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
   List<Purchase> purchaseCourse = [];
   bool userHasViewedCourse = false;
   CourseDetailsData? data;
+  bool _isCouponApplied = false;
+  String _couponCode = '';
+  double _discountAmount = 0.0;
 
   @override
   void initState() {
@@ -62,6 +65,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log('========ID=====${widget.data!.id}==========ID=============');
     return Scaffold(
       appBar: CustomAppbar(
         title: widget.data!.courseTitle,
@@ -414,6 +418,8 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                     itemBuilder: (_, index) {
                       CourseModule? coursedata =
                           courseData.data!.courseModules![index];
+
+                      int coursePersentage = coursedata.completionRate!.toInt();
                       return InkWell(
                         onTap: () {
                           if (purchaseCourse.isEmpty) {
@@ -515,12 +521,12 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                                             color: AppColors.c8C8C8C,
                                           ),
                                           Text(
-                                            " ${coursedata.completionRate}% Completed",
+                                            " ${coursePersentage}% Completed",
                                             overflow: TextOverflow.ellipsis,
                                             style: TextFontStyle
                                                 .textStyle12w400c9AB2A8StyleGTWalsheim
                                                 .copyWith(
-                                              color: Colors.blueAccent,
+                                              color: Colors.green,
                                             ),
                                           ),
                                         ],

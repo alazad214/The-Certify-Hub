@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             ///search textfield...
             CustomTextfield(
-              hintText: 'Search a certification. Example: CMRP, PMP, etc.',
+              hintText: 'Search a certification. Ex.: CMRP, PMP, etc.',
               fillColor: AppColors.white,
               controller: searchController,
               prefixIcon: Padding(
@@ -226,9 +226,6 @@ class _HomeScreenState extends State<HomeScreen> {
               )
             ],
           );
-        
-        
-        
         }
         return Center(
           child: CircularProgressIndicator(),
