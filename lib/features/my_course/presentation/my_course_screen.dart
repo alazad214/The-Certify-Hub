@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:christiandimene/common_widgets/custom_textfeild.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
-import 'package:christiandimene/features/my_course/model/purchase_course_response.dart';
+import 'package:christiandimene/features/home/model/course_response.dart';
 import 'package:christiandimene/gen/assets.gen.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../helpers/all_routes.dart';
+import '../../../helpers/navigation_service.dart';
 import '../../../networks/api_acess.dart';
 
 class MyCourseScreen extends StatefulWidget {
@@ -21,7 +23,7 @@ class MyCourseScreen extends StatefulWidget {
 
 class _MyCourseScreenState extends State<MyCourseScreen> {
   String? _selectedType;
-  PurchaseCourseData? data;
+  Course? data;
 
   TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
@@ -90,19 +92,27 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.active) {
                       if (snapshot.hasData) {
-                        PurchasedCourseResponse courseData = snapshot.data;
+                        CourseResponse courseData = snapshot.data;
 
                         if (courseData.data == null ||
                             courseData.data!.isEmpty) {
-                          return Center(child: Text('No courses available'));
+                          return Center(
+                              child: Padding(
+                                  padding: EdgeInsets.only(top: 20.h),
+                                  child: Text(
+                                    'No courses available',
+                                    style: TextFontStyle
+                                        .headline18w400cFFFFFFStyleGTWalsheim,
+                                  )));
                         } else {
-                          List<PurchaseCourseData> coursesToShow = courseData
-                              .data!
-                              .where((course) =>
-                                  course.progressRate! < 100 &&
-                                  (course.courseTitle!
-                                      .toLowerCase()
-                                      .contains(_searchQuery)))
+                          List<Course> coursesToShow = courseData.data!
+                              .where(
+                                (course) =>
+                                    course.progressRate! < 100 &&
+                                    (course.courseTitle
+                                        .toLowerCase()
+                                        .contains(_searchQuery)),
+                              )
                               .toList();
                           return ListView.builder(
                               shrinkWrap: true,
@@ -112,9 +122,9 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                 data = coursesToShow[index];
                                 return InkWell(
                                   onTap: () {
-                                    // NavigationService.navigateToWithArgs(
-                                    //     Routes.certificationScreen,
-                                    //     {'data': data});
+                                    NavigationService.navigateToWithArgs(
+                                        Routes.certificationScreen,
+                                        {'data': data});
                                   },
                                   child: Container(
                                     height: 100.h,
@@ -215,17 +225,26 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.active) {
                       if (snapshot.hasData) {
-                        PurchasedCourseResponse courseData = snapshot.data;
+                        CourseResponse courseData = snapshot.data;
 
                         if (courseData.data == null ||
                             courseData.data!.isEmpty) {
-                          return Center(child: Text('No courses available'));
+                          return Center(
+                              child: Padding(
+                            padding: EdgeInsets.only(
+                              top: 20.h,
+                            ),
+                            child: Text(
+                              'No courses available',
+                              style: TextFontStyle
+                                  .headline18w400cFFFFFFStyleGTWalsheim,
+                            ),
+                          ));
                         } else {
-                          List<PurchaseCourseData> coursesToShow = courseData
-                              .data!
+                          List<Course> coursesToShow = courseData.data!
                               .where((course) =>
                                   course.progressRate! == 100 &&
-                                  (course.courseTitle!
+                                  (course.courseTitle
                                       .toLowerCase()
                                       .contains(_searchQuery)))
                               .toList();
@@ -237,9 +256,9 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                 data = coursesToShow[index];
                                 return InkWell(
                                   onTap: () {
-                                    // NavigationService.navigateToWithArgs(
-                                    //     Routes.certificationScreen,
-                                    //     {'data': data});
+                                      NavigationService.navigateToWithArgs(
+                                        Routes.certificationScreen,
+                                        {'data': data});
                                   },
                                   child: Container(
                                     height: 100.h,

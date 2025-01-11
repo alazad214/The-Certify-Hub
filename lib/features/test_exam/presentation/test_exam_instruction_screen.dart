@@ -27,7 +27,7 @@ class TestExamInstructionScreen extends StatefulWidget {
 class _PracticeExamInstructionScreenState
     extends State<TestExamInstructionScreen> {
   final List<String> instructionTitles = [
-    'Passing Score : 70%',
+
     'You have a time limit for the quiz.',
     'You will able to see the correct response only at the end of the test',
     'You can skip questions or answer them in any order. Tap on any question to revisit it at any time.',

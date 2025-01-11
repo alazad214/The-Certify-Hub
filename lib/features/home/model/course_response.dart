@@ -45,10 +45,11 @@ class Course {
   num coursePrice;
   String courseFeatureImage;
   String status;
-  num totalLessons;
+  num? totalLessons;
   DateTime createdAt;
   DateTime updatedAt;
   dynamic deletedAt;
+  num? progressRate;   
 
   Course({
     required this.id,
@@ -60,10 +61,11 @@ class Course {
     required this.coursePrice,
     required this.courseFeatureImage,
     required this.status,
-    required this.totalLessons,
+     this.totalLessons,
     required this.createdAt,
     required this.updatedAt,
     required this.deletedAt,
+    this.progressRate,
   });
 
   factory Course.fromRawJson(String str) => Course.fromJson(json.decode(str));
@@ -84,6 +86,7 @@ class Course {
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
         deletedAt: json["deleted_at"],
+        progressRate: json["progress_rate"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -100,5 +103,6 @@ class Course {
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
         "deleted_at": deletedAt,
+        "progress_rate": progressRate,
       };
 }

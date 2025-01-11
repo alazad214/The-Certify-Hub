@@ -17,12 +17,13 @@ import 'package:christiandimene/features/certification/model/track_content_respo
 import 'package:christiandimene/features/home/data/rx.dart';
 import 'package:christiandimene/features/home/model/course_response.dart';
 import 'package:christiandimene/features/my_course/data/rx.dart';
-import 'package:christiandimene/features/my_course/model/purchase_course_response.dart';
 import 'package:christiandimene/features/practice_exam/data/rx.dart';
 import 'package:christiandimene/features/practice_exam/model/practice_quiz_response.dart';
 import 'package:christiandimene/features/profile_screen/data/get_profile_rx/rx.dart';
+import 'package:christiandimene/features/profile_screen/data/get_technical_support/rx.dart';
 import 'package:christiandimene/features/profile_screen/data/post_logout_rx/rx.dart';
 import 'package:christiandimene/features/profile_screen/model/get_profile_response.dart';
+import 'package:christiandimene/features/profile_screen/model/technical_support_response.dart';
 import 'package:christiandimene/features/test_exam/data/get_quiz_result/rx.dart';
 import 'package:christiandimene/features/test_exam/data/get_test_quiz/rx.dart';
 import 'package:christiandimene/features/test_exam/data/post_calculate_result/rx.dart';
@@ -33,7 +34,9 @@ import 'package:rxdart/subjects.dart';
 import '../features/auth/data/otp_verification_rx/rx.dart';
 import '../features/certification/data/get_lessons_rx/rx.dart';
 import '../features/certification/data/get_pdf_rx/rx.dart';
+import '../features/profile_screen/data/get_academic_support/rx.dart';
 import '../features/profile_screen/data/post_edit_profile_rx/rx.dart';
+import '../features/profile_screen/model/academic_support_response.dart';
 
 PostLoginRx postLoginRxObj =
     PostLoginRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
@@ -101,8 +104,7 @@ GetPracticeQuizRx getPracticeQuizRxObj = GetPracticeQuizRx(
     dataFetcher: BehaviorSubject<PracticeQuizResponse>());
 
 GetPurchaseCourseRx getPurchaseCourseRxObj = GetPurchaseCourseRx(
-    empty: PurchasedCourseResponse(),
-    dataFetcher: BehaviorSubject<PurchasedCourseResponse>());
+    empty: CourseResponse(), dataFetcher: BehaviorSubject<CourseResponse>());
 
 PostProgressRx postProgressRxObj =
     PostProgressRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
@@ -112,3 +114,10 @@ RegisterVerifyRx registerVerifyRxObj =
 
 PostTrackContentRx postTrackContentRxObj =
     PostTrackContentRx(empty: {}, dataFetcher: BehaviorSubject<Map>());
+
+GettechnicalSupportRx gettechnicalSupportRxObj = GettechnicalSupportRx(
+    empty: TechnicalSupportResponse(),
+    dataFetcher: BehaviorSubject<TechnicalSupportResponse>());
+
+final getAcademicSupportRxObj = GetAcademicSupportRx(
+    empty: AcademicSupportResponse(), dataFetcher: BehaviorSubject());

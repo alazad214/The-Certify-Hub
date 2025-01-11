@@ -40,7 +40,7 @@ final class Endpoints {
   static String pdf(int id) => "/courses/$id/files";
   static String mockTest(int id) => "/get-quizzes/$id";
 
-  //MOCK TEST-->
+  //MOCK TEST-->>
 
   static String testQuiz(int id) => "/quizzes/$id";
   static String testQuizResult(int id) => "/quiz-result/$id";
@@ -50,4 +50,6 @@ final class Endpoints {
   static String courseProgress() => "/course-progress";
   static String trackContentProgress() => "/track-content-progress";
   static String contentProgress() => "/content-progress";
+  static String technicalLink() => "/technicalLink";
+  static String academicLink() => "/academicLink";
 }

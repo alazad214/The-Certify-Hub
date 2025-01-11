@@ -356,7 +356,7 @@ class _TestExamQuizState extends State<TestExamQuiz> {
             pauseTime();
             examFinishPopup(
               context,
-              'Are you sure finish this quiz.',
+              'Quiz paused',
               () {
                 Map<String, dynamic> answer = {
                   "quiz_id": widget.quiz!.id!,

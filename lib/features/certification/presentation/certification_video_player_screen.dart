@@ -20,7 +20,7 @@ import 'package:provider/provider.dart';
 import '../../../gen/assets.gen.dart';
 
 class CertificationVideoPlayerScreen extends StatefulWidget {
-  final CourseContent? data;
+  CourseContent? data;
   LessonsModelResponse? lessonData;
   CourseModule? courseModule;
   CertificationVideoPlayerScreen(
@@ -37,6 +37,7 @@ class _CertificationVideoPlayerScreenState
   late WebViewController _controller;
   bool _isControllerReady = false;
   int? currentPlayingVideoIndex;
+  int? currentPlayingVideoId;
   String? currentVideoTitle;
 
   Future<void> _initializeWebView() async {
@@ -165,6 +166,7 @@ class _CertificationVideoPlayerScreenState
   void initState() {
     super.initState();
     _initializeWebView();
+    currentPlayingVideoId = widget.data!.id!;
   }
 
   @override
@@ -209,9 +211,9 @@ class _CertificationVideoPlayerScreenState
               ),
               UIHelper.verticalSpace(16.h),
 
-              // Update the current title
-              Text(currentVideoTitle ?? 'Loading...',
-                  style: TextFontStyle.headline20w500c222222StyleGTWalsheim),
+              // // Update the current title
+              // Text(currentVideoTitle ?? 'Loading...',
+              //     style: TextFontStyle.headline20w500c222222StyleGTWalsheim),
               UIHelper.verticalSpace(24.h),
 
               ///UP NEXT=========>>>>>>>>>
@@ -242,117 +244,128 @@ class _CertificationVideoPlayerScreenState
                             bool isCurrentlyPlaying =
                                 currentPlayingVideoIndex == index;
 
-                            return InkWell(
-                              onTap: () {
-                                _loadVimeoVideo(video!.videoFile!);
-                                setState(() {
-                                  currentPlayingVideoIndex = index;
-                                  currentVideoTitle = video!.contentTitle;
-                                });
-                              },
-                              child: Container(
-                                height: 93.h,
-                                padding: EdgeInsets.all(8.sp),
-                                margin: EdgeInsets.symmetric(vertical: 8.h),
-                                decoration: BoxDecoration(
-                                  color: AppColors.white,
-                                  borderRadius: BorderRadius.circular(8.r),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
-                                      spreadRadius: 1,
-                                      blurRadius: 8,
-                                      offset: Offset(2, 2),
-                                    ),
-                                  ],
-                                  border: Border.all(
-                                    color: isCurrentlyPlaying
-                                        ? AppColors.c245741
-                                        : Colors.transparent,
-                                    width: 1,
-                                  ),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 103.w,
-                                      height: 120.h,
-                                      clipBehavior: Clip.antiAlias,
+                            return video.id! <= currentPlayingVideoId!
+                                ? SizedBox()
+                                : InkWell(
+                                    onTap: () {
+                                      _loadVimeoVideo(video!.videoFile!);
+                                      setState(() {
+                                        currentPlayingVideoIndex = index;
+                                        currentVideoTitle = video!.contentTitle;
+                                        currentPlayingVideoId = video.id;
+                                      });
+                                    },
+                                    child: Container(
+                                      height: 93.h,
+                                      padding: EdgeInsets.all(8.sp),
+                                      margin:
+                                          EdgeInsets.symmetric(vertical: 8.h),
                                       decoration: BoxDecoration(
+                                        color: AppColors.white,
                                         borderRadius:
                                             BorderRadius.circular(8.r),
-                                      ),
-                                      child: Image.asset(
-                                        Assets.images.homeCardImage.path,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    UIHelper.horizontalSpace(12.w),
-                                    Flexible(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            '${video.contentTitle}',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextFontStyle
-                                                .headline20w500c222222StyleGTWalsheim,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.1),
+                                            spreadRadius: 1,
+                                            blurRadius: 8,
+                                            offset: Offset(2, 2),
                                           ),
-                                          Row(
-                                            children: [
-                                              Flexible(
-                                                child: Text(
-                                                  widget.data!.contentLength!,
+                                        ],
+                                        border: Border.all(
+                                          color: isCurrentlyPlaying
+                                              ? AppColors.c245741
+                                              : Colors.transparent,
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 103.w,
+                                            height: 120.h,
+                                            clipBehavior: Clip.antiAlias,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.r),
+                                            ),
+                                            child: Image.asset(
+                                              Assets.images.homeCardImage.path,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          UIHelper.horizontalSpace(12.w),
+                                          Flexible(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '${video.contentTitle}',
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: TextFontStyle
-                                                      .textStyle14w400c9AB2A8StyleGTWalsheim
-                                                      .copyWith(
-                                                          color: AppColors
-                                                              .c8C8C8C),
+                                                      .headline20w500c222222StyleGTWalsheim,
                                                 ),
-                                              ),
-                                              widget.data!.viewed == true
-                                                  ? Container(
-                                                      width: 1.5.w,
-                                                      height: 16.h,
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 4.w),
-                                                      color: AppColors.c8C8C8C,
-                                                    )
-                                                  : SizedBox.shrink(),
-                                              Flexible(
-                                                child: Text(
-                                                  widget.data!.viewed == true
-                                                      ? "Completed"
-                                                      : "",
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextFontStyle
-                                                      .textStyle14w400c9AB2A8StyleGTWalsheim
-                                                      .copyWith(
-                                                    color: Colors.blueAccent,
-                                                  ),
+                                                Row(
+                                                  children: [
+                                                    Flexible(
+                                                      child: Text(
+                                                        widget.data!
+                                                            .contentLength!,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextFontStyle
+                                                            .textStyle14w400c9AB2A8StyleGTWalsheim
+                                                            .copyWith(
+                                                                color: AppColors
+                                                                    .c8C8C8C),
+                                                      ),
+                                                    ),
+                                                    video.viewed == true
+                                                        ? Container(
+                                                            width: 1.5.w,
+                                                            height: 16.h,
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        4.w),
+                                                            color: AppColors
+                                                                .c8C8C8C,
+                                                          )
+                                                        : SizedBox.shrink(),
+                                                    Flexible(
+                                                      child: Text(
+                                                        video.viewed == true
+                                                            ? "Viewed"
+                                                            : "",
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextFontStyle
+                                                            .textStyle14w400c9AB2A8StyleGTWalsheim
+                                                            .copyWith(
+                                                          color:
+                                                              Colors.blueAccent,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
+                                          ),
+                                          SvgPicture.asset(
+                                            Assets.icons.playButtonContainer,
+                                            height: 30.h,
+                                            width: 30.w,
                                           ),
                                         ],
                                       ),
                                     ),
-                                    SvgPicture.asset(
-                                      Assets.icons.playButtonContainer,
-                                      height: 30.h,
-                                      width: 30.w,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
+                                  );
                           })
                     ],
                   ),

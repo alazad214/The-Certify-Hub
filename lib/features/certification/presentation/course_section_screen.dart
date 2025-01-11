@@ -12,6 +12,7 @@ import 'package:christiandimene/networks/api_acess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import '../model/lesson_model_response.dart';
 
 class CourseSectionScreen extends StatefulWidget {
@@ -26,6 +27,7 @@ class CourseSectionScreen extends StatefulWidget {
 
 class _CertificationMainScreenState extends State<CourseSectionScreen> {
   String? _selectedType;
+  RxInt totalViewed = 0.obs;
 
   @override
   void initState() {
@@ -38,12 +40,6 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: CustomAppbar(
-      //   title: widget.data!.courseModuleName!,
-      //   onCallBack: () {
-      //     NavigationService.goBack;
-      //   },
-      // ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -51,14 +47,16 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               UIHelper.verticalSpace(21.h),
-              CustomAppbar2(
-                title: widget.courseModule!.courseModuleName,
-                subtitle: _selectedType == 'lesson'
-                    ? '0/${widget.courseModule!.lessonCount} lesson(s) completed'
-                    : '',
-                ontap: () {
-                  NavigationService.goBack;
-                },
+              Obx(
+                () => CustomAppbar2(
+                  title: widget.courseModule!.courseModuleName,
+                  subtitle: _selectedType == 'lesson'
+                      ? '${totalViewed.value == 0 ? '0' : totalViewed.value}/${widget.courseModule!.lessonCount} Done | ${widget.courseModule!.completionRate}% completed'
+                      : '',
+                  ontap: () {
+                    NavigationService.goBack;
+                  },
+                ),
               ),
               if (_selectedType == 'lesson') UIHelper.verticalSpace(21.h),
               if (_selectedType == 'lesson')
@@ -179,7 +177,11 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
               return Center(child: Text("Error: ${snapshot.error}"));
             } else if (snapshot.hasData) {
               LessonsModelResponse? lessonData = snapshot.data;
-              ;
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                totalViewed.value = lessonData!.data!.contents!
+                    .where((content) => content.viewed == true)
+                    .length;
+              });
 
               if (lessonData!.data == null ||
                   lessonData.data!.contents!.isEmpty) {
@@ -269,9 +271,7 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                                             : SizedBox.shrink(),
                                         Flexible(
                                           child: Text(
-                                            data.viewed == true
-                                                ? "Completed"
-                                                : "",
+                                            data.viewed == true ? "Viewed" : "",
                                             overflow: TextOverflow.ellipsis,
                                             style: TextFontStyle
                                                 .textStyle14w400c9AB2A8StyleGTWalsheim

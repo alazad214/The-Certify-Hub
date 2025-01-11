@@ -360,13 +360,7 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
           onTap: () {
             examFinishPopup(
               context,
-              'Are you sure finish this quiz.',
-              () {
-                NavigationService.navigateToWithArgs(
-                    Routes.certificationScreen, {
-                  "data": widget.data,
-                });
-              },
+              'Quiz paused',
               () {
                 NavigationService.navigateToWithArgs(
                     Routes.practiceExamResult, {
@@ -376,11 +370,18 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
                   'course': widget.data
                 });
               },
+              () {
+                //    NavigationService.navigateToWithArgs(
+                //     Routes.certificationScreen, {
+                //   "data": widget.data,
+                // });
+                Navigator.pop(context);
+              },
               attemped.length.toString(),
               unttempted.toString(),
               true,
-              'Restart',
-              'Result',
+              'Results',
+              'Continue',
             );
           },
           child: Container(
@@ -392,7 +393,7 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
             ),
             child: Center(
               child: Text(
-                "Finish",
+                "Pause",
                 style:
                     TextFontStyle.headline18w500c222222StyleGTWalsheim.copyWith(
                   color: AppColors.black,

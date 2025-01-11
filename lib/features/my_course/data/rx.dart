@@ -1,15 +1,15 @@
 import 'dart:developer';
 import 'package:christiandimene/constants/app_constants.dart';
 import 'package:christiandimene/features/my_course/data/api.dart';
-import 'package:christiandimene/features/my_course/model/purchase_course_response.dart';
 import 'package:christiandimene/helpers/all_routes.dart';
 import 'package:christiandimene/helpers/di.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../../../networks/rx_base.dart';
+import '../../home/model/course_response.dart';
 
-final class GetPurchaseCourseRx extends RxResponseInt<PurchasedCourseResponse> {
+final class GetPurchaseCourseRx extends RxResponseInt<CourseResponse> {
   final api = PurchaseCourseApi.instance;
 
   bool success = false;
@@ -22,7 +22,7 @@ final class GetPurchaseCourseRx extends RxResponseInt<PurchasedCourseResponse> {
 
   Future<void> GetCourseData() async {
     try {
-      PurchasedCourseResponse data = await api.courseData();
+      CourseResponse data = await api.courseData();
       return handleSuccessWithReturn(data);
     } catch (error) {
       return handleErrorWithReturn(error);
@@ -30,9 +30,9 @@ final class GetPurchaseCourseRx extends RxResponseInt<PurchasedCourseResponse> {
   }
 
   @override
-  handleSuccessWithReturn(PurchasedCourseResponse data) async {
+  handleSuccessWithReturn(CourseResponse data) async {
     try {
-      PurchasedCourseResponse respose = data;
+      CourseResponse respose = data;
       log('course response: $respose');
       dataFetcher.sink.add(data);
     } catch (e) {

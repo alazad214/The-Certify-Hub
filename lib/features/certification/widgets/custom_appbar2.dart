@@ -26,8 +26,8 @@ class CustomAppbar2 extends StatelessWidget {
                 },
             child: SvgPicture.asset(
               Assets.icons.backButton,
-              height: 32.h,
-              width: 32.w,
+              height: 27.h,
+              width: 27.w,
             ),
           ),
           UIHelper.horizontalSpace(16.w),
@@ -41,7 +41,8 @@ class CustomAppbar2 extends StatelessWidget {
               ),
               Text(
                 subtitle,
-                style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim,
+                style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim
+                    .copyWith(color: Colors.black54),
               ),
             ],
           )
