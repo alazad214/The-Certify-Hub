@@ -51,83 +51,89 @@ class _TestExamQuizState extends State<TestExamQuiz> {
     unttempted = widget.quiz!.totalQuestions! - attemped.length;
 
     log('=====Course Id ${widget.data!.id}=====');
-    return Scaffold(
-      appBar: CustomAppbar(
-        title: "${widget.quiz!.title}",
-        onCallBack: () {
-          quizDismissPopup(context);
-        },
-        actions: [
-          _buildFlagButton(),
-        ],
-      ),
-      backgroundColor: Colors.grey[200],
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.sp),
-        child: StreamBuilder(
-            stream: getTestQuizRxObj.getData,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.active) {
-                if (snapshot.hasError) {
-                  return Center(child: Text("Error: ${snapshot.error}"));
-                } else if (snapshot.hasData) {
-                  quizData = snapshot.data;
-
-                  if (quizData!.quiz == null ||
-                      quizData!.quiz!.questions!.isEmpty) {
-                    return Center(child: Text('No Quiz Available'));
+    return PopScope(
+         canPop: false,
+      onPopInvoked: (bool didPop) async {
+        quizDismissPopup(context);
+      },
+      child: Scaffold(
+        appBar: CustomAppbar(
+          title: "${widget.quiz!.title}",
+          onCallBack: () {
+            quizDismissPopup(context);
+          },
+          actions: [
+            _buildFlagButton(),
+          ],
+        ),
+        backgroundColor: Colors.grey[200],
+        body: SingleChildScrollView(
+          padding: EdgeInsets.all(16.sp),
+          child: StreamBuilder(
+              stream: getTestQuizRxObj.getData,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.active) {
+                  if (snapshot.hasError) {
+                    return Center(child: Text("Error: ${snapshot.error}"));
+                  } else if (snapshot.hasData) {
+                    quizData = snapshot.data;
+      
+                    if (quizData!.quiz == null ||
+                        quizData!.quiz!.questions!.isEmpty) {
+                      return Center(child: Text('No Quiz Available'));
+                    } else {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          UIHelper.verticalSpace(12.h),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   children: [
+      
+                          //     // Text(
+                          //     //   "Total- ${widget.quiz!.totalQuestions}",
+                          //     //   style: TextFontStyle
+                          //     //       .headline20w500c222222StyleGTWalsheim,
+                          //     // )
+                          //   ],
+                          // ),
+                          _buildTimeWidget(),
+                          Text(
+                            "Question ${selectedQuestionIndex + 1}",
+                            style: TextFontStyle
+                                .textStyle12w400c9AB2A8StyleGTWalsheim,
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            quizData!
+                                .quiz!.questions![selectedQuestionIndex].text!,
+                            style: TextFontStyle
+                                .headline18w500c222222StyleGTWalsheim,
+                            textAlign: TextAlign.center,
+                          ),
+                          UIHelper.verticalSpace(24.h),
+                          buildQuestion(),
+                          UIHelper.verticalSpace(24.h),
+      
+                          ///BUILD QUIZ ITEM...
+                          buildQuizItem(),
+                          UIHelper.verticalSpace(24.h),
+      
+                          ///NAVIGATION BUTTONS...
+                          navigationButtons(),
+                        ],
+                      );
+                    }
                   } else {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        UIHelper.verticalSpace(12.h),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //   children: [
-
-                        //     // Text(
-                        //     //   "Total- ${widget.quiz!.totalQuestions}",
-                        //     //   style: TextFontStyle
-                        //     //       .headline20w500c222222StyleGTWalsheim,
-                        //     // )
-                        //   ],
-                        // ),
-                        _buildTimeWidget(),
-                        Text(
-                          "Question ${selectedQuestionIndex + 1}",
-                          style: TextFontStyle
-                              .textStyle12w400c9AB2A8StyleGTWalsheim,
-                          textAlign: TextAlign.center,
-                        ),
-                        Text(
-                          quizData!
-                              .quiz!.questions![selectedQuestionIndex].text!,
-                          style: TextFontStyle
-                              .headline18w500c222222StyleGTWalsheim,
-                          textAlign: TextAlign.center,
-                        ),
-                        UIHelper.verticalSpace(24.h),
-                        buildQuestion(),
-                        UIHelper.verticalSpace(24.h),
-
-                        ///BUILD QUIZ ITEM...
-                        buildQuizItem(),
-                        UIHelper.verticalSpace(24.h),
-
-                        ///NAVIGATION BUTTONS...
-                        navigationButtons(),
-                      ],
-                    );
+                    return const SizedBox.shrink();
                   }
+                } else if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
                 } else {
-                  return const SizedBox.shrink();
+                  return Center(child: CircularProgressIndicator());
                 }
-              } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
-            }),
+              }),
+        ),
       ),
     );
   }

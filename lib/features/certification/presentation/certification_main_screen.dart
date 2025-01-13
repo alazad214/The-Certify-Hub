@@ -167,7 +167,9 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
     }).catchError((e) {
       log(e.toString());
       Get.snackbar(
-          backgroundColor: Colors.red, 'Something wrong', 'Payment Failed');
+          backgroundColor: Colors.red,
+          'Something went Wrong',
+          'Payment Failed');
     });
   }
 
@@ -585,8 +587,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                   data!.courseTitle!,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
-                  style: TextFontStyle.headline20w700c222222StyleGTWalsheim
-                      .copyWith(fontSize: 16.sp),
+                  style: TextFontStyle.textStyle16w500c222222StyleGTWalsheim,
                 ),
                 Row(
                   children: [

@@ -33,61 +33,62 @@ class _AcademicSupportScreenState extends State<AcademicSupportScreen> {
             NavigationService.goBack;
           },
         ),
-        body: StreamBuilder(
-          stream: getAcademicSupportRxObj.academicData,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
+     body: StreamBuilder(
+            stream: getAcademicSupportRxObj.academicData,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.active) {
+                if (snapshot.hasError) {
+                  return Center(child: Text("Error: ${snapshot.error}"));
+                } else if (snapshot.hasData) {
+                  AcademicSupportResponse academicSupport = snapshot.data;
 
-            if (snapshot.hasError) {
-              log('Stream error: ${snapshot.error}');
-              return Center(child: Text("Error: ${snapshot.error}"));
-            }
+                  if (academicSupport.data == null) {
+                    return Center(child: Text('No courses available'));
+                  } else {
+                    return SingleChildScrollView(
+                      padding: EdgeInsets.all(16.sp),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'If you are facing any technical issues, you can contact us through the following link:',
+                            style: TextFontStyle
+                                .headline20w500c222222StyleGTWalsheim,
+                          ),
+                          UIHelper.verticalSpace(20.h),
+                          customButton(
+                            name: 'Visit Academic Suppot',
+                            height: 55.h,
+                            minWidth: Get.width / 1.5,
+                            onCallBack: () async {
+                              final String whatsappUrl =
+                                  'https://wa.me/${academicSupport.data!.user!.url!}';
 
-            if (snapshot.hasData) {
-              AcademicSupportResponse? academicData = snapshot.data;
-              if (academicData?.data?.user?.url == null) {
-                return Center(
-                    child: Text('No academic support URL available.'));
+                              if (await canLaunch(whatsappUrl)) {
+                                await launch(whatsappUrl);
+                              } else {
+                                throw 'Could not launch WhatsApp';
+                              }
+                              log('============academic support===========');
+                              log(academicSupport.data!.user!.url.toString());
+                            },
+                            context: context,
+                          )
+                        ],
+                      ),
+                    );
+                  }
+                } else {
+                  return const SizedBox.shrink();
+                }
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                return Center(child: CircularProgressIndicator());
               }
-
-              return SingleChildScrollView(
-                padding: EdgeInsets.all(16.sp),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'If you need assistance with academic-related queries, feel free to contact us through the link below:',
-                      style: TextFontStyle.headline20w500c222222StyleGTWalsheim,
-                    ),
-                    UIHelper.verticalSpace(20.h),
-                    customButton(
-                      name: 'Contact Academic Support',
-                      height: 55.h,
-                      minWidth: Get.width / 1.5,
-                      onCallBack: () async {
-                        final String whatsappUrl =
-                            'https://wa.me/${academicData!.data!.user!.url!}';
-
-                        if (await canLaunch(whatsappUrl)) {
-                          await launch(whatsappUrl);
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content: Text('Could not launch WhatsApp')),
-                          );
-                        }
-                      },
-                      context: context,
-                    )
-                  ],
-                ),
-              );
-            }
-
-            return Center(child: Text('No data available.'));
-          },
-        ));
+            }));
+ 
+ 
+ 
   }
 }

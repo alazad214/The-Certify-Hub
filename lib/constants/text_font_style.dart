@@ -101,6 +101,12 @@ class TextFontStyle {
     fontSize: 12.sp,
     fontWeight: FontWeight.w400,
   );
+  static final textStyle12w700c9AB2A8StyleGTWalsheim = TextStyle(
+    fontFamily: 'GT Walsheim Trial',
+    color: Colors.black,
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w700,
+  );
 
   ///Christiandimene END
 }

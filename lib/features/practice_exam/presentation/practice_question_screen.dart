@@ -51,73 +51,79 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
     unttempted = widget.quiz!.totalQuestions! - attemped.length;
 
     log('=====Course Id ${widget.data!.id}=====');
-    return Scaffold(
-      appBar: CustomAppbar(
-        title: widget.quiz!.title!,
-        onCallBack: () {
-          quizDismissPopup(context);
-        },
-        actions: [
-          _buildFlagButton(),
-        ],
-      ),
-      backgroundColor: Colors.grey[200],
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(16.sp),
-          child: StreamBuilder(
-              stream: getPracticeQuizRxObj.dataFetcher,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.active) {
-                  if (snapshot.hasError) {
-                    return Center(child: Text("Error: ${snapshot.error}"));
-                  } else if (snapshot.hasData) {
-                    quizData = snapshot.data!.quiz;
-
-                    if (quizData == null || quizData!.questions!.isEmpty) {
-                      return Center(child: Text('No Quiz Available'));
+    return PopScope(
+         canPop: false,
+      onPopInvoked: (bool didPop) async {
+      quizDismissPopup(context);
+      },
+      child: Scaffold(
+        appBar: CustomAppbar(
+          title: widget.quiz!.title!,
+          onCallBack: () {
+            quizDismissPopup(context);
+          },
+          actions: [
+            _buildFlagButton(),
+          ],
+        ),
+        backgroundColor: Colors.grey[200],
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(16.sp),
+            child: StreamBuilder(
+                stream: getPracticeQuizRxObj.dataFetcher,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.active) {
+                    if (snapshot.hasError) {
+                      return Center(child: Text("Error: ${snapshot.error}"));
+                    } else if (snapshot.hasData) {
+                      quizData = snapshot.data!.quiz;
+      
+                      if (quizData == null || quizData!.questions!.isEmpty) {
+                        return Center(child: Text('No Quiz Available'));
+                      } else {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Question ${selectedQuestionIndex + 1}",
+                              style: TextFontStyle
+                                  .textStyle14w500c6B6B6BtyleGTWalsheim,
+                              textAlign: TextAlign.center,
+                            ),
+                            UIHelper.verticalSpace(15.h),
+                            Text(
+                              quizData!.questions![selectedQuestionIndex].text!,
+                              style: TextFontStyle
+                                  .headline18w500c222222StyleGTWalsheim,
+                              textAlign: TextAlign.center,
+                            ),
+                            UIHelper.verticalSpace(25.h),
+      
+                            //QUESTION OPTION...
+                            buildQuestion(),
+                            UIHelper.verticalSpace(30.h),
+      
+                            //QUESTION ITEM LIST...
+                            buildQuizItem(),
+                            UIHelper.verticalSpace(40.h),
+      
+                            //NAVIGATION BUTTONS...
+                            navigationButtons(),
+                          ],
+                        );
+                      }
                     } else {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Question ${selectedQuestionIndex + 1}",
-                            style: TextFontStyle
-                                .textStyle14w500c6B6B6BtyleGTWalsheim,
-                            textAlign: TextAlign.center,
-                          ),
-                          UIHelper.verticalSpace(15.h),
-                          Text(
-                            quizData!.questions![selectedQuestionIndex].text!,
-                            style: TextFontStyle
-                                .headline18w500c222222StyleGTWalsheim,
-                            textAlign: TextAlign.center,
-                          ),
-                          UIHelper.verticalSpace(25.h),
-
-                          //QUESTION OPTION...
-                          buildQuestion(),
-                          UIHelper.verticalSpace(30.h),
-
-                          //QUESTION ITEM LIST...
-                          buildQuizItem(),
-                          UIHelper.verticalSpace(40.h),
-
-                          //NAVIGATION BUTTONS...
-                          navigationButtons(),
-                        ],
-                      );
+                      return const SizedBox.shrink();
                     }
+                  } else if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
                   } else {
-                    return const SizedBox.shrink();
+                    return Center(child: CircularProgressIndicator());
                   }
-                } else if (snapshot.connectionState ==
-                    ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  return Center(child: CircularProgressIndicator());
-                }
-              }),
+                }),
+          ),
         ),
       ),
     );

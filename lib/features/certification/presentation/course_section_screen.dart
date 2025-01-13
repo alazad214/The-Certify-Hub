@@ -39,6 +39,7 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    int coursePersentage = widget.courseModule!.completionRate!.toInt();
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -53,8 +54,7 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                   subtitle: _selectedType == 'lesson'
                       ? '${totalViewed.value == 0 ? '0' : totalViewed.value}/${widget.courseModule!.lessonCount} Done | '
                       : '',
-                  subtitle2:
-                      "${widget.courseModule!.completionRate}% completed",
+                  subtitle2: "${coursePersentage}% completed",
                   ontap: () {
                     NavigationService.goBack;
                   },
