@@ -155,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Text(
                             "${data.courseTitle}",
                             style: TextFontStyle
-                                .textStyle12w700c9AB2A8StyleGTWalsheim,
+                                .textStyle13w600c9AB2A8StyleGTWalsheim,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                           ),

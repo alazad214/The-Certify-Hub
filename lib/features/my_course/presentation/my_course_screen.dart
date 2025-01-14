@@ -170,7 +170,7 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 2,
                                                 style: TextFontStyle
-                                                    .headline20w500c222222StyleGTWalsheim,
+                                                    .textStyle16w700c222222StyleGTWalsheim,
                                               ),
                                               Row(
                                                 children: [

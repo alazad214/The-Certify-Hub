@@ -25,7 +25,7 @@ final class PostProfileEditRx extends RxResponseInt {
       FormData formData = FormData.fromMap(
         {
           "name": name,
-          "phone_number": phone,
+          "phone": phone,
           "avatar": avatar != null
               ? await MultipartFile.fromFile(avatar.path,
                   filename: "avatar.jpg")

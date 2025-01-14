@@ -52,9 +52,12 @@ class CustomAskMeCard extends StatelessWidget {
               children: [
                 Text(
                   aiText ?? '',
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextFontStyle.headline20w500c222222StyleGTWalsheim
-                      .copyWith(color: AppColors.cFFFFFF, fontSize: 18.sp),
+                  style: TextFontStyle.textStyle14w500c6B6B6BtyleGTWalsheim
+                      .copyWith(
+                    color: AppColors.cFFFFFF,
+                  ),
                 ),
                 Text(
                   aiDescription ?? '',

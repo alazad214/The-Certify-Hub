@@ -1,10 +1,10 @@
 import 'dart:developer';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/app_constants.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/model/mock_test_response.dart';
+import 'package:christiandimene/features/certification/widgets/build_header_card.dart';
 import 'package:christiandimene/features/home/model/course_response.dart';
 import 'package:christiandimene/features/widgets/custom_ask_me_card.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
@@ -86,7 +86,12 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                   padding: EdgeInsets.all(24.sp),
                   child: Column(
                     children: [
-                      _buildHeaderCard(),
+                      ///COURSE DETAILS HEADER=====>>>
+                      BuildHeaderCard(
+                        image: baseUrl + data!.courseFeatureImage!,
+                        courseTitle: data!.courseTitle!,
+                        duration: data!.duration!,
+                      ),
                       UIHelper.verticalSpace(24.h),
                       CustomAskMeCard(
                         aiText: data!.aiName,
@@ -550,72 +555,5 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
             return Center(child: CircularProgressIndicator());
           }
         });
-  }
-
-  ///build header card....
-  Widget _buildHeaderCard() {
-    return Container(
-      height: 132.h,
-      padding: EdgeInsets.all(8.sp),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(8.r),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 130.w,
-            height: 120.h,
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(8.r)),
-            child: CachedNetworkImage(
-              imageUrl: baseUrl + data!.courseFeatureImage!,
-              placeholder: (context, url) =>
-                  Center(child: CircularProgressIndicator()),
-              errorWidget: (context, url, error) => Icon(Icons.error),
-              fit: BoxFit.cover,
-            ),
-          ),
-          UIHelper.horizontalSpace(12.w),
-          Flexible(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  data!.courseTitle!,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: TextFontStyle.textStyle16w500c222222StyleGTWalsheim,
-                ),
-                Row(
-                  children: [
-                    Flexible(
-                      child: Text(
-                        "Duration: ",
-                        overflow: TextOverflow.ellipsis,
-                        style: TextFontStyle
-                            .textStyle16w400c999999StyleGTWalsheim
-                            .copyWith(color: AppColors.c8C8C8C),
-                      ),
-                    ),
-                    Flexible(
-                      child: Text(
-                        data!.duration!,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextFontStyle
-                            .textStyle14w400c9AB2A8StyleGTWalsheim
-                            .copyWith(color: AppColors.c8C8C8C),
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    );
   }
 }
