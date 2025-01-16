@@ -398,8 +398,8 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
             child: Center(
               child: Text(
                 "Pause/Finish",
-                style:
-                    TextFontStyle.textStyle16w700c222222StyleGTWalsheim.copyWith(
+                style: TextFontStyle.textStyle16w700c222222StyleGTWalsheim
+                    .copyWith(
                   color: AppColors.black,
                 ),
               ),
