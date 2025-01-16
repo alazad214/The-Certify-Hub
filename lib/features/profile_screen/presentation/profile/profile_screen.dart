@@ -1,13 +1,9 @@
-import 'dart:developer';
-
 import 'package:christiandimene/constants/app_constants.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/profile_screen/model/get_profile_response.dart';
 import 'package:christiandimene/features/profile_screen/presentation/about_us.dart';
 import 'package:christiandimene/features/profile_screen/presentation/academic_support_screen.dart';
-import 'package:christiandimene/features/profile_screen/presentation/privacy_policy.dart';
 import 'package:christiandimene/features/profile_screen/presentation/technical_support.dart';
-import 'package:christiandimene/features/profile_screen/presentation/terms_and_conditions.dart';
 import 'package:christiandimene/features/profile_screen/widget/logout_button_dialog.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/di.dart';
@@ -20,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../helpers/all_routes.dart';
 
@@ -54,15 +51,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     style: TextFontStyle.headline18w500c222222StyleGTWalsheim,
                   ),
                 ),
-
                 StreamBuilder(
                   stream: getProfileDataRxObj.getProfileCreateData,
                   builder: (context, snapshot) {
                     profileData = snapshot.data?.data?.user;
-
-                    log('==================USER ID============================');
-
-                    // appData.write("UserId", profileData!.id.toString());
                     if (snapshot.hasData) {
                       return Column(
                         children: [
@@ -93,21 +85,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             fit: BoxFit.cover,
                                           ),
                                   ),
-
-                                  // Container(
-                                  //   height: 110.0.h,
-                                  //   width: 110.0.w,
-                                  //   decoration: BoxDecoration(
-                                  //     shape: BoxShape.circle,
-                                  //   ),
-                                  //   child: profileData?.avatar != null
-                                  //       ? Image.network(
-                                  //           "${/profileData?.avatar}",
-                                  //           fit: BoxFit.cover,
-                                  //         )
-                                  //       : Image.asset(
-                                  //           Assets.images.profileImage.path),
-                                  // ),
                                 ],
                               ),
                             ],
@@ -122,20 +99,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           UIHelper.verticalSpace(8.h),
 
-                          // // USER Phone...
-                          // profileData!.phoneNumber != null
-                          //     ? Text(
-                          //         profileData?.phoneNumber ?? ' ',
-                          //         style: TextFontStyle
-                          //             .textStyle14w500c6B6B6BtyleGTWalsheim,
-                          //       )
-                          //     :SizedBox(
-                          //         height: 0.1.h,
-                          //       ),
-                          // if (profileData!.phoneNumber != null)
-                          //   UIHelper.verticalSpace(8.h),
-
-                          ///USER EMAIL...
                           profileData!.phoneNumber != null
                               ? Text(
                                   profileData?.email ?? ' ',
@@ -200,24 +163,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   color: AppColors.cBBCBC4,
                   thickness: 0.5,
                 ),
+
                 profileItem(
-                  title: 'Privacy Policy',
-                  svg: SvgPicture.asset(Assets.icons.shieldTick),
-                  onPressed: () {
-                    Get.to(() => PrivacyPolicyScreen());
-                  },
-                ),
-                Divider(
-                  color: AppColors.cBBCBC4,
-                  thickness: 0.5,
-                ),
+                    title: 'Privacy Policy',
+                    svg: SvgPicture.asset(Assets.icons.shieldTick),
+                    onPressed: () async {
+                      final String whatsappUrl =
+                          'https://christiandimene.softvencefsd.xyz/privacy-policy-the-certify-hub';
+
+                      if (await canLaunch(whatsappUrl)) {
+                        await launch(whatsappUrl);
+                      } else {
+                        throw 'Could not launch WhatsApp';
+                      }
+                    }),
+
+                Divider(color: AppColors.cBBCBC4, thickness: 0.5),
                 profileItem(
-                  title: 'Terms & Conditions',
-                  svg: SvgPicture.asset(Assets.icons.check),
-                  onPressed: () {
-                    Get.to(() => TermsAndConditionsScreen());
-                  },
-                ),
+                    title: 'Terms & Conditions',
+                    svg: SvgPicture.asset(Assets.icons.check),
+                    onPressed: () async {
+                      final String whatsappUrl =
+                          'https://christiandimene.softvencefsd.xyz/terms-and-conditions-the-certify-hub';
+
+                      if (await canLaunch(whatsappUrl)) {
+                        await launch(whatsappUrl);
+                      } else {
+                        throw 'Could not launch WhatsApp';
+                      }
+                    }),
+
                 Divider(
                   color: AppColors.cBBCBC4,
                   thickness: 0.5,

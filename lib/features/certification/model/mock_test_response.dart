@@ -63,6 +63,7 @@ class QuizData {
   int? id;
   String? title;
   int? totalTime;
+  String? passMark;
   int? courseId;
   int? totalQuestions;
 
@@ -70,6 +71,7 @@ class QuizData {
       {this.id,
       this.title,
       this.totalTime,
+      this.passMark,
       this.courseId,
       this.totalQuestions});
 
@@ -82,6 +84,7 @@ class QuizData {
         id: json["id"],
         title: json["title"],
         totalTime: json["total_time"],
+        passMark: json["passmark"],
         courseId: json["course_id"],
         totalQuestions: json["total_questions"],
       );
@@ -90,6 +93,7 @@ class QuizData {
         "id": id,
         "title": title,
         "total_time": totalTime,
+        "passmark": passMark,
         "course_id": courseId,
         "total_questions": totalQuestions,
       };

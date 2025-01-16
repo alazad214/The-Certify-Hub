@@ -33,7 +33,7 @@ class _AcademicSupportScreenState extends State<AcademicSupportScreen> {
             NavigationService.goBack;
           },
         ),
-     body: StreamBuilder(
+        body: StreamBuilder(
             stream: getAcademicSupportRxObj.academicData,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.active) {
@@ -51,7 +51,7 @@ class _AcademicSupportScreenState extends State<AcademicSupportScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'If you are facing any technical issues, you can contact us through the following link:',
+                            'If you are facing any Academic issues, you can contact us through the following link:',
                             style: TextFontStyle
                                 .headline20w500c222222StyleGTWalsheim,
                           ),
@@ -61,11 +61,9 @@ class _AcademicSupportScreenState extends State<AcademicSupportScreen> {
                             height: 55.h,
                             minWidth: Get.width / 1.5,
                             onCallBack: () async {
-                              final String whatsappUrl =
-                                  'https://wa.me/${academicSupport.data!.user!.url!}';
-
-                              if (await canLaunch(whatsappUrl)) {
-                                await launch(whatsappUrl);
+                              if (await canLaunch(
+                                  academicSupport.data!.user!.url!)) {
+                                await launch(academicSupport.data!.user!.url!);
                               } else {
                                 throw 'Could not launch WhatsApp';
                               }
@@ -87,8 +85,5 @@ class _AcademicSupportScreenState extends State<AcademicSupportScreen> {
                 return Center(child: CircularProgressIndicator());
               }
             }));
- 
- 
- 
   }
 }

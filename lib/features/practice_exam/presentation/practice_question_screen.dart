@@ -49,12 +49,10 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
   @override
   Widget build(BuildContext context) {
     unttempted = widget.quiz!.totalQuestions! - attemped.length;
-
-    log('=====Course Id ${widget.data!.id}=====');
     return PopScope(
-         canPop: false,
+      canPop: false,
       onPopInvoked: (bool didPop) async {
-      quizDismissPopup(context);
+        quizDismissPopup(context);
       },
       child: Scaffold(
         appBar: CustomAppbar(
@@ -78,7 +76,7 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
                       return Center(child: Text("Error: ${snapshot.error}"));
                     } else if (snapshot.hasData) {
                       quizData = snapshot.data!.quiz;
-      
+
                       if (quizData == null || quizData!.questions!.isEmpty) {
                         return Center(child: Text('No Quiz Available'));
                       } else {
@@ -99,15 +97,15 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
                               textAlign: TextAlign.center,
                             ),
                             UIHelper.verticalSpace(25.h),
-      
+
                             //QUESTION OPTION...
                             buildQuestion(),
                             UIHelper.verticalSpace(30.h),
-      
+
                             //QUESTION ITEM LIST...
                             buildQuizItem(),
                             UIHelper.verticalSpace(40.h),
-      
+
                             //NAVIGATION BUTTONS...
                             navigationButtons(),
                           ],
@@ -401,7 +399,7 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
               child: Text(
                 "Pause/Finish",
                 style:
-                    TextFontStyle.headline18w500c222222StyleGTWalsheim.copyWith(
+                    TextFontStyle.textStyle16w700c222222StyleGTWalsheim.copyWith(
                   color: AppColors.black,
                 ),
               ),

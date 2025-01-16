@@ -1,18 +1,12 @@
 import 'dart:developer';
-import 'package:christiandimene/constants/app_constants.dart';
 import 'package:christiandimene/features/home/data/api.dart';
 import 'package:christiandimene/features/home/model/course_response.dart';
-import 'package:christiandimene/helpers/all_routes.dart';
-import 'package:christiandimene/helpers/di.dart';
-import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:dio/dio.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../../../networks/rx_base.dart';
 
 final class GetCourseRx extends RxResponseInt<CourseResponse> {
   final api = CourseApi.instance;
-
-  bool success = false;
 
   GetCourseRx({required super.empty, required super.dataFetcher});
 
@@ -52,13 +46,6 @@ final class GetCourseRx extends RxResponseInt<CourseResponse> {
         message = error.message ?? "An unknown error occurred";
       }
 
-      if (error.response!.statusCode == 401) {
-        NavigationService.navigateToUntilReplacement(Routes.logInScreen);
-        appData.write(kKeyIsLoggedIn, false);
-        appData.write(kKeyIsExploring, false);
-        appData.remove(kKeyAccessToken);
-        appData.read(userId).toString();
-      }
       dataFetcher.sink.addError(error);
     } else {
       log('Unexpected error: $error');

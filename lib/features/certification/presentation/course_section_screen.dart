@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/model/course_details_response.dart';
 import 'package:christiandimene/features/certification/model/pdf_model_response.dart';
@@ -11,15 +13,22 @@ import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:christiandimene/networks/api_acess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../../../common_widgets/custom_button.dart';
+import '../../../constants/app_constants.dart';
+import '../../../helpers/di.dart';
 import '../model/lesson_model_response.dart';
 
 class CourseSectionScreen extends StatefulWidget {
   CourseModule? courseModule;
   CourseDetailsData? aiData;
+  List<Purchase>? purchaseCourse;
 
-  CourseSectionScreen({this.aiData, this.courseModule, super.key});
+  CourseSectionScreen(
+      {this.aiData, this.courseModule, this.purchaseCourse, super.key});
 
   @override
   State<CourseSectionScreen> createState() => _CertificationMainScreenState();
@@ -28,6 +37,7 @@ class CourseSectionScreen extends StatefulWidget {
 class _CertificationMainScreenState extends State<CourseSectionScreen> {
   String? _selectedType;
   RxInt totalViewed = 0.obs;
+  bool userHasViewedCourse = false;
 
   @override
   void initState() {
@@ -37,9 +47,20 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
     getPdfRxObj.getPdfFile(widget.courseModule!.id!);
   }
 
+  void checkIfUserViewed() {
+    if (widget.purchaseCourse!.isNotEmpty &&
+        widget.purchaseCourse![0].userId.toString() ==
+            appData.read(userId).toString()) {
+      userHasViewedCourse = false;
+    } else {
+      userHasViewedCourse = true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     int coursePersentage = widget.courseModule!.completionRate!.toInt();
+    int coursePrice = widget.aiData!.coursePrice!.toInt();
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -66,7 +87,23 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                   aiText: widget.aiData!.aiName,
                   aiDescription: widget.aiData!.aiDescription,
                   aiImage: widget.aiData!.aiPicture,
-                  aiUrl: widget.aiData!.aiUrl,
+                  onTap: () async {
+                    if (widget.purchaseCourse!.isEmpty) {
+                      Get.snackbar(
+                        backgroundColor: Colors.red,
+                        'Something went wrong!',
+                        'Enroll in this course to get started',
+                      );
+                    } else {
+                      final Uri uri = Uri.parse(widget.aiData!.aiUrl ?? '');
+                      if (await canLaunchUrl(uri)) {
+                        await launchUrl(uri,
+                            mode: LaunchMode.externalApplication);
+                      } else {
+                        throw 'Could not launch ${widget.aiData!.aiUrl}';
+                      }
+                    }
+                  },
                 ),
               UIHelper.verticalSpace(25.h),
               _buildCourseAndTestButton(),
@@ -78,7 +115,65 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
           ),
         ),
       ),
+      bottomSheet: widget.purchaseCourse!.isEmpty
+          ? Container(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              height: 95.h,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${coursePrice} \$',
+                    style: TextFontStyle.headline24w700c245741StyleGTWalsheim,
+                  ),
+                  customButton(
+                    minWidth: 170.w,
+                    height: 48.h,
+                    name: 'Buy Now',
+                    onCallBack: () async {
+                      try {
+                        var paymentResponse = await paymentRxObj.paymentData(
+                            courseId: {"course_id": widget.aiData!.id});
+                        await stripePaymentSheet(
+                            orderId: widget.aiData!.id,
+                            paymentIntentClientSecret:
+                                paymentResponse["client_secret"]);
+                      } catch (e) {
+                        log(e.toString());
+                      }
+                    },
+                    context: context,
+                  )
+                ],
+              ),
+            )
+          : SizedBox.shrink(),
     );
+  }
+
+  Future<void> stripePaymentSheet(
+      {required String paymentIntentClientSecret,
+      required dynamic orderId}) async {
+    await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+      paymentIntentClientSecret: paymentIntentClientSecret,
+      merchantDisplayName: 'Service Booking',
+    ));
+
+    await Stripe.instance.presentPaymentSheet().then((value) async {
+      if (value == null) {
+        NavigationService.navigateToUntilReplacement(Routes.bottomNavBarScreen);
+
+        Get.snackbar(
+            backgroundColor: Colors.green, 'Successfull', 'Payment Success');
+      }
+    }).catchError((e) {
+      log(e.toString());
+      Get.snackbar(
+          backgroundColor: Colors.red,
+          'Something went Wrong',
+          'Payment Failed');
+    });
   }
 
   Widget _buildPDFItem() {
@@ -105,8 +200,16 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
 
                       return InkWell(
                         onTap: () {
-                          NavigationService.navigateToWithArgs(
-                              Routes.pdfViewerScreen, {'data': pdf});
+                          if (widget.purchaseCourse!.isEmpty) {
+                            Get.snackbar(
+                              backgroundColor: Colors.red,
+                              'Something went wrong!',
+                              'Enroll in this course to get started',
+                            );
+                          } else {
+                            NavigationService.navigateToWithArgs(
+                                Routes.pdfViewerScreen, {'data': pdf});
+                          }
                         },
                         child: Container(
                           height: 84.h,
@@ -199,14 +302,22 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
 
                       return InkWell(
                         onTap: () {
-                          NavigationService.navigateToWithArgs(
-                            Routes.videoPlayerScreen,
-                            {
-                              'data': data,
-                              'lessonData': lessonData,
-                              'module': widget.courseModule
-                            },
-                          );
+                          if (data!.status == '1') {
+                            NavigationService.navigateToWithArgs(
+                              Routes.videoPlayerScreen,
+                              {
+                                'data': data,
+                                'lessonData': lessonData,
+                                'module': widget.courseModule
+                              },
+                            );
+                          } else {
+                            Get.snackbar(
+                              backgroundColor: Colors.red,
+                              'Something went wrong!',
+                              'Enroll in this course to get started',
+                            );
+                          }
                         },
                         child: Container(
                           height: 115.h,

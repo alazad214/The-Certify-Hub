@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../widgets/mock_test_popup.dart';
 import '../model/course_details_response.dart';
 
@@ -64,8 +65,17 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
   }
 
   @override
+  void dispose() {
+    getCourseDetailsRxObj.getCourseDetailsdata(widget.data!.id);
+    getMockTestRxObj.getMockTest(widget.data!.id);
+    // getTrackContentRxObj.gettrackContent(appData.read(userId), coursedata!.id!);
+    purchaseCourse;
+    checkIfUserViewed();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    log('========ID=====${widget.data!.id}==========ID=============');
     return Scaffold(
       appBar: CustomAppbar(
         title: widget.data!.courseTitle,
@@ -97,7 +107,23 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                         aiText: data!.aiName,
                         aiDescription: data!.aiDescription,
                         aiImage: data!.aiPicture,
-                        aiUrl: data!.aiUrl,
+                        onTap: () async {
+                          if (purchaseCourse.isEmpty) {
+                            Get.snackbar(
+                              backgroundColor: Colors.red,
+                              'Something went wrong!',
+                              'Enroll in this course to get started',
+                            );
+                          } else {
+                            final Uri uri = Uri.parse(data!.aiUrl ?? '');
+                            if (await canLaunchUrl(uri)) {
+                              await launchUrl(uri,
+                                  mode: LaunchMode.externalApplication);
+                            } else {
+                              throw 'Could not launch ${data!.aiUrl}';
+                            }
+                          }
+                        },
                       ),
                       UIHelper.verticalSpace(25.h),
                       _buildCourseAndTestButton(),
@@ -429,35 +455,38 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                       int coursePersentage = coursedata.completionRate!.toInt();
                       return InkWell(
                         onTap: () {
-                          if (purchaseCourse.isEmpty) {
-                            Get.snackbar(
-                              backgroundColor: Colors.red,
-                              'Something went wrong!',
-                              'Enroll in this course to get started',
-                            );
-                          } else {
-                            if (purchaseCourse[0].courseId.toString() ==
-                                widget.data!.id.toString()) {
-                              if (purchaseCourse[0].userId.toString() ==
-                                  appData.read(userId).toString()) {
-                                NavigationService.navigateToWithArgs(
-                                    Routes.certificationSectionScreen,
-                                    {'data': coursedata, 'aidata': data});
-                              } else {
-                                Get.snackbar(
-                                  backgroundColor: Colors.red,
-                                  'Something went wrong!',
-                                  'No Course Found',
-                                );
-                              }
-                            } else {
-                              Get.snackbar(
-                                backgroundColor: Colors.red,
-                                'Something went wrong!',
-                                'No Course Found',
-                              );
-                            }
-                          }
+                          // if (courseData.data!.purchases!.isEmpty) {
+
+                          // } else {
+                          //   if (purchaseCourse[0].courseId.toString() ==
+                          //       widget.data!.id.toString()) {
+                          //     if (purchaseCourse[0].userId.toString() ==
+                          //         appData.read(userId).toString()) {
+                          //       NavigationService.navigateToWithArgs(
+                          //           Routes.certificationSectionScreen,
+                          //           {'data': coursedata, 'aidata': data});
+                          //     } else {
+                          //       Get.snackbar(
+                          //         backgroundColor: Colors.red,
+                          //         'Something went wrong!',
+                          //         'No Course Found',
+                          //       );
+                          //     }
+                          //   } else {
+                          //     Get.snackbar(
+                          //       backgroundColor: Colors.red,
+                          //       'Something went wrong!',
+                          //       'No Course Found',
+                          //     );
+                          //   }
+                          // }
+                          NavigationService.navigateToWithArgs(
+                              Routes.certificationSectionScreen, {
+                            'data': coursedata,
+                            'aidata': data,
+                            'userHasViewedCourse': userHasViewedCourse,
+                            'purchaseCourse': purchaseCourse
+                          });
                         },
                         child: Container(
                             alignment: Alignment.center,

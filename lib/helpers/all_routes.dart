@@ -140,12 +140,14 @@ final class RouteGenerator {
                 widget: CourseSectionScreen(
                   courseModule: arg!['data'],
                   aiData: arg['aidata'],
+                  purchaseCourse: arg['purchaseCourse'],
                 ),
                 settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => CourseSectionScreen(
                       courseModule: arg!['data'],
                       aiData: arg['aidata'],
+                      purchaseCourse: arg['purchaseCourse'],
                     ));
 
       case Routes.mockTestSectionScreen:

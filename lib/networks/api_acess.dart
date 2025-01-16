@@ -30,7 +30,6 @@ import 'package:christiandimene/features/test_exam/data/post_calculate_result/rx
 import 'package:christiandimene/features/test_exam/model/test_quiz_response.dart';
 import 'package:christiandimene/features/test_exam/model/test_result_response.dart';
 import 'package:rxdart/subjects.dart';
-
 import '../features/auth/data/otp_verification_rx/rx.dart';
 import '../features/certification/data/get_lessons_rx/rx.dart';
 import '../features/certification/data/get_pdf_rx/rx.dart';
@@ -121,3 +120,4 @@ GettechnicalSupportRx gettechnicalSupportRxObj = GettechnicalSupportRx(
 
 final getAcademicSupportRxObj = GetAcademicSupportRx(
     empty: AcademicSupportResponse(), dataFetcher: BehaviorSubject());
+

@@ -52,7 +52,7 @@ class _TestExamQuizState extends State<TestExamQuiz> {
 
     log('=====Course Id ${widget.data!.id}=====');
     return PopScope(
-         canPop: false,
+      canPop: false,
       onPopInvoked: (bool didPop) async {
         quizDismissPopup(context);
       },
@@ -77,7 +77,7 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                     return Center(child: Text("Error: ${snapshot.error}"));
                   } else if (snapshot.hasData) {
                     quizData = snapshot.data;
-      
+
                     if (quizData!.quiz == null ||
                         quizData!.quiz!.questions!.isEmpty) {
                       return Center(child: Text('No Quiz Available'));
@@ -89,7 +89,7 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                           // Row(
                           //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           //   children: [
-      
+
                           //     // Text(
                           //     //   "Total- ${widget.quiz!.totalQuestions}",
                           //     //   style: TextFontStyle
@@ -114,11 +114,11 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                           UIHelper.verticalSpace(24.h),
                           buildQuestion(),
                           UIHelper.verticalSpace(24.h),
-      
+
                           ///BUILD QUIZ ITEM...
                           buildQuizItem(),
                           UIHelper.verticalSpace(24.h),
-      
+
                           ///NAVIGATION BUTTONS...
                           navigationButtons(),
                         ],
@@ -127,7 +127,8 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                   } else {
                     return const SizedBox.shrink();
                   }
-                } else if (snapshot.connectionState == ConnectionState.waiting) {
+                } else if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 } else {
                   return Center(child: CircularProgressIndicator());
@@ -408,9 +409,10 @@ class _TestExamQuizState extends State<TestExamQuiz> {
             ),
             child: Center(
               child: Text(
-                "Pause",
-                style:
-                    TextFontStyle.headline18w500c222222StyleGTWalsheim.copyWith(
+                "Pause/Finish",
+                overflow: TextOverflow.ellipsis,
+                style: TextFontStyle.textStyle16w700c222222StyleGTWalsheim
+                    .copyWith(
                   color: AppColors.black,
                 ),
               ),

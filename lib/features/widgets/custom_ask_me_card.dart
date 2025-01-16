@@ -6,15 +6,14 @@ import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:christiandimene/networks/endpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class CustomAskMeCard extends StatelessWidget {
   CustomAskMeCard(
-      {this.aiImage, this.aiText, this.aiDescription, this.aiUrl, super.key});
+      {this.aiImage, this.aiText, this.aiDescription, this.onTap, super.key});
   String? aiImage;
   String? aiText;
   String? aiDescription;
-  String? aiUrl;
+  final onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -67,15 +66,7 @@ class CustomAskMeCard extends StatelessWidget {
                       .copyWith(color: AppColors.cBBCBC4),
                 ),
                 InkWell(
-                  onTap: () async {
-                    final Uri uri = Uri.parse(aiUrl ?? '');
-                    if (await canLaunchUrl(uri)) {
-                      await launchUrl(uri,
-                          mode: LaunchMode.externalApplication);
-                    } else {
-                      throw 'Could not launch $aiUrl';
-                    }
-                  },
+                  onTap: onTap,
                   child: Container(
                     height: 31.h,
                     alignment: Alignment.center,

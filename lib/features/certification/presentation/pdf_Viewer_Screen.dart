@@ -50,9 +50,6 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
       }
     } catch (e) {
       print('Error downloading PDF: $e');
-      setState(() {
-        loading = false;
-      });
     }
   }
 

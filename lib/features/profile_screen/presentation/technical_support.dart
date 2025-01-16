@@ -61,11 +61,11 @@ class _TechnicalSupportScreenState extends State<TechnicalSupportScreen> {
                             height: 55.h,
                             minWidth: Get.width / 1.5,
                             onCallBack: () async {
-                              final String whatsappUrl =
-                                  'https://wa.me/${technicalData.data!.user!.url!}';
+                     
 
-                              if (await canLaunch(whatsappUrl)) {
-                                await launch(whatsappUrl);
+                              if (await canLaunch(
+                                  technicalData.data!.user!.url!)) {
+                                await launch(technicalData.data!.user!.url!);
                               } else {
                                 throw 'Could not launch WhatsApp';
                               }
@@ -86,7 +86,5 @@ class _TechnicalSupportScreenState extends State<TechnicalSupportScreen> {
                 return Center(child: CircularProgressIndicator());
               }
             }));
- 
- 
   }
 }

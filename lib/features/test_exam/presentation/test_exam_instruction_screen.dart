@@ -27,7 +27,6 @@ class TestExamInstructionScreen extends StatefulWidget {
 class _PracticeExamInstructionScreenState
     extends State<TestExamInstructionScreen> {
   final List<String> instructionTitles = [
-
     'You have a time limit for the quiz.',
     'You will able to see the correct response only at the end of the test',
     'You can skip questions or answer them in any order. Tap on any question to revisit it at any time.',
@@ -210,10 +209,10 @@ class _PracticeExamInstructionScreenState
                                 .copyWith(color: AppColors.c000000),
                           ),
                           Text(
-                            '70%'.tr,
+                            "${widget.quiz!.passMark}%",
                             overflow: TextOverflow.ellipsis,
                             style: TextFontStyle
-                                .textStyle16w500c222222StyleGTWalsheim
+                                .textStyle14w500c6B6B6BtyleGTWalsheim
                                 .copyWith(color: AppColors.c000000),
                           ),
                         ],

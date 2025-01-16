@@ -52,4 +52,6 @@ final class Endpoints {
   static String contentProgress() => "/content-progress";
   static String technicalLink() => "/technicalLink";
   static String academicLink() => "/academicLink";
+  static String privacyPolicy() => "/privacy-policy";
+  static String termsAndConditions() => "/terms-and-conditions";
 }

@@ -139,7 +139,6 @@ class _SignupScreenState extends State<SignupScreen> {
                           name: nameController.text,
                         )
                             .then((value) {
-                      
                           appData.write(kUserEmail, emailController.text);
                         });
 

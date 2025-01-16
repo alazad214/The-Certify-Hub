@@ -15,6 +15,7 @@ import 'package:christiandimene/provider/video_screen_provider/video_screen_prov
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:provider/provider.dart';
 import '../../../gen/assets.gen.dart';
@@ -248,12 +249,21 @@ class _CertificationVideoPlayerScreenState
                                 ? SizedBox()
                                 : InkWell(
                                     onTap: () {
-                                      _loadVimeoVideo(video!.videoFile!);
-                                      setState(() {
-                                        currentPlayingVideoIndex = index;
-                                        currentVideoTitle = video!.contentTitle;
-                                        currentPlayingVideoId = video.id;
-                                      });
+                                      if (video!.status == '1') {
+                                        _loadVimeoVideo(video.videoFile!);
+                                        setState(() {
+                                          currentPlayingVideoIndex = index;
+                                          currentVideoTitle =
+                                              video!.contentTitle;
+                                          currentPlayingVideoId = video.id;
+                                        });
+                                      } else {
+                                        Get.snackbar(
+                                          backgroundColor: Colors.red,
+                                          'Something went wrong!',
+                                          'Enroll in this course to get started',
+                                        );
+                                      }
                                     },
                                     child: Container(
                                       height: 93.h,
@@ -346,8 +356,7 @@ class _CertificationVideoPlayerScreenState
                                                         style: TextFontStyle
                                                             .textStyle14w400c9AB2A8StyleGTWalsheim
                                                             .copyWith(
-                                                          color:
-                                                              Colors.green,
+                                                          color: Colors.green,
                                                         ),
                                                       ),
                                                     ),
