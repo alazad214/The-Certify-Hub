@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/model/course_details_response.dart';
 import 'package:christiandimene/features/certification/model/pdf_model_response.dart';
+import 'package:christiandimene/features/certification/presentation/payment_screen.dart';
 import 'package:christiandimene/features/certification/widgets/custom_appbar2.dart';
 import 'package:christiandimene/features/widgets/custom_ask_me_card.dart';
 import 'package:christiandimene/gen/assets.gen.dart';
@@ -13,7 +14,7 @@ import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:christiandimene/networks/api_acess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
+
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -134,10 +135,29 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                       try {
                         var paymentResponse = await paymentRxObj.paymentData(
                             courseId: {"course_id": widget.aiData!.id});
-                        await stripePaymentSheet(
-                            orderId: widget.aiData!.id,
-                            paymentIntentClientSecret:
-                                paymentResponse["client_secret"]);
+
+                        if (paymentResponse.containsKey("payment_url")) {
+                          // Open WebView with payment URL
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WebViewScreen(
+                                  link: paymentResponse["payment_url"]),
+                            ),
+                          );
+                        } else {
+                          Get.snackbar(
+                            backgroundColor: Colors.red,
+                            'Error',
+                            'Something went wrong!',
+                          );
+                          // Use Stripe Payment Sheet
+                          // await stripePaymentSheet(
+                          //     orderId: widget.data!.id,
+                          //     paymentIntentClientSecret:
+                          //         paymentResponse["client_secret"]);
+                        }
                       } catch (e) {
                         log(e.toString());
                       }
@@ -151,30 +171,30 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
     );
   }
 
-  Future<void> stripePaymentSheet(
-      {required String paymentIntentClientSecret,
-      required dynamic orderId}) async {
-    await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-      paymentIntentClientSecret: paymentIntentClientSecret,
-      merchantDisplayName: 'Service Booking',
-    ));
+  // Future<void> stripePaymentSheet(
+  //     {required String paymentIntentClientSecret,
+  //     required dynamic orderId}) async {
+  //   await Stripe.instance.initPaymentSheet(
+  //       paymentSheetParameters: SetupPaymentSheetParameters(
+  //     paymentIntentClientSecret: paymentIntentClientSecret,
+  //     merchantDisplayName: 'Service Booking',
+  //   ));
 
-    await Stripe.instance.presentPaymentSheet().then((value) async {
-      if (value == null) {
-        NavigationService.navigateToUntilReplacement(Routes.bottomNavBarScreen);
+  //   await Stripe.instance.presentPaymentSheet().then((value) async {
+  //     if (value == null) {
+  //       NavigationService.navigateToUntilReplacement(Routes.bottomNavBarScreen);
 
-        Get.snackbar(
-            backgroundColor: Colors.green, 'Successfull', 'Payment Success');
-      }
-    }).catchError((e) {
-      log(e.toString());
-      Get.snackbar(
-          backgroundColor: Colors.red,
-          'Something went Wrong',
-          'Payment Failed');
-    });
-  }
+  //       Get.snackbar(
+  //           backgroundColor: Colors.green, 'Successfull', 'Payment Success');
+  //     }
+  //   }).catchError((e) {
+  //     log(e.toString());
+  //     Get.snackbar(
+  //         backgroundColor: Colors.red,
+  //         'Something went Wrong',
+  //         'Payment Failed');
+  //   });
+  // }
 
   Widget _buildPDFItem() {
     return StreamBuilder(

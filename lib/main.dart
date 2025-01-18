@@ -1,4 +1,5 @@
 import 'package:christiandimene/loading_screen.dart';
+import 'package:christiandimene/networks/internet_checker/internet_controller.dart';
 import 'package:christiandimene/provider/video_screen_provider/video_screen_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,6 +26,7 @@ void main() async {
       'pk_test_51PuhUnCNNZOwq4CUa7L48iSaSvJsJeL2nNZV5ApvJOoiguUi84pkNI95PUCVDVZ9a0CRF9et4FUl9SnnDhS9p7Cp00tDu86hgn';
 
   DioSingleton.instance.create();
+  Get.put(InternetController(), permanent: true);
 
   runApp(
     MultiProvider(

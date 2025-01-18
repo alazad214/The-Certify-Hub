@@ -363,30 +363,32 @@ class _PracticeQuestionScreenState extends State<PracticeQuestionScreen> {
         InkWell(
           onTap: () {
             examFinishPopup(
-              context,
-              'Quiz paused',
-              () {
-                NavigationService.navigateToWithArgs(
-                    Routes.practiceExamResult, {
-                  'quiz': quizData,
-                  'attempted': attemped,
-                  'selectedOptions': result,
-                  'course': widget.data
+                context,
+                'Quiz paused',
+                () {
+                  NavigationService.navigateToWithArgs(
+                      Routes.practiceExamResult, {
+                    'quiz': quizData,
+                    'attempted': attemped,
+                    'selectedOptions': result,
+                    'course': widget.data
+                  });
+                },
+                () {
+                  //    NavigationService.navigateToWithArgs(
+                  //     Routes.certificationScreen, {
+                  //   "data": widget.data,
+                  // });
+                  Navigator.pop(context);
+                },
+                attemped.length.toString(),
+                unttempted.toString(),
+                true,
+                'Finish',
+                'Continue',
+                () {
+                  return Future.value(false);
                 });
-              },
-              () {
-                //    NavigationService.navigateToWithArgs(
-                //     Routes.certificationScreen, {
-                //   "data": widget.data,
-                // });
-                Navigator.pop(context);
-              },
-              attemped.length.toString(),
-              unttempted.toString(),
-              true,
-              'Finish',
-              'Continue',
-            );
           },
           child: Container(
             width: 176.w,

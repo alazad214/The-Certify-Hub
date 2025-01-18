@@ -58,6 +58,8 @@ final class GetPurchaseCourseRx extends RxResponseInt<CourseResponse> {
         appData.write(kKeyIsExploring, false);
         appData.remove(kKeyAccessToken);
         appData.read(userId).toString();
+      } else {
+        NavigationService.navigateToUntilReplacement(Routes.logInScreen);
       }
       dataFetcher.sink.addError(error);
     } else {

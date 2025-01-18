@@ -49,12 +49,9 @@ class _TestExamQuizState extends State<TestExamQuiz> {
   @override
   Widget build(BuildContext context) {
     unttempted = widget.quiz!.totalQuestions! - attemped.length;
-
-    log('=====Course Id ${widget.data!.id}=====');
     return PopScope(
       canPop: false,
       onPopInvoked: (bool didPop) async {
-     
         quizDismissPopup(context);
       },
       child: Scaffold(
@@ -87,17 +84,7 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           UIHelper.verticalSpace(12.h),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //   children: [
 
-                          //     // Text(
-                          //     //   "Total- ${widget.quiz!.totalQuestions}",
-                          //     //   style: TextFontStyle
-                          //     //       .headline20w500c222222StyleGTWalsheim,
-                          //     // )
-                          //   ],
-                          // ),
                           _buildTimeWidget(),
                           Text(
                             "Question ${selectedQuestionIndex + 1}",
@@ -157,17 +144,10 @@ class _TestExamQuizState extends State<TestExamQuiz> {
           onTap: () {
             setState(() {
               selectedOptions[selectedQuestionIndex] = index;
-              log('selectedOptions[selectedQuestionIndex] ${selectedOptions[selectedQuestionIndex].toString()}');
-              log('selectedQuestionIndex $selectedQuestionIndex');
-              log('quiz id : ${quizData!.quiz!.questions![selectedQuestionIndex].id}');
-              log('answer id : ${options[index].id}');
-              log('answer text : ${options[index].text}');
-
               result.addAll({
                 quizData!.quiz!.questions![selectedQuestionIndex].id.toString():
                     options[index].id!
               });
-
               attemped.add(selectedQuestionIndex);
             });
 
@@ -363,44 +343,49 @@ class _TestExamQuizState extends State<TestExamQuiz> {
           onTap: () {
             pauseTime();
             examFinishPopup(
-              context,
-              'Quiz paused',
-              () {
-                Map<String, dynamic> answer = {
-                  "quiz_id": widget.quiz!.id!,
-                  "answers": result
-                };
+                context,
+                'Quiz paused',
+                () {
+                  Map<String, dynamic> answer = {
+                    "quiz_id": widget.quiz!.id!,
+                    "answers": result
+                  };
 
-                if (result.isEmpty) {
-                  Get.snackbar('Contribute a minimum of 1 quiz.',
-                      'please continue and Contribute to the minimum of 1 quiz.',
-                      backgroundColor: AppColors.cFDB338);
-                } else {
-                  timer?.cancel();
-                  postCalculateQuizRxObj.calculateResult(answers: answer).then(
-                    (value) {
-                      NavigationService.navigateToWithArgs(
-                        Routes.testExamResult,
-                        {
-                          'data': value,
-                          "courseId": widget.data,
-                        },
-                      );
-                    },
-                  );
-                }
-              },
-              () {
-                Navigator.pop(context);
-                resumeTime();
-              },
-              attemped.length.toString(),
-              unttempted.toString(),
-              false,
-              'Finish',
-              'Continue',
-              
-            );
+                  if (result.isEmpty) {
+                    Get.snackbar('Contribute a minimum of 1 quiz.',
+                        'please continue and Contribute to the minimum of 1 quiz.',
+                        backgroundColor: AppColors.cFDB338);
+                  } else {
+                    timer?.cancel();
+                    postCalculateQuizRxObj
+                        .calculateResult(answers: answer)
+                        .then(
+                      (value) {
+                        NavigationService.navigateToWithArgs(
+                          Routes.testExamResult,
+                          {
+                            'data': value,
+                            "courseId": widget.data,
+                          },
+                        );
+                      },
+                    );
+                  }
+                },
+                () {
+                  Navigator.pop(context);
+                  resumeTime();
+                },
+                attemped.length.toString(),
+                unttempted.toString(),
+                false,
+                'Finish',
+                'Continue',
+                () {
+                  startTime();
+
+                  return Future.value(true);
+                });
           },
           child: Container(
             width: 176.w,
@@ -495,38 +480,42 @@ class _TestExamQuizState extends State<TestExamQuiz> {
     timer?.cancel();
 
     examFinishPopup(
-      context,
-      'Time is up, see your results now?',
-      () {
-        NavigationService.navigateToWithArgs(Routes.certificationScreen, {
-          "data": widget.data,
-        });
-      },
-      () {
-        Map<String, dynamic> answer = {
-          "quiz_id": widget.quiz!.id!,
-          "answers": result
-        };
-
-        if (result.isEmpty) {
-          Get.snackbar(
-              'Contribute a minimum of 1 quiz.', 'Please Restart the Quiz.',
-              backgroundColor: AppColors.cFDB338);
-        } else {
-          postCalculateQuizRxObj.calculateResult(answers: answer).then((value) {
-            NavigationService.navigateToWithArgs(Routes.testExamResult, {
-              'data': widget.quiz,
-              "courseId": widget.data,
-            });
+        context,
+        'Time is up, see your results now?',
+        () {
+          NavigationService.navigateToWithArgs(Routes.certificationScreen, {
+            "data": widget.data,
           });
-        }
-      },
-      '08:11',
-      attemped.length.toString(),
-      false,
-      'Restart',
-      'Results',
-    );
+        },
+        () {
+          Map<String, dynamic> answer = {
+            "quiz_id": widget.quiz!.id!,
+            "answers": result
+          };
+
+          if (result.isEmpty) {
+            Get.snackbar(
+                'Contribute a minimum of 1 quiz.', 'Please Restart the Quiz.',
+                backgroundColor: AppColors.cFDB338);
+          } else {
+            postCalculateQuizRxObj
+                .calculateResult(answers: answer)
+                .then((value) {
+              NavigationService.navigateToWithArgs(Routes.testExamResult, {
+                'data': widget.quiz,
+                "courseId": widget.data,
+              });
+            });
+          }
+        },
+        '08:11',
+        attemped.length.toString(),
+        false,
+        'Restart',
+        'Results',
+        () async {
+          return Future.value(false);
+        });
   }
 
   // Pause the timer

@@ -64,6 +64,7 @@ dependencies:
   permission_handler: ^11.3.1
   fluttertoast: ^8.2.10
   flutter_stripe: ^11.3.0
+  connectivity_plus: ^6.1.2
   
   
 

@@ -4,6 +4,7 @@ import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/app_constants.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/model/mock_test_response.dart';
+import 'package:christiandimene/features/certification/presentation/payment_screen.dart';
 import 'package:christiandimene/features/certification/widgets/build_header_card.dart';
 import 'package:christiandimene/features/home/model/course_response.dart';
 import 'package:christiandimene/features/widgets/custom_ask_me_card.dart';
@@ -17,7 +18,6 @@ import 'package:christiandimene/networks/endpoints.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../widgets/mock_test_popup.dart';
@@ -76,6 +76,7 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log('build');
     return Scaffold(
       appBar: CustomAppbar(
         title: widget.data!.courseTitle,
@@ -162,10 +163,29 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                       try {
                         var paymentResponse = await paymentRxObj.paymentData(
                             courseId: {"course_id": widget.data!.id});
-                        await stripePaymentSheet(
-                            orderId: widget.data!.id,
-                            paymentIntentClientSecret:
-                                paymentResponse["client_secret"]);
+
+                        if (paymentResponse.containsKey("payment_url")) {
+                          // Open WebView with payment URL
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WebViewScreen(
+                                  link: paymentResponse["payment_url"]),
+                            ),
+                          );
+                        } else {
+                          Get.snackbar(
+                            backgroundColor: Colors.red,
+                            'Error',
+                            'Something went wrong!',
+                          );
+                          // Use Stripe Payment Sheet
+                          // await stripePaymentSheet(
+                          //     orderId: widget.data!.id,
+                          //     paymentIntentClientSecret:
+                          //         paymentResponse["client_secret"]);
+                        }
                       } catch (e) {
                         log(e.toString());
                       }
@@ -179,30 +199,30 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
     );
   }
 
-  Future<void> stripePaymentSheet(
-      {required String paymentIntentClientSecret,
-      required dynamic orderId}) async {
-    await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-      paymentIntentClientSecret: paymentIntentClientSecret,
-      merchantDisplayName: 'Service Booking',
-    ));
+  // Future<void> stripePaymentSheet(
+  //     {required String paymentIntentClientSecret,
+  //     required dynamic orderId}) async {
+  //   await Stripe.instance.initPaymentSheet(
+  //       paymentSheetParameters: SetupPaymentSheetParameters(
+  //     paymentIntentClientSecret: paymentIntentClientSecret,
+  //     merchantDisplayName: 'Service Booking',
+  //   ));
 
-    await Stripe.instance.presentPaymentSheet().then((value) async {
-      if (value == null) {
-        NavigationService.navigateToUntilReplacement(Routes.bottomNavBarScreen);
+  //   await Stripe.instance.presentPaymentSheet().then((value) async {
+  //     if (value == null) {
+  //       NavigationService.navigateToUntilReplacement(Routes.bottomNavBarScreen);
 
-        Get.snackbar(
-            backgroundColor: Colors.green, 'Successfull', 'Payment Success');
-      }
-    }).catchError((e) {
-      log(e.toString());
-      Get.snackbar(
-          backgroundColor: Colors.red,
-          'Something went Wrong',
-          'Payment Failed');
-    });
-  }
+  //       Get.snackbar(
+  //           backgroundColor: Colors.green, 'Successfull', 'Payment Success');
+  //     }
+  //   }).catchError((e) {
+  //     log(e.toString());
+  //     Get.snackbar(
+  //         backgroundColor: Colors.red,
+  //         'Something went Wrong',
+  //         'Payment Failed');
+  //   });
+  // }
 
   ///COURSE AND MOCK TEST--->>
   Widget _buildCourseAndTestButton() {
