@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
-const String url = "https://christiandimene.softvencefsd.xyz/api";
-const String baseUrl = "https://christiandimene.softvencefsd.xyz/";
+const String url = "https://relmaxpdc.com/api";
+const String baseUrl = "https://relmaxpdc.com/";
 
 final class NetworkConstants {
   NetworkConstants._();

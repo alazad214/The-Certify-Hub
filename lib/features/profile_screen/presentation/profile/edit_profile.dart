@@ -124,18 +124,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       .textStyle16w400c999999StyleGTWalsheim
                       .copyWith(color: AppColors.c000000.withOpacity(0.6)),
                 ),
-                UIHelper.verticalSpace(16.h),
-                CustomTextfield(
-                  hintText: 'Phone',
-                  borderRadius: 12.r,
-                  controller: phoneController,
-                  inputType: TextInputType.number,
-                  fillColor: AppColors.cFFFFFF,
-                  hintTextSyle: TextFontStyle
-                      .textStyle16w400c999999StyleGTWalsheim
-                      .copyWith(color: AppColors.c000000.withOpacity(0.6)),
-                ),
-                UIHelper.verticalSpace(100.h),
+                UIHelper.verticalSpace(50.h),
                 customButton(
                   name: 'Update',
                   height: 50.h,
@@ -157,22 +146,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       .copyWith(color: AppColors.cFFFFFF),
                   borderRadius: 12.r,
                 ),
-                UIHelper.verticalSpace(16.h),
-
-                // ///DELETE ACCOUNT...
-                // customButton(
-                //   name: 'Delete Account?',
-                //   height: 50.h,
-                //   onCallBack: () {
-                //     deleteButtonDialog(context, () {});
-                //   },
-                //   context: context,
-                //   color: AppColors.c245741,
-                //   borderColor: AppColors.c245741,
-                //   textStyle: TextFontStyle.headline18w400cFFFFFFStyleGTWalsheim
-                //       .copyWith(color: AppColors.cFFFFFF),
-                //   borderRadius: 12.r,
-                // ),
               ],
             ),
           ),

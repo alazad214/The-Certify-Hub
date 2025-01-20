@@ -18,7 +18,6 @@ class WebViewScreen extends StatefulWidget {
 class _PaymentScreenState extends State<WebViewScreen> {
   @override
   Widget build(BuildContext context) {
-    log('payment link >>>>>> ----- ${widget.link}');
     final controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(

@@ -13,7 +13,6 @@ import 'package:christiandimene/networks/endpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import '../../profile_screen/model/get_profile_response.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -46,41 +45,50 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<void> refreshFunc() async {
+    await getCourseRxObj.getCourseData();
+    await getProfileDataRxObj.getprofileData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
         padding: EdgeInsets.all(20.sp),
-        child: Column(
-          children: [
-            ///home header.....
-            _buildHomeHeader(),
-            UIHelper.verticalSpace(12.h),
+        child: RefreshIndicator(
+          onRefresh: refreshFunc,
+          
+          child: Column(
+            children: [
+              ///home header.....
+              _buildHomeHeader(),
+              UIHelper.verticalSpace(12.h),
 
-            ///search textfield...
-            CustomTextfield(
-              hintText: 'Search a certification. Ex.: CMRP, PMP, etc.',
-              fillColor: AppColors.white,
-              controller: searchController,
-              prefixIcon: Padding(
-                padding: EdgeInsets.symmetric(vertical: 13),
-                child: SvgPicture.asset(
-                  Assets.icons.search,
-                  height: 20,
-                  width: 20,
+              ///search textfield...
+              CustomTextfield(
+                hintText: 'Search a certification. Ex.: CMRP, PMP, etc.',
+                fillColor: AppColors.white,
+                controller: searchController,
+                prefixIcon: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 13),
+                  child: SvgPicture.asset(
+                    Assets.icons.search,
+                    height: 20,
+                    width: 20,
+                  ),
                 ),
+                onChanged: (query) {
+                  filterCourses(query);
+                },
               ),
-              onChanged: (query) {
-                filterCourses(query);
-              },
-            ),
-            UIHelper.verticalSpace(26.h),
+              UIHelper.verticalSpace(26.h),
 
-            ///build custom card...
-            _buildHomeCustomCard(),
-            UIHelper.verticalSpace(26.h),
-          ],
+              ///build custom card...
+              _buildHomeCustomCard(),
+              UIHelper.verticalSpace(26.h),
+            ],
+          ),
         ),
       ),
     ));

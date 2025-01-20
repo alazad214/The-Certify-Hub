@@ -91,7 +91,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   UIHelper.verticalSpace(10.h),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -140,26 +139,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       )
                     ],
                   ),
-
                   UIHelper.verticalSpace(16.h),
                   customButton(
                     name: 'Log In',
                     onCallBack: () async {
-                      // if (_formKey.currentState!.validate()) {
-                      //   if (_isChecked == true) {
-                      //     await postLoginRxObj.postLogin(
-                      //       email: emailController.text,
-                      //       password: passwordController.text,
-                      //     );
-
-                      //     emailController.clear();
-                      //     passwordController.clear();
-                      //   } else {
-                      //     Get.snackbar("Something Wrong",
-                      //         "Don't forget to check \"Remember me\"",
-                      //         backgroundColor: AppColors.allPrimaryColor);
-                      //   }
-                      // }
                       if (_formKey.currentState!.validate()) {
                         await postLoginRxObj.postLogin(
                           email: emailController.text,
@@ -177,29 +160,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         .copyWith(color: AppColors.c000000),
                   ),
                   UIHelper.verticalSpace(24.h),
-
-                  // UIHelper.verticalSpace(41.5.h),
-                  // Text(
-                  //   'Or continue with'.tr,
-                  //   style: TextFontStyle.textStyle14w400c9AB2A8StyleGTWalsheim
-                  //       .copyWith(color: AppColors.c6B6B6B),
-                  // ),
-                  // UIHelper.verticalSpace(20.h),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-                  //     Image.asset(Assets.images.facebook.path,
-                  //         width: 56.w, height: 42.h),
-                  //     UIHelper.horizontalSpace(16.w),
-                  //     Image.asset(Assets.images.google.path,
-                  //         width: 56.w, height: 42.h),
-                  //     UIHelper.horizontalSpace(16.w),
-                  //     Image.asset(Assets.images.apple.path,
-                  //         width: 56.w, height: 42.h),
-                  //   ],
-                  // ),
-
-                  // UIHelper.verticalSpace(42.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

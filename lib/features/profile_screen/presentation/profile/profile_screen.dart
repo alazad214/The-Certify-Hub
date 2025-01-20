@@ -1,7 +1,6 @@
 import 'package:christiandimene/constants/app_constants.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/profile_screen/model/get_profile_response.dart';
-import 'package:christiandimene/features/profile_screen/presentation/about_us.dart';
 import 'package:christiandimene/features/profile_screen/presentation/academic_support_screen.dart';
 import 'package:christiandimene/features/profile_screen/presentation/technical_support.dart';
 import 'package:christiandimene/features/profile_screen/widget/logout_button_dialog.dart';
@@ -44,13 +43,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: SafeArea(
             child: Column(
               children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Profile',
-                    style: TextFontStyle.headline18w500c222222StyleGTWalsheim,
-                  ),
-                ),
                 StreamBuilder(
                   stream: getProfileDataRxObj.getProfileCreateData,
                   builder: (context, snapshot) {
@@ -114,7 +106,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     );
                   },
                 ),
-
                 UIHelper.verticalSpace(40.h),
                 profileItem(
                   title: 'Edit Profile',
@@ -124,7 +115,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Routes.editProfile, {'data': profileData});
                   },
                 ),
-
                 Divider(
                   color: AppColors.cBBCBC4,
                   thickness: 0.5,
@@ -137,8 +127,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     width: 24.w,
                   ),
                   onPressed: () {
-                    // NavigationService.navigateTo(Routes.notification);
-
                     Get.to(() => TechnicalSupportScreen());
                   },
                 ),
@@ -154,8 +142,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     width: 24.w,
                   ),
                   onPressed: () {
-                    // NavigationService.navigateTo(Routes.notification);
-
                     Get.to(() => AcademicSupportScreen());
                   },
                 ),
@@ -163,7 +149,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   color: AppColors.cBBCBC4,
                   thickness: 0.5,
                 ),
-
                 profileItem(
                     title: 'Privacy Policy',
                     svg: SvgPicture.asset(Assets.icons.shieldTick),
@@ -177,7 +162,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         throw 'Could not launch WhatsApp';
                       }
                     }),
-
                 Divider(color: AppColors.cBBCBC4, thickness: 0.5),
                 profileItem(
                     title: 'Terms & Conditions',
@@ -192,23 +176,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         throw 'Could not launch WhatsApp';
                       }
                     }),
-
-                Divider(
-                  color: AppColors.cBBCBC4,
-                  thickness: 0.5,
-                ),
-                profileItem(
-                  title: 'About Us',
-                  svg: SvgPicture.asset(Assets.icons.help),
-                  onPressed: () {
-                    Get.to(() => AboutUsScreen());
-                  },
-                ),
                 UIHelper.verticalSpace(24.h),
-
-                ///logout button....
                 _buildLogoutButton(),
-                UIHelper.verticalSpace(50.h),
               ],
             ),
           ),
@@ -217,7 +186,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  GestureDetector _buildLogoutButton() {
+  Widget _buildLogoutButton() {
     return GestureDetector(
       onTap: () {
         logOutButtonDialog(context, () {
@@ -249,7 +218,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Assets.icons.logout,
               height: 24.h,
               width: 24.w,
-              // ignore: deprecated_member_use
               color: AppColors.c222222,
             ),
             UIHelper.horizontalSpace(10.w),
@@ -298,7 +266,6 @@ class profileItem extends StatelessWidget {
               Assets.icons.arrowBlacks,
               height: 24.h,
               width: 24.w,
-              // ignore: deprecated_member_use
               color: AppColors.c222222,
             ),
           ],

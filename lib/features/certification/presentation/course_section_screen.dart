@@ -217,6 +217,7 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                     itemBuilder: (_, index) {
                       FileElement? pdf;
                       pdf = pdfData.data!.files![index];
+                      log(pdf.filePath.toString());
 
                       return InkWell(
                         onTap: () {
@@ -253,7 +254,7 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Document- ${index + 1}",
+                                      pdf.filePath!.split('/').last,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextFontStyle
                                           .textStyle16w400c999999StyleGTWalsheim
