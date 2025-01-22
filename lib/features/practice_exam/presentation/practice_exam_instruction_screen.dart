@@ -29,7 +29,6 @@ class PracticeExamInstructionScreen extends StatefulWidget {
 class _PracticeExamInstructionScreenState
     extends State<PracticeExamInstructionScreen> {
   final List<String> instructionTitles = [
-  
     'There is no time limit, so feel free to take your time with each question.',
     'After each answer, you’ll immediately see whether you got it correct, along with a detailed explanation.',
     'You can skip questions or answer them in any order. Tap on any question to revisit it at any time.',
@@ -110,7 +109,7 @@ class _PracticeExamInstructionScreenState
   Widget _questionBoard() {
     return Center(
       child: Container(
-        width: 280.w,
+       
         decoration: BoxDecoration(
           color: AppColors.cFFFFFF,
           borderRadius: BorderRadius.circular(8.r),
@@ -120,7 +119,7 @@ class _PracticeExamInstructionScreenState
             Expanded(
               child: Padding(
                 padding:
-                    EdgeInsets.symmetric(horizontal: 18.0.w, vertical: 10.0.h),
+                    EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.0.h),
                 child: Row(
                   children: [
                     SvgPicture.asset(Assets.icons.question),
@@ -128,18 +127,20 @@ class _PracticeExamInstructionScreenState
                       padding: EdgeInsets.symmetric(
                           vertical: 10.0.h, horizontal: 5.w),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                            'Questions'.tr,
-                            style: TextFontStyle
-                                .textStyle12w400c9AB2A8StyleGTWalsheim
-                                .copyWith(color: AppColors.c000000),
-                          ),
+                        
                           Text(
                             widget.quiz!.totalQuestions.toString(),
                             style: TextFontStyle
                                 .textStyle16w500c222222StyleGTWalsheim,
+                          ),
+                            Text(
+                            'Questions'.tr,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextFontStyle
+                                .textStyle12w400c9AB2A8StyleGTWalsheim
+                                .copyWith(color: AppColors.c000000),
                           ),
                         ],
                       ),
@@ -169,15 +170,17 @@ class _PracticeExamInstructionScreenState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Passing Score: '.tr,
+                            'Passing Score:',
+                            
                             style: TextFontStyle
                                 .textStyle12w400c9AB2A8StyleGTWalsheim
                                 .copyWith(color: AppColors.c000000),
                           ),
                           Text(
-                            '70%',
+                            "${widget.quiz!.passMark}%",
+                            overflow: TextOverflow.ellipsis,
                             style: TextFontStyle
-                                .textStyle16w500c222222StyleGTWalsheim
+                                .textStyle14w500c6B6B6BtyleGTWalsheim
                                 .copyWith(color: AppColors.c000000),
                           ),
                           //widget.quiz!.totalTime.toString(),

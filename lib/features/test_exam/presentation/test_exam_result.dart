@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/features/home/model/course_response.dart';
 import 'package:christiandimene/features/test_exam/model/test_result_response.dart';
@@ -16,12 +14,14 @@ import '../../../constants/text_font_style.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../helpers/navigation_service.dart';
 import '../../../helpers/ui_helpers.dart';
+import '../../certification/model/mock_test_response.dart';
 
 class TestExamResult extends StatefulWidget {
   final Map? quiz;
+  QuizData? quizdata;
 
   Course? data;
-  TestExamResult({this.data, this.quiz, super.key});
+  TestExamResult({this.data, this.quiz, this.quizdata, super.key});
   @override
   State<TestExamResult> createState() => _TestExamResultState();
 }
@@ -35,7 +35,8 @@ class _TestExamResultState extends State<TestExamResult> {
 
   @override
   Widget build(BuildContext context) {
-    log('=====Course Id ${widget.data!.id}=====');
+    int passMark = int.parse(widget.quizdata!.passMark.toString());
+
     return Scaffold(
       appBar: CustomAppbar(title: 'Quiz Result'),
       body: SafeArea(
@@ -45,7 +46,7 @@ class _TestExamResultState extends State<TestExamResult> {
             padding: const EdgeInsets.all(25.0),
             child: Column(
               children: [
-                (widget.quiz!["result"]["percentage"] >= 70)
+                (widget.quiz!["result"]["percentage"] >= passMark)
                     ? Center(
                         child: Image.asset(
                           Assets.images.characterPass.path,
@@ -60,7 +61,7 @@ class _TestExamResultState extends State<TestExamResult> {
                           width: 138.w,
                         ),
                       ),
-                (widget.quiz!["result"]["percentage"] >= 70)
+                (widget.quiz!["result"]["percentage"] >= passMark)
                     ? Text(
                         'You have passed the quiz!',
                         style: TextFontStyle
@@ -77,7 +78,7 @@ class _TestExamResultState extends State<TestExamResult> {
                           color: AppColors.c000000,
                         ),
                       ),
-                (widget.quiz!["result"]["percentage"] >= 70)
+                (widget.quiz!["result"]["percentage"] >= passMark)
                     ? SizedBox.shrink()
                     : Text(
                         'Try Again'.tr,
@@ -177,7 +178,7 @@ class _TestExamResultState extends State<TestExamResult> {
             context: context,
             minWidth: double.infinity,
             height: 44.h,
-            name: 'Restart Quiz',
+            name: 'Return to course',
             onCallBack: () {
               quizRestartPopupPopup(
                 context,
@@ -271,7 +272,7 @@ class _TestExamResultState extends State<TestExamResult> {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0.w, vertical: 8.0.h),
+        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 8.0.h),
         child: Row(
           children: [
             SvgPicture.asset(Assets.icons.question),
@@ -298,7 +299,7 @@ class _TestExamResultState extends State<TestExamResult> {
                   children: [
                     Text('Your Score'),
                     Text(
-                        "${widget.quiz?["result"]["percentage"].toString()} %"),
+                        "${widget.quiz!["result"]["percentage"].toDouble().toInt()}%"),
                   ],
                 ),
               ],

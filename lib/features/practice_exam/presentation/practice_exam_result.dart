@@ -238,7 +238,7 @@ class _PracticeExamResultState extends State<PracticeExamResult> {
         child: customButton(
           minWidth: double.infinity,
           height: 48.h,
-          name: 'Restart Quiz',
+          name: 'Return to course',
           onCallBack: () {
             quizRestartPopupPopup(
               context,

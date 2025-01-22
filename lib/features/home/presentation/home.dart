@@ -58,7 +58,6 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: EdgeInsets.all(20.sp),
         child: RefreshIndicator(
           onRefresh: refreshFunc,
-          
           child: Column(
             children: [
               ///home header.....

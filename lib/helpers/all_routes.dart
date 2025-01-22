@@ -310,12 +310,14 @@ final class RouteGenerator {
                 widget: TestExamResult(
                   quiz: arg!['data'],
                   data: arg['courseId'],
+                  quizdata: arg['quiz'],
                 ),
                 settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => TestExamResult(
                   quiz: arg!['data'],
                   data: arg['courseId'],
+                   quizdata: arg['quiz'],
                 ),
               );
 

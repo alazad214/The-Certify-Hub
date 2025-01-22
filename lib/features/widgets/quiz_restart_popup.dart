@@ -65,7 +65,7 @@ void quizRestartPopupPopup(BuildContext context, VoidCallback restart) {
                   UIHelper.horizontalSpace(16.w),
                   Expanded(
                     child: customButton(
-                      name: 'Restart',
+                      name: 'Go to course',
                       height: 42.h,
                       onCallBack: restart,
                       context: context,

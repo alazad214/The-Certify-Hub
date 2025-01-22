@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/model/course_details_response.dart';
 import 'package:christiandimene/features/certification/model/pdf_model_response.dart';
@@ -14,7 +13,6 @@ import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:christiandimene/networks/api_acess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -152,11 +150,6 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                             'Error',
                             'Something went wrong!',
                           );
-                          // Use Stripe Payment Sheet
-                          // await stripePaymentSheet(
-                          //     orderId: widget.data!.id,
-                          //     paymentIntentClientSecret:
-                          //         paymentResponse["client_secret"]);
                         }
                       } catch (e) {
                         log(e.toString());
@@ -170,31 +163,6 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
           : SizedBox.shrink(),
     );
   }
-
-  // Future<void> stripePaymentSheet(
-  //     {required String paymentIntentClientSecret,
-  //     required dynamic orderId}) async {
-  //   await Stripe.instance.initPaymentSheet(
-  //       paymentSheetParameters: SetupPaymentSheetParameters(
-  //     paymentIntentClientSecret: paymentIntentClientSecret,
-  //     merchantDisplayName: 'Service Booking',
-  //   ));
-
-  //   await Stripe.instance.presentPaymentSheet().then((value) async {
-  //     if (value == null) {
-  //       NavigationService.navigateToUntilReplacement(Routes.bottomNavBarScreen);
-
-  //       Get.snackbar(
-  //           backgroundColor: Colors.green, 'Successfull', 'Payment Success');
-  //     }
-  //   }).catchError((e) {
-  //     log(e.toString());
-  //     Get.snackbar(
-  //         backgroundColor: Colors.red,
-  //         'Something went Wrong',
-  //         'Payment Failed');
-  //   });
-  // }
 
   Widget _buildPDFItem() {
     return StreamBuilder(
@@ -254,7 +222,11 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      pdf.filePath!.split('/').last,
+                                      pdf.filePath!
+                                          .split('/')
+                                          .last
+                                          .split('.')
+                                          .first,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextFontStyle
                                           .textStyle16w400c999999StyleGTWalsheim

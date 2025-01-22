@@ -44,9 +44,11 @@ class _PaymentScreenState extends State<WebViewScreen> {
           onNavigationRequest: (NavigationRequest request) {
             log('Navigating to: ${request.url}');
             if (request.url.contains('success')) {
-              Get.snackbar('Sussess', 'Payment Success',
-                  backgroundColor: Colors.green[300],
-                  snackPosition: SnackPosition.BOTTOM);
+              Get.snackbar(
+                'Sussess',
+                'Payment Success',
+                backgroundColor: Colors.green[300],
+              );
 
               NavigationService.navigateToUntilReplacement(
                   Routes.bottomNavBarScreen);

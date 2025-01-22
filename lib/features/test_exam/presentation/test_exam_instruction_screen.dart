@@ -86,7 +86,7 @@ class _PracticeExamInstructionScreenState
                         onCallBack: () {
                           NavigationService.navigateToWithArgs(
                               Routes.testExamQuestionScreen,
-                              {'data': widget.quiz, 'courseId': widget.data});
+                              {'data': widget.quiz, 'courseId': widget.data, });
                         },
                         context: context)
                   ],

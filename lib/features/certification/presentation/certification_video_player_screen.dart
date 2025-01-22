@@ -62,7 +62,7 @@ class _CertificationVideoPlayerScreenState
           } else if (message.message == 'exit_full_screen') {
             _unlockOrientation();
           } else if (message.message == "ended") {
-            log('========================course track======================');
+  
             context.read<VideoScreenProvider>().setCompleted(true);
             postProgressRxObj.progressData(courseId: {
               "course_id": widget.data!.courseId,
@@ -70,7 +70,7 @@ class _CertificationVideoPlayerScreenState
               "is_completed": true
             });
 
-            log('========================content track======================');
+   
 
             postTrackContentRxObj.postTrackContent(
               userId: appData.read(userId),
