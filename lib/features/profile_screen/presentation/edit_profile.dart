@@ -10,11 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../../common_widgets/custom_textfeild.dart';
-import '../../../../constants/text_font_style.dart';
-import '../../../../gen/assets.gen.dart';
-import '../../../../gen/colors.gen.dart';
-import '../../../../helpers/ui_helpers.dart';
+import '../../../common_widgets/custom_textfeild.dart';
+import '../../../constants/text_font_style.dart';
+import '../../../gen/assets.gen.dart';
+import '../../../gen/colors.gen.dart';
+import '../../../helpers/ui_helpers.dart';
 
 class EditProfileScreen extends StatefulWidget {
   User data;
@@ -76,11 +76,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     log(widget.data.phoneNumber.toString());
 
-    if (kDebugMode) {
-      emailController.text = widget.data.email!;
-      phoneController.text = widget.data.phoneNumber!;
-      nameController.text = widget.data.name!;
-    }
+    emailController.text = widget.data.email!;
+    phoneController.text = widget.data.phoneNumber!;
+    nameController.text = widget.data.name!;
+
     return Scaffold(
       appBar: CustomAppbar(
         title: 'Edit Profile',
@@ -98,7 +97,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   profileImage: _profileImage,
                   onEditPressed: _showImagePickerOptions,
                 ),
-                UIHelper.verticalSpace(24.h),
+                UIHelper.verticalSpace(12.h),
+                Text(
+                  '${widget.data.email!}',
+                  style: TextFontStyle.textStyle14w400c9AB2A8
+                      .copyWith(color: AppColors.c1A1A1A),
+                ),
+                Divider(
+                  height: 25,
+                  thickness: 1,
+                ),
                 Text(
                   'Personal Information',
                   style: TextFontStyle.headline18w400cFFFFFFStyleGTWalsheim,
@@ -113,7 +121,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       .textStyle16w400c999999StyleGTWalsheim
                       .copyWith(color: AppColors.c000000.withOpacity(0.6)),
                 ),
-                UIHelper.verticalSpace(16.h),
+                         UIHelper.verticalSpace(16.h),
                 CustomTextfield(
                   hintText: 'Email',
                   borderRadius: 12.r,
@@ -124,6 +132,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       .textStyle16w400c999999StyleGTWalsheim
                       .copyWith(color: AppColors.c000000.withOpacity(0.6)),
                 ),
+                UIHelper.verticalSpace(16.h),
+                // CustomTextfield(
+                //   hintText: 'Phone',
+                //   borderRadius: 12.r,
+                //   controller: phoneController,
+                //   inputType: TextInputType.phone,
+                //   fillColor: AppColors.cFFFFFF,
+                //   hintTextSyle: TextFontStyle
+                //       .textStyle16w400c999999StyleGTWalsheim
+                //       .copyWith(color: AppColors.c000000.withOpacity(0.6)),
+                // ),
                 UIHelper.verticalSpace(50.h),
                 customButton(
                   name: 'Update',

@@ -212,25 +212,25 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              InkWell(
-                onTap: () {
-                  NavigationService.navigateTo(Routes.notification);
-                },
-                child: Container(
-                  height: 44.h,
-                  width: 44.w,
-                  padding: EdgeInsets.all(7.sp),
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  child: SvgPicture.asset(
-                    Assets.icons.notification,
-                    height: 24.h,
-                    width: 24.w,
-                  ),
-                ),
-              )
+              // InkWell(
+              //   onTap: () {
+              //     NavigationService.navigateTo(Routes.notification);
+              //   },
+              //   child: Container(
+              //     height: 44.h,
+              //     width: 44.w,
+              //     padding: EdgeInsets.all(7.sp),
+              //     decoration: BoxDecoration(
+              //       color: AppColors.white,
+              //       shape: BoxShape.circle,
+              //     ),
+              //     child: SvgPicture.asset(
+              //       Assets.icons.notification,
+              //       height: 24.h,
+              //       width: 24.w,
+              //     ),
+              //   ),
+              // )
             ],
           );
         }

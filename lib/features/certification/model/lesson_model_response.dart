@@ -75,8 +75,10 @@ class CourseContent {
   String? contentLength;
   int? courseId;
   int? courseModuleId;
-  String? status;
+  int? status;
+  int? beforePurchase;
   bool? viewed;
+  bool? isPurchased;
 
   CourseContent({
     this.id,
@@ -86,7 +88,9 @@ class CourseContent {
     this.courseId,
     this.courseModuleId,
     this.status,
+    this.beforePurchase,
     this.viewed,
+    this.isPurchased,
   });
 
   factory CourseContent.fromRawJson(String str) =>
@@ -102,7 +106,9 @@ class CourseContent {
         courseId: json["course_id"],
         courseModuleId: json["course_module_id"],
         status: json["status"],
+        beforePurchase: json["before_purchase"],
         viewed: json["viewed"],
+        isPurchased: json["is_purchased"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -113,6 +119,8 @@ class CourseContent {
         "course_id": courseId,
         "course_module_id": courseModuleId,
         "status": status,
+        "before_purchase": beforePurchase,
         "viewed": viewed,
+        "is_purchased": isPurchased,
       };
 }

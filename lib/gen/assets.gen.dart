@@ -110,6 +110,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/home.svg
   String get home => 'assets/icons/home.svg';
 
+  /// File path: assets/icons/lock.png
+  AssetGenImage get lockPng => const AssetGenImage('assets/icons/lock.png');
+
+  /// File path: assets/icons/lock.svg
+  String get lockSvg => 'assets/icons/lock.svg';
+
   /// File path: assets/icons/marks.svg
   String get marks => 'assets/icons/marks.svg';
 
@@ -153,7 +159,7 @@ class $AssetsIconsGen {
   String get warning2 => 'assets/icons/warning-2.svg';
 
   /// List of all assets
-  List<String> get values => [
+  List<dynamic> get values => [
         backButtonFrame,
         backButton,
         check,
@@ -182,6 +188,8 @@ class $AssetsIconsGen {
         flatOutline,
         google,
         home,
+        lockPng,
+        lockSvg,
         marks,
         notification,
         notificationOne,

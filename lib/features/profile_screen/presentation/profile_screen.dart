@@ -16,8 +16,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../../gen/assets.gen.dart';
-import '../../../../helpers/all_routes.dart';
+import '../../../gen/assets.gen.dart';
+import '../../../helpers/all_routes.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

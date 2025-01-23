@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/common_widgets/custom_button.dart';
@@ -57,19 +56,17 @@ class _TechnicalSupportScreenState extends State<TechnicalSupportScreen> {
                           ),
                           UIHelper.verticalSpace(20.h),
                           customButton(
-                            name: 'Visit Technical Suppot',
+                            name: 'Contact Technical Support',
                             height: 55.h,
                             minWidth: Get.width / 1.5,
                             onCallBack: () async {
-                     
-
                               if (await canLaunch(
                                   technicalData.data!.user!.url!)) {
                                 await launch(technicalData.data!.user!.url!);
                               } else {
                                 throw 'Could not launch WhatsApp';
                               }
-                              log(technicalData.data!.user!.url.toString());
+                           
                             },
                             context: context,
                           )

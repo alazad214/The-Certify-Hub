@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
 import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
@@ -57,7 +55,7 @@ class _AcademicSupportScreenState extends State<AcademicSupportScreen> {
                           ),
                           UIHelper.verticalSpace(20.h),
                           customButton(
-                            name: 'Visit Academic Suppot',
+                            name: 'Contact Academic Support',
                             height: 55.h,
                             minWidth: Get.width / 1.5,
                             onCallBack: () async {
@@ -67,8 +65,6 @@ class _AcademicSupportScreenState extends State<AcademicSupportScreen> {
                               } else {
                                 throw 'Could not launch WhatsApp';
                               }
-                              log('============academic support===========');
-                              log(academicSupport.data!.user!.url.toString());
                             },
                             context: context,
                           )

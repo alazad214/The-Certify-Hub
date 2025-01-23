@@ -7,8 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-import '../../../../constants/text_font_style.dart';
-import '../../../../gen/assets.gen.dart';
+import '../../constants/text_font_style.dart';
+import '../../gen/assets.gen.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});

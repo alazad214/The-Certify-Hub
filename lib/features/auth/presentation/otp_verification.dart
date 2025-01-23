@@ -1,27 +1,27 @@
 import 'dart:developer';
 
 import 'package:christiandimene/common_widgets/custom_button.dart';
-import 'package:christiandimene/constants/app_constants.dart';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
-import 'package:christiandimene/helpers/di.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
-import 'package:christiandimene/networks/api_acess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import '../../../../helpers/all_routes.dart';
-import '../../../../helpers/navigation_service.dart';
+import '../../../constants/app_constants.dart';
+import '../../../helpers/all_routes.dart';
+import '../../../helpers/di.dart';
+import '../../../helpers/navigation_service.dart';
+import '../../../networks/api_acess.dart';
 
-class ForgetVerifyScreen extends StatefulWidget {
-  const ForgetVerifyScreen({super.key});
+class OtpVerification extends StatefulWidget {
+  const OtpVerification({super.key});
 
   @override
-  State<ForgetVerifyScreen> createState() => _OtpVerificationState();
+  State<OtpVerification> createState() => _OtpVerificationState();
 }
 
-class _OtpVerificationState extends State<ForgetVerifyScreen> {
+class _OtpVerificationState extends State<OtpVerification> {
   final TextEditingController _otpTEController = TextEditingController();
 
   @override
@@ -30,7 +30,7 @@ class _OtpVerificationState extends State<ForgetVerifyScreen> {
       backgroundColor: AppColors.white,
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 55.h),
+          padding: EdgeInsets.symmetric(horizontal: 8.0.w, vertical: 55.h),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -58,9 +58,9 @@ class _OtpVerificationState extends State<ForgetVerifyScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 14.0),
+                    padding: EdgeInsets.symmetric(horizontal: 8.w),
                     child: Text(
-                      "Enter 4 digit code.".tr,
+                      "Enter 6 digit code.".tr,
                       style: TextFontStyle.textStyle16w400c999999StyleGTWalsheim
                           .copyWith(color: AppColors.c000000.withOpacity(0.6)),
                       textAlign: TextAlign.start,
@@ -68,15 +68,15 @@ class _OtpVerificationState extends State<ForgetVerifyScreen> {
                   ),
                   UIHelper.verticalSpace(16.h),
                   PinCodeTextField(
-                    length: 4,
+                    length: 6,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     obscureText: false,
                     animationType: AnimationType.fade,
                     pinTheme: PinTheme(
                         shape: PinCodeFieldShape.box,
                         borderRadius: BorderRadius.circular(12.r),
-                        fieldHeight: 52.h,
-                        fieldWidth: 70.w,
+                        fieldHeight: 55.h,
+                        fieldWidth: 45.w,
                         inactiveFillColor: AppColors.cE8E8E8,
                         inactiveColor: AppColors.cE8E8E8,
                         selectedColor: Colors.transparent,
@@ -92,45 +92,48 @@ class _OtpVerificationState extends State<ForgetVerifyScreen> {
                     onChanged: (value) {},
                     appContext: context,
                   ),
+                 
+                 
+                 
                   UIHelper.verticalSpace(16.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Didn’t Receive Code?'.tr,
-                        style: TextFontStyle
-                            .textStyle14w400c9AB2A8StyleGTWalsheim
-                            .copyWith(color: AppColors.c6B6B6B),
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Text(
-                          ' Resend Code'.tr,
-                          style: TextFontStyle
-                              .textStyle14w400c9AB2A8StyleGTWalsheim
-                              .copyWith(color: AppColors.c245741),
-                        ),
-                      )
-                    ],
-                  ),
-                  UIHelper.verticalSpace(8.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Resend code in'.tr,
-                        style: TextFontStyle
-                            .textStyle14w400c9AB2A8StyleGTWalsheim
-                            .copyWith(color: AppColors.c6B6B6B),
-                      ),
-                      Text(
-                        ' 00:59'.tr,
-                        style: TextFontStyle
-                            .textStyle14w400c9AB2A8StyleGTWalsheim
-                            .copyWith(color: AppColors.c245741),
-                      )
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Text(
+                  //       'Didn’t Receive Code?'.tr,
+                  //       style: TextFontStyle
+                  //           .textStyle14w400c9AB2A8StyleGTWalsheim
+                  //           .copyWith(color: AppColors.c6B6B6B),
+                  //     ),
+                  //     GestureDetector(
+                  //       onTap: () {},
+                  //       child: Text(
+                  //         ' Resend Code'.tr,
+                  //         style: TextFontStyle
+                  //             .textStyle14w400c9AB2A8StyleGTWalsheim
+                  //             .copyWith(color: AppColors.c245741),
+                  //       ),
+                  //     )
+                  //   ],
+                  // ),
+                  // UIHelper.verticalSpace(8.h),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Text(
+                  //       'Resend code in'.tr,
+                  //       style: TextFontStyle
+                  //           .textStyle14w400c9AB2A8StyleGTWalsheim
+                  //           .copyWith(color: AppColors.c6B6B6B),
+                  //     ),
+                  //     Text(
+                  //       ' 00:59'.tr,
+                  //       style: TextFontStyle
+                  //           .textStyle14w400c9AB2A8StyleGTWalsheim
+                  //           .copyWith(color: AppColors.c245741),
+                  //     )
+                  //   ],
+                  // ),
                   UIHelper.verticalSpace(180.h),
                   customButton(
                     name: 'Verify',
@@ -139,26 +142,22 @@ class _OtpVerificationState extends State<ForgetVerifyScreen> {
                       if (_otpTEController.text.isEmpty) {
                         log('Please Enter OTP');
                       } else {
-                        verifyOTPRXObj
+                        registerVerifyRxObj
                             .verifyOTP(
                           email: appData.read(kUserEmail),
-                          code: _otpTEController.text,
+                          otp: _otpTEController.text,
                         )
                             .then((value) {
-                          NavigationService.navigateTo(
-                              Routes.createNewPassword);
+                          NavigationService.navigateToUntilReplacement(
+                              Routes.bottomNavBarScreen);
                         });
 
-                        appData.write(kforgetOtp, _otpTEController.text);
+                        // appData.write(kforgetOtp, _otpTEController.text);
                         _otpTEController.clear();
                       }
+                      // NavigationService.navigateTo(Routes.bottomNavBarScreen);
                     },
                     context: context,
-                    textStyle: TextFontStyle
-                        .headline18w500c222222StyleGTWalsheim
-                        .copyWith(
-                      color: AppColors.c000000,
-                    ),
                   ),
                 ],
               ),

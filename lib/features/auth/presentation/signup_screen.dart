@@ -10,8 +10,8 @@ import 'package:christiandimene/networks/api_acess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../../../../helpers/all_routes.dart';
-import '../../../../helpers/di.dart';
+import '../../../helpers/all_routes.dart';
+import '../../../helpers/di.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});

@@ -295,7 +295,24 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
 
                       return InkWell(
                         onTap: () {
-                          if (data!.status == '1') {
+                          if (data!.isPurchased == false) {
+                            if (data.beforePurchase == 1) {
+                              NavigationService.navigateToWithArgs(
+                                Routes.videoPlayerScreen,
+                                {
+                                  'data': data,
+                                  'lessonData': lessonData,
+                                  'module': widget.courseModule
+                                },
+                              );
+                            } else {
+                              Get.snackbar(
+                                backgroundColor: Colors.red,
+                                'Something went wrong!',
+                                'Enroll in this course to get started',
+                              );
+                            }
+                          } else {
                             NavigationService.navigateToWithArgs(
                               Routes.videoPlayerScreen,
                               {
@@ -303,12 +320,6 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                                 'lessonData': lessonData,
                                 'module': widget.courseModule
                               },
-                            );
-                          } else {
-                            Get.snackbar(
-                              backgroundColor: Colors.red,
-                              'Something went wrong!',
-                              'Enroll in this course to get started',
                             );
                           }
                         },
@@ -389,11 +400,23 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                                   ],
                                 ),
                               ),
-                              SvgPicture.asset(
-                                Assets.icons.playButtonContainer,
-                                height: 30.h,
-                                width: 30.w,
-                              ),
+                              (data.isPurchased == true)
+                                  ? SvgPicture.asset(
+                                      Assets.icons.playButtonContainer,
+                                      height: 30.h,
+                                      width: 30.w,
+                                    )
+                                  : data.beforePurchase == 1
+                                      ? SvgPicture.asset(
+                                          Assets.icons.playButtonContainer,
+                                          height: 30.h,
+                                          width: 30.w,
+                                        )
+                                      : SvgPicture.asset(
+                                          Assets.icons.lockSvg,
+                                          height: 30.h,
+                                          width: 30.w,
+                                        )
                             ],
                           ),
                         ),

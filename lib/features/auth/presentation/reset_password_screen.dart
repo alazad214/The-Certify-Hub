@@ -6,11 +6,11 @@ import 'package:christiandimene/networks/api_acess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../../../../common_widgets/custom_button.dart';
-import '../../../../common_widgets/custom_textfeild.dart';
-import '../../../../constants/text_font_style.dart';
-import '../../../../gen/colors.gen.dart';
-import '../../../../helpers/ui_helpers.dart';
+import '../../../common_widgets/custom_button.dart';
+import '../../../common_widgets/custom_textfeild.dart';
+import '../../../constants/text_font_style.dart';
+import '../../../gen/colors.gen.dart';
+import '../../../helpers/ui_helpers.dart';
 
 class CreateNewPassScreen extends StatefulWidget {
   const CreateNewPassScreen({super.key});

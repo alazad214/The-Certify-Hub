@@ -1,7 +1,7 @@
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/home/presentation/home.dart';
 import 'package:christiandimene/features/my_course/presentation/my_course_screen.dart';
-import 'package:christiandimene/features/profile_screen/presentation/profile/profile_screen.dart';
+import 'package:christiandimene/features/profile_screen/presentation/profile_screen.dart';
 import 'package:christiandimene/gen/assets.gen.dart';
 import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/helper_methods.dart';

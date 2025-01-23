@@ -9,7 +9,7 @@ import 'package:christiandimene/gen/colors.gen.dart';
 import 'package:christiandimene/helpers/ui_helpers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../../../../networks/api_acess.dart';
+import '../../../networks/api_acess.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
