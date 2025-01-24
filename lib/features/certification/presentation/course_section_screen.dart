@@ -259,15 +259,15 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                                 ),
                               ),
                               (content.isPurchased == true)
-                                  ? SvgPicture.asset(
-                                      Assets.icons.playButtonContainer,
+                                  ? Image.asset(
+                                      Assets.icons.group1.path,
                                       height: 30.h,
                                       width: 30.w,
                                     )
                                   : content.beforePurchase == 1
-                                      ? SvgPicture.asset(
-                                          Assets.icons.playButtonContainer,
-                                          height: 30.h,
+                                      ? Image.asset(
+                                          Assets.icons.group1.path,
+                                          height: 40.h,
                                           width: 30.w,
                                         )
                                       : SvgPicture.asset(
@@ -539,21 +539,3 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
     );
   }
 }
-
-                                  // Container(
-                                      //   width: 2.w,
-                                      //   height: 12.h,
-                                      //   margin: EdgeInsets.symmetric(
-                                      //       horizontal: 8.w),
-                                      //   color: AppColors.c8C8C8C,
-                                      // ),
-                                      // Flexible(
-                                      //   child: Text(
-                                      //     '2 pages',
-                                      //     overflow: TextOverflow.ellipsis,
-                                      //     style: TextFontStyle
-                                      //         .textStyle14w400c9AB2A8StyleGTWalsheim
-                                      //         .copyWith(
-                                      //             color: AppColors.c8C8C8C),
-                                      //   ),
-                                      // ),

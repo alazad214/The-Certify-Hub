@@ -172,7 +172,7 @@ class _PracticeExamInstructionScreenState
                                 .copyWith(color: AppColors.c000000),
                           ),
                           Text(
-                            "munites",
+                            "minutes",
                             overflow: TextOverflow.ellipsis,
                             style: TextFontStyle
                                 .textStyle12w400c9AB2A8StyleGTWalsheim

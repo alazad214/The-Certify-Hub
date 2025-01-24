@@ -55,25 +55,27 @@ class _CertificationVideoPlayerScreenState
       ))
       ..addJavaScriptChannel(
         'VimeoChannel',
-        onMessageReceived: (message) {
+        onMessageReceived: (message) async {
           if (message.message == 'enter_full_screen') {
             _lockOrientation();
           } else if (message.message == 'exit_full_screen') {
             _unlockOrientation();
           } else if (message.message == "ended") {
             context.read<VideoScreenProvider>().setCompleted(true);
-            postProgressRxObj.progressData(courseId: {
+            await postProgressRxObj.progressData(courseId: {
               "course_id": widget.data!.courseId,
               "course_content_id": widget.data!.id.toString(),
               "is_completed": true
             });
 
-            postTrackContentRxObj.postTrackContent(
+           await postTrackContentRxObj.postTrackContent(
               userId: appData.read(userId),
               courseModuleId: widget.courseModule!.id!,
               courseContentId: widget.data!.id!,
               isCompleted: true,
             );
+           await getLessonsRxObj.getLessonsData(widget.courseModule!.id!);
+           await getPdfRxObj.getPdfFile(widget.courseModule!.id!);
           }
         },
       );

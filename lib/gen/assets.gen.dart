@@ -35,6 +35,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Check.svg
   String get check => 'assets/icons/Check.svg';
 
+  /// File path: assets/icons/Group 1.png
+  AssetGenImage get group1 => const AssetGenImage('assets/icons/Group 1.png');
+
   /// File path: assets/icons/Help.svg
   String get help => 'assets/icons/Help.svg';
 
@@ -155,6 +158,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/time.svg
   String get time => 'assets/icons/time.svg';
 
+  /// File path: assets/icons/unlock.svg
+  String get unlock => 'assets/icons/unlock.svg';
+
   /// File path: assets/icons/warning-2.svg
   String get warning2 => 'assets/icons/warning-2.svg';
 
@@ -163,6 +169,7 @@ class $AssetsIconsGen {
         backButtonFrame,
         backButton,
         check,
+        group1,
         help,
         logout,
         playButtonContainer,
@@ -203,6 +210,7 @@ class $AssetsIconsGen {
         testTime,
         tickCircle,
         time,
+        unlock,
         warning2
       ];
 }
