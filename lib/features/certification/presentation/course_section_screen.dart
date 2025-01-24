@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:christiandimene/constants/text_font_style.dart';
 import 'package:christiandimene/features/certification/model/course_details_response.dart';
-import 'package:christiandimene/features/certification/model/pdf_model_response.dart';
 import 'package:christiandimene/features/certification/presentation/payment_screen.dart';
 import 'package:christiandimene/features/certification/widgets/custom_appbar2.dart';
 import 'package:christiandimene/features/widgets/custom_ask_me_card.dart';
@@ -135,8 +134,6 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                             courseId: {"course_id": widget.aiData!.id});
 
                         if (paymentResponse.containsKey("payment_url")) {
-                          // Open WebView with payment URL
-
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -165,39 +162,54 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
   }
 
   Widget _buildPDFItem() {
-    return StreamBuilder(
-        stream: getPdfRxObj.getPdfData,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.active) {
-            if (snapshot.hasError) {
-              return Center(child: Text("Error: ${snapshot.error}"));
-            } else if (snapshot.hasData) {
-              PdfModelResponse? pdfData = snapshot.data;
+    return StreamBuilder<LessonsModelResponse>(
+      stream: getLessonsRxObj.dataFetcher,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          } else if (snapshot.hasData) {
+            LessonsModelResponse? lessonData = snapshot.data;
 
-              if (pdfData!.data!.files == null ||
-                  pdfData.data!.files!.isEmpty) {
-                return Center(child: Text('No pdf available'));
-              } else {
-                return ListView.builder(
-                    itemCount: pdfData.data!.files!.length,
+            if (lessonData?.data?.contents == null ||
+                lessonData?.data?.contents?.isEmpty == true) {
+              return Center(child: Text('No content available'));
+            } else {
+              return ListView.builder(
+                itemCount: lessonData?.data?.contents?.length ?? 0,
+                shrinkWrap: true,
+                primary: false,
+                itemBuilder: (_, contentIndex) {
+                  CourseContent content =
+                      lessonData!.data!.contents![contentIndex];
+
+                  return ListView.builder(
+                    itemCount: content.contentFiles!.length,
                     shrinkWrap: true,
                     primary: false,
-                    itemBuilder: (_, index) {
-                      FileElement? pdf;
-                      pdf = pdfData.data!.files![index];
-                      log(pdf.filePath.toString());
+                    itemBuilder: (_, pdfIndex) {
+                      ContentFile pdf = content.contentFiles![pdfIndex];
 
                       return InkWell(
                         onTap: () {
-                          if (widget.purchaseCourse!.isEmpty) {
-                            Get.snackbar(
-                              backgroundColor: Colors.red,
-                              'Something went wrong!',
-                              'Enroll in this course to get started',
-                            );
+                          if (content.isPurchased == false) {
+                            if (content.beforePurchase == 1) {
+                              NavigationService.navigateToWithArgs(
+                                Routes.pdfViewerScreen,
+                                {'pdf': pdf},
+                              );
+                            } else {
+                              Get.snackbar(
+                                backgroundColor: Colors.red,
+                                'Something went wrong!',
+                                'Enroll in this course to get started',
+                              );
+                            }
                           } else {
                             NavigationService.navigateToWithArgs(
-                                Routes.pdfViewerScreen, {'data': pdf});
+                              Routes.pdfViewerScreen,
+                              {'pdf': pdf},
+                            );
                           }
                         },
                         child: Container(
@@ -205,7 +217,7 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                           padding: EdgeInsets.all(8.sp),
                           margin: EdgeInsets.symmetric(vertical: 8.h),
                           decoration: BoxDecoration(
-                            color: AppColors.white,
+                            color: Colors.white,
                             borderRadius: BorderRadius.circular(8.r),
                           ),
                           child: Row(
@@ -214,15 +226,14 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                                 Assets.images.pdf.path,
                                 fit: BoxFit.cover,
                               ),
-                              UIHelper.horizontalSpace(12.w),
+                              SizedBox(width: 12.h),
                               Flexible(
                                 child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      pdf.filePath!
+                                      pdf.fileUrl!
                                           .split('/')
                                           .last
                                           .split('.')
@@ -230,40 +241,59 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                                       overflow: TextOverflow.ellipsis,
                                       style: TextFontStyle
                                           .textStyle16w400c999999StyleGTWalsheim
-                                          .copyWith(color: AppColors.c222222),
+                                          .copyWith(color: Colors.black),
                                     ),
+                                    UIHelper.verticalSpace(5.h),
                                     Row(
                                       children: [
-                                        Flexible(
-                                          child: Text(
-                                            'PDFs',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextFontStyle
-                                                .textStyle14w400c9AB2A8StyleGTWalsheim
-                                                .copyWith(
-                                                    color: AppColors.c8C8C8C),
-                                          ),
+                                        Text(
+                                          'PDF',
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextFontStyle
+                                              .textStyle14w400c9AB2A8StyleGTWalsheim
+                                              .copyWith(color: Colors.grey),
                                         ),
                                       ],
                                     ),
                                   ],
                                 ),
                               ),
+                              (content.isPurchased == true)
+                                  ? SvgPicture.asset(
+                                      Assets.icons.playButtonContainer,
+                                      height: 30.h,
+                                      width: 30.w,
+                                    )
+                                  : content.beforePurchase == 1
+                                      ? SvgPicture.asset(
+                                          Assets.icons.playButtonContainer,
+                                          height: 30.h,
+                                          width: 30.w,
+                                        )
+                                      : SvgPicture.asset(
+                                          Assets.icons.lockSvg,
+                                          height: 30.h,
+                                          width: 30.w,
+                                        )
                             ],
                           ),
                         ),
                       );
-                    });
-              }
-            } else {
-              return const SizedBox.shrink();
+                    },
+                  );
+                },
+              );
             }
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
           } else {
             return Center(child: CircularProgressIndicator());
           }
-        });
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+    );
   }
 
   Widget _buildLessonItem() {

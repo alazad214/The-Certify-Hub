@@ -109,7 +109,6 @@ class _PracticeExamInstructionScreenState
   Widget _questionBoard() {
     return Center(
       child: Container(
-       
         decoration: BoxDecoration(
           color: AppColors.cFFFFFF,
           borderRadius: BorderRadius.circular(8.r),
@@ -129,13 +128,13 @@ class _PracticeExamInstructionScreenState
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                        
                           Text(
                             widget.quiz!.totalQuestions.toString(),
-                            style: TextFontStyle
-                                .textStyle16w500c222222StyleGTWalsheim,
+                                style: TextFontStyle
+                                .textStyle12w400c9AB2A8StyleGTWalsheim
+                                .copyWith(color: AppColors.c000000),
                           ),
-                            Text(
+                          Text(
                             'Questions'.tr,
                             overflow: TextOverflow.ellipsis,
                             style: TextFontStyle
@@ -167,22 +166,23 @@ class _PracticeExamInstructionScreenState
                     ),
                     Expanded(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            'Passing Score:',
-                            
-                            style: TextFontStyle
+                            "${widget.quiz!.passMark}%",
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                          style: TextFontStyle
                                 .textStyle12w400c9AB2A8StyleGTWalsheim
                                 .copyWith(color: AppColors.c000000),
                           ),
                           Text(
-                            "${widget.quiz!.passMark}%",
-                            overflow: TextOverflow.ellipsis,
-                            style: TextFontStyle
-                                .textStyle14w500c6B6B6BtyleGTWalsheim
+                            'passing score',
+                          style: TextFontStyle
+                                .textStyle12w400c9AB2A8StyleGTWalsheim
                                 .copyWith(color: AppColors.c000000),
                           ),
+
                           //widget.quiz!.totalTime.toString(),
                         ],
                       ),

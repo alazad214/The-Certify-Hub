@@ -85,8 +85,10 @@ class _PracticeExamInstructionScreenState
                         name: 'Start Now',
                         onCallBack: () {
                           NavigationService.navigateToWithArgs(
-                              Routes.testExamQuestionScreen,
-                              {'data': widget.quiz, 'courseId': widget.data, });
+                              Routes.testExamQuestionScreen, {
+                            'data': widget.quiz,
+                            'courseId': widget.data,
+                          });
                         },
                         context: context)
                   ],
@@ -125,7 +127,8 @@ class _PracticeExamInstructionScreenState
                             "${widget.quiz!.totalQuestions}",
                             overflow: TextOverflow.ellipsis,
                             style: TextFontStyle
-                                .textStyle16w500c222222StyleGTWalsheim,
+                                .textStyle12w400c9AB2A8StyleGTWalsheim
+                                .copyWith(color: AppColors.c000000),
                           ),
                           Text(
                             'questions',
@@ -172,7 +175,7 @@ class _PracticeExamInstructionScreenState
                             "munites",
                             overflow: TextOverflow.ellipsis,
                             style: TextFontStyle
-                                .textStyle16w500c222222StyleGTWalsheim
+                                .textStyle12w400c9AB2A8StyleGTWalsheim
                                 .copyWith(color: AppColors.c000000),
                           ),
                         ],
@@ -198,21 +201,22 @@ class _PracticeExamInstructionScreenState
                     UIHelper.horizontalSpace(8.w),
                     Flexible(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            'Passing Score: ',
+                            "${widget.quiz!.passMark}%",
                             overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
                             style: TextFontStyle
                                 .textStyle12w400c9AB2A8StyleGTWalsheim
                                 .copyWith(color: AppColors.c000000),
                           ),
                           Text(
-                            "${widget.quiz!.passMark}%",
+                            ' passing score',
                             overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
                             style: TextFontStyle
-                                .textStyle14w500c6B6B6BtyleGTWalsheim
+                                .textStyle12w400c9AB2A8StyleGTWalsheim
                                 .copyWith(color: AppColors.c000000),
                           ),
                         ],

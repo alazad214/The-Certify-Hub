@@ -70,7 +70,7 @@ class LessonData {
 
 class CourseContent {
   int? id;
-  dynamic contentTitle;
+  String? contentTitle;
   String? videoFile;
   String? contentLength;
   int? courseId;
@@ -79,6 +79,7 @@ class CourseContent {
   int? beforePurchase;
   bool? viewed;
   bool? isPurchased;
+  List<ContentFile>? contentFiles; // Added for PDFs
 
   CourseContent({
     this.id,
@@ -91,6 +92,7 @@ class CourseContent {
     this.beforePurchase,
     this.viewed,
     this.isPurchased,
+    this.contentFiles,
   });
 
   factory CourseContent.fromRawJson(String str) =>
@@ -109,6 +111,10 @@ class CourseContent {
         beforePurchase: json["before_purchase"],
         viewed: json["viewed"],
         isPurchased: json["is_purchased"],
+        contentFiles: json["content_files"] == null
+            ? []
+            : List<ContentFile>.from(
+                json["content_files"].map((x) => ContentFile.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -122,5 +128,25 @@ class CourseContent {
         "before_purchase": beforePurchase,
         "viewed": viewed,
         "is_purchased": isPurchased,
+        "content_files": contentFiles == null
+            ? []
+            : List<dynamic>.from(contentFiles!.map((x) => x.toJson())),
+      };
+}
+
+class ContentFile {
+  int? id;
+  String? fileUrl;
+
+  ContentFile({this.id, this.fileUrl});
+
+  factory ContentFile.fromJson(Map<String, dynamic> json) => ContentFile(
+        id: json["id"],
+        fileUrl: json["file_url"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "file_url": fileUrl,
       };
 }

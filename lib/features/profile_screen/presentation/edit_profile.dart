@@ -99,18 +99,25 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
                 UIHelper.verticalSpace(12.h),
                 Text(
-                  '${widget.data.email!}',
-                  style: TextFontStyle.textStyle14w400c9AB2A8
+                  'Personal Information',
+                  style: TextFontStyle.headline20w700c222222StyleGTWalsheim
+                      .copyWith(decoration: TextDecoration.underline),
+                ),
+                UIHelper.verticalSpace(12.h),
+                Text(
+                  '${widget.data.name!}',
+                  overflow: TextOverflow.ellipsis,
+                  style: TextFontStyle.textStyle16w400c999999StyleGTWalsheim
                       .copyWith(color: AppColors.c1A1A1A),
                 ),
-                Divider(
-                  height: 25,
-                  thickness: 1,
-                ),
+                UIHelper.verticalSpace(5.h),
                 Text(
-                  'Personal Information',
-                  style: TextFontStyle.headline18w400cFFFFFFStyleGTWalsheim,
+                  '${widget.data.email!}',
+                  overflow: TextOverflow.ellipsis,
+                  style: TextFontStyle.textStyle12w400c9AB2A8StyleGTWalsheim
+                      .copyWith(color: AppColors.c1A1A1A),
                 ),
+
                 UIHelper.verticalSpace(24.h),
                 CustomTextfield(
                   hintText: 'Name',
@@ -121,7 +128,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       .textStyle16w400c999999StyleGTWalsheim
                       .copyWith(color: AppColors.c000000.withOpacity(0.6)),
                 ),
-                         UIHelper.verticalSpace(16.h),
+                UIHelper.verticalSpace(16.h),
                 CustomTextfield(
                   hintText: 'Email',
                   borderRadius: 12.r,

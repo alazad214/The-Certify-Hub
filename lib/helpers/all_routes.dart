@@ -125,12 +125,12 @@ final class RouteGenerator {
         return Platform.isAndroid
             ? _FadedTransitionRoute(
                 widget: PdfViewerScreen(
-                  data: arg!['data'],
+                  data: arg!['pdf'],
                 ),
                 settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => PdfViewerScreen(
-                      data: arg!['data'],
+                      data: arg!['pdf'],
                     ));
 
       case Routes.certificationSectionScreen:

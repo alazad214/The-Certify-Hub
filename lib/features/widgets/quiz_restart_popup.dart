@@ -40,7 +40,7 @@ void quizRestartPopupPopup(BuildContext context, VoidCallback restart) {
               ),
               UIHelper.verticalSpace(16.h),
               Text(
-                "Are you sure you want to restart this quiz?",
+                "Are you sure you want to return to the course?",
                 textAlign: TextAlign.center,
                 style: TextFontStyle.textStyle14w500c6B6B6BtyleGTWalsheim,
               ),

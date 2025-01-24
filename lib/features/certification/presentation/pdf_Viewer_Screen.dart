@@ -1,6 +1,6 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:christiandimene/common_widgets/custom_appbar.dart';
-import 'package:christiandimene/features/certification/model/pdf_model_response.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/networks/endpoints.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +8,10 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
+import '../model/lesson_model_response.dart';
+
 class PdfViewerScreen extends StatefulWidget {
-  FileElement? data;
+  ContentFile? data;
 
   PdfViewerScreen({required this.data, super.key});
   @override
@@ -23,7 +25,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
   @override
   void initState() {
     super.initState();
-    downloadPdf(baseUrl + widget.data!.filePath.toString());
+    downloadPdf(baseUrl + widget.data!.fileUrl!.toString());
   }
 
   Future<void> downloadPdf(String url) async {
@@ -55,9 +57,10 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log('==========PDF File:==${widget.data!.fileUrl!}============');
     return Scaffold(
       appBar: CustomAppbar(
-        title: "Document File",
+        title: widget.data!.fileUrl!.split('/').last.split('.').first,
         onCallBack: () {
           NavigationService.goBack;
         },
