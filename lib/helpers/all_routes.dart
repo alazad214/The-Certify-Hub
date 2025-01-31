@@ -317,7 +317,7 @@ final class RouteGenerator {
                 builder: (context) => TestExamResult(
                   quiz: arg!['data'],
                   data: arg['courseId'],
-                   quizdata: arg['quiz'],
+                  quizdata: arg['quiz'],
                 ),
               );
 

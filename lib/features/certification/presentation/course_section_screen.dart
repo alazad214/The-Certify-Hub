@@ -370,7 +370,7 @@ class _CertificationMainScreenState extends State<CourseSectionScreen> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8.r)),
                                 child: Image.asset(
-                                  Assets.images.homeCardImage.path,
+                                  Assets.images.contentCard.path,
                                   fit: BoxFit.cover,
                                 ),
                               ),

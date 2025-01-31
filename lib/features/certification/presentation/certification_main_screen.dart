@@ -18,6 +18,7 @@ import 'package:christiandimene/networks/endpoints.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../widgets/mock_test_popup.dart';
@@ -182,7 +183,6 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
                           );
                           // Use Stripe Payment Sheet
                           // await stripePaymentSheet(
-                          //     orderId: widget.data!.id,
                           //     paymentIntentClientSecret:
                           //         paymentResponse["client_secret"]);
                         }
@@ -199,30 +199,30 @@ class _CertificationMainScreenState extends State<CertificationMainScreen> {
     );
   }
 
-  // Future<void> stripePaymentSheet(
-  //     {required String paymentIntentClientSecret,
-  //     required dynamic orderId}) async {
-  //   await Stripe.instance.initPaymentSheet(
-  //       paymentSheetParameters: SetupPaymentSheetParameters(
-  //     paymentIntentClientSecret: paymentIntentClientSecret,
-  //     merchantDisplayName: 'Service Booking',
-  //   ));
+  Future<void> stripePaymentSheet({
+    required String paymentIntentClientSecret,
+  }) async {
+    await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+      paymentIntentClientSecret: paymentIntentClientSecret,
+      merchantDisplayName: 'Service Booking',
+    ));
 
-  //   await Stripe.instance.presentPaymentSheet().then((value) async {
-  //     if (value == null) {
-  //       NavigationService.navigateToUntilReplacement(Routes.bottomNavBarScreen);
+    await Stripe.instance.presentPaymentSheet().then((value) async {
+      if (value == null) {
+        NavigationService.navigateToUntilReplacement(Routes.bottomNavBarScreen);
 
-  //       Get.snackbar(
-  //           backgroundColor: Colors.green, 'Successfull', 'Payment Success');
-  //     }
-  //   }).catchError((e) {
-  //     log(e.toString());
-  //     Get.snackbar(
-  //         backgroundColor: Colors.red,
-  //         'Something went Wrong',
-  //         'Payment Failed');
-  //   });
-  // }
+        Get.snackbar(
+            backgroundColor: Colors.green, 'Successfull', 'Payment Success');
+      }
+    }).catchError((e) {
+      log(e.toString());
+      Get.snackbar(
+          backgroundColor: Colors.red,
+          'Something went Wrong',
+          'Payment Failed');
+    });
+  }
 
   ///COURSE AND MOCK TEST--->>
   Widget _buildCourseAndTestButton() {

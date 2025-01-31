@@ -366,7 +366,7 @@ class _TestExamQuizState extends State<TestExamQuiz> {
                           {
                             'data': value,
                             "courseId": widget.data,
-                            'quiz':widget.quiz,
+                            'quiz': widget.quiz,
                           },
                         );
                       },

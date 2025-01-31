@@ -238,6 +238,10 @@ class $AssetsImagesGen {
   AssetGenImage get characterPass =>
       const AssetGenImage('assets/images/character_pass.png');
 
+  /// File path: assets/images/content_card.webp
+  AssetGenImage get contentCard =>
+      const AssetGenImage('assets/images/content_card.webp');
+
   /// File path: assets/images/customer-support.png
   AssetGenImage get customerSupport =>
       const AssetGenImage('assets/images/customer-support.png');
@@ -309,6 +313,7 @@ class $AssetsImagesGen {
         askme,
         characterOops,
         characterPass,
+        contentCard,
         customerSupport,
         errorImage,
         facebook,
