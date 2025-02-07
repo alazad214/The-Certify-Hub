@@ -41,25 +41,28 @@ final class PostRegisterRx extends RxResponseInt {
   handleSuccessWithReturn(data) async {
     int? statusCode = data['code'];
 
-    // SAVE USER TOKEN, ID & EMAIL...
-
     if (statusCode == 200) {
       NavigationService.navigateToReplacement(Routes.otpVerification);
       Get.snackbar(
         "Success",
-        "Verify Otp Send",
+        "Verify Otp Sent",
         backgroundColor: Colors.green,
         colorText: Colors.white,
       );
+      return true;
     } else if (statusCode == 422) {
-      log("The email has already been taken.");
+      String errorMessage = data["message"] ?? "Validation error occurred";
+
+      log("Validation Error: $errorMessage");
+
       Get.snackbar(
         "Error",
-        "The email has already been taken.",
+        errorMessage,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
+      return false;
     }
 
     dataFetcher.sink.add(data);
@@ -76,7 +79,14 @@ final class PostRegisterRx extends RxResponseInt {
       if (error.type == DioExceptionType.connectionError) {
         message = "Check Your Network Connection";
       }
-      log("Error: $message, Code: $message");
+      log("Errossssr: $message, Code: $message");
+
+      Get.snackbar(
+        "Error",
+        '$message',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     }
     return false;
   }

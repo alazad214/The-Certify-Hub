@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' as dio;
 
 import '../../../../../networks/dio/dio.dart';
 import '../../../../../networks/exception_handler/data_source.dart';
@@ -22,10 +22,11 @@ final class RegisterApi {
         "password": password,
         "password_confirmation": passwordConfirmation,
       };
-      Response response = await postHttp(Endpoints.register(), data);
-      if (response.statusCode == 200) {
-        Map data = json.decode(json.encode(response.data));
-        return data;
+
+      dio.Response response = await postHttp(Endpoints.register(), data);
+
+      if (response.statusCode == 200 || response.statusCode == 422) {
+        return json.decode(json.encode(response.data));
       } else {
         throw DataSource.DEFAULT.getFailure();
       }

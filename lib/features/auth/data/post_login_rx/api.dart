@@ -19,7 +19,7 @@ final class PostLoginApi {
         "password": password,
       };
       Response response = await postHttp(Endpoints.logIn(), data);
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 422) {
         Map data = json.decode(json.encode(response.data));
         return data;
       } else {

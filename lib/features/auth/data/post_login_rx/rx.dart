@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'package:christiandimene/helpers/loading_helper.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../../../../networks/dio/dio.dart';
 import '../../../../../networks/rx_base.dart';
@@ -68,6 +70,12 @@ final class PostLoginRx extends RxResponseInt {
         message = "Check Your Network Connection";
       }
       log("Error: $message, Code: $message");
+      Get.snackbar(
+        "Error",
+        '$message',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     }
     return false;
   }

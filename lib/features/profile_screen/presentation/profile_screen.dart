@@ -154,7 +154,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     svg: SvgPicture.asset(Assets.icons.shieldTick),
                     onPressed: () async {
                       final String whatsappUrl =
-                          'https://christiandimene.softvencefsd.xyz/privacy-policy-the-certify-hub';
+                          'https://relmaxpdc.com/privacy-policy';
 
                       if (await canLaunch(whatsappUrl)) {
                         await launch(whatsappUrl);
@@ -168,7 +168,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     svg: SvgPicture.asset(Assets.icons.check),
                     onPressed: () async {
                       final String whatsappUrl =
-                          'https://christiandimene.softvencefsd.xyz/terms-and-conditions-the-certify-hub';
+                          'https://relmaxpdc.com/terms-conditions';
 
                       if (await canLaunch(whatsappUrl)) {
                         await launch(whatsappUrl);

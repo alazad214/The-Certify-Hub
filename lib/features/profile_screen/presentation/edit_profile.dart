@@ -5,7 +5,7 @@ import 'package:christiandimene/common_widgets/custom_button.dart';
 import 'package:christiandimene/features/profile_screen/model/get_profile_response.dart';
 import 'package:christiandimene/helpers/navigation_service.dart';
 import 'package:christiandimene/networks/api_acess.dart';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
